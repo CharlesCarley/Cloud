@@ -2,7 +2,7 @@
 
 CustomCloud is a collection of tools and libraries that allows a  movable cloud which can be set up on a local computer, virtual machine, or remote server.
 
-_This project is still largely unfinished, and should be kept private. Not just because it shows how ambitiously mediocre I am, but i'm out of time to work on it. I'm making it public because it shows some database/REST experience. Even though primitive at best_    
+_This project is still largely unfinished, and should be kept private. Not just because it shows how ambitiously mediocre I am, but it's unfinished.  I'm out of time to work on it, so I'm making it public because it shows some database / REST experience. (Even though primitive at best)_    
 
 ## Architectural overview
 
@@ -59,3 +59,9 @@ The transaction layer communicates between the client and host.
 ![Overview](Content/Cloud.Transaction.svg)
 
 
+## Basic testing
+
+In the Visual Studio solution explorer, right click on the root of the solution tree
+and select Properties. Select Common Properties / Startup Project.
+From the list of projects enable BookStore.Store and BookStore.FrontEnd as the projects 
+to start. Then Ctrl+F5 will launch both projects for testing. 
