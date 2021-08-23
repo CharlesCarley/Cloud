@@ -1,0 +1,3 @@
+private static readonly byte[] _${BaseName} = {
+            ${Bytes}
+        };

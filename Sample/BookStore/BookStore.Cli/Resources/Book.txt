@@ -1,0 +1,15 @@
+﻿
+book: <action>
+
+    <action> is one of the following:
+
+          help - Displays this screen.
+          list - Pulls all books from the server and prints them to the console.
+         clear - Clears the entire book store.
+
+   selectArray - Pulls a list of all server id and revision pairs.
+                    The list is in the form of [id[0], rev[0] ... id[n], rev[n]]
+
+   selectById  - Pulls a book item with the specified id.
+                    <int> Server id
+

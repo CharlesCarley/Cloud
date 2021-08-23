@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$(SolutionDir)\BuildTools\Library.targets" />
+
+
+  <PropertyGroup>
+    <DocumentationFileName>Cloud.GeneratorApi</DocumentationFileName>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\BuildTools\Cloud.Documentation.targets" />
+  <PropertyGroup>
+    <PackageName>$(DocumentationFileName)</PackageName>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\BuildTools\Publish.targets" />
+
+
+
+  <ItemGroup>
+    <ProjectReference Include="$(CloudReflection)" />
+  </ItemGroup>
+</Project>

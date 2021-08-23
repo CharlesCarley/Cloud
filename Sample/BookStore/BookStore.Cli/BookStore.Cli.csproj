@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="$(SolutionDir)\BuildTools\Executable.targets" />
+
+  <PropertyGroup>
+    <DocumentationFileName>Cloud.Generator</DocumentationFileName>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\BuildTools\Cloud.Documentation.targets" />
+
+
+
+  <!-- references -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Build.Framework" Version="16.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(CloudReflection)" />
+    <ProjectReference Include="$(CloudGeneratorApi)" />
+    <ProjectReference Include="$(CloudClientSQLite)" />
+    <ProjectReference Include="$(CloudServerSQLite)" />
+    <ProjectReference Include="$(CloudUtils)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(SolutionDir)Sample\BookStore\BookStore.Client\BookStore.Client.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

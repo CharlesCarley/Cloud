@@ -1,0 +1,45 @@
+---
+BasedOnStyle:       Microsoft
+IndentWidth:        4
+TabWidth:           4
+UseTab:             Never
+
+Language:           CSharp
+BreakBeforeBraces:  WebKit
+
+AlignConsecutiveDeclarations:        true
+AlignConsecutiveAssignments:         true
+AllowShortIfStatementsOnASingleLine: true
+AllowShortFunctionsOnASingleLine:    true
+
+ColumnLimit:        0
+IndentCaseLabels:   false
+
+MaxEmptyLinesToKeep:                 1
+KeepEmptyLinesAtTheStartOfBlocks:   false
+
+IndentPPDirectives:   None
+IncludeBlocks:        Merge
+AccessModifierOffset: -4
+NamespaceIndentation: All
+PointerAlignment:     Left
+SpaceBeforeParens:    ControlStatements
+
+Standard: Auto
+AlignTrailingComments: true
+AlignOperands: true
+BinPackParameters: false
+BinPackArguments:  false
+
+AllowShortLoopsOnASingleLine: false
+
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+BreakConstructorInitializersBeforeComma: true
+BreakConstructorInitializers: AfterColon
+ConstructorInitializerIndentWidth: 4
+
+BreakBeforeTernaryOperators: true
+AllowShortCaseLabelsOnASingleLine: false
+AlignEscapedNewlines: Left
+
+...

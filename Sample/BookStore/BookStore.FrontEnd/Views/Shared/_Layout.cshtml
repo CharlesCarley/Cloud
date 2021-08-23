@@ -1,0 +1,52 @@
+﻿@using BookStore.FrontEnd.Controllers
+@using BookStore.FrontEnd.Components
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Book Store Server</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/theme.light.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    </head>
+
+<body class="content">
+    <header>
+        <nav class="navbar navbar-expand border-bottom shadow-lg mb-3 main-header">
+            <div class="container">
+                <a class="text-header-local" asp-area="" asp-controller="Home" asp-action="Index">Book Store</a>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav">
+
+                        <li class="nav-item">
+                            <a class="icon-list-24  text-header-local flex-grow-1"
+                               asp-area="" asp-controller="Book" asp-action="Index"></a>
+                        </li>
+                        <li class="nav-item">
+                            @await Component.InvokeAsync(typeof(ConnectedViewComponent),"")
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="content">
+        <div class="container">
+            <main role="main" class="pb-5">
+                @RenderBody()
+            </main>
+        </div>
+
+        <footer class="main-footer">
+            <div class="container">
+            </div>
+        </footer>
+        <script src="~/lib/jquery/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        @await RenderSectionAsync("Scripts", false)
+    </div>
+</body>
+</html>

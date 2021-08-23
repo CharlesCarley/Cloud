@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$(SolutionDir)\BuildTools\Library.targets" />
+
+  <ItemGroup>
+    <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BookStore.Api\BookStore.Api.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="$(CloudTransaction)" />
+    <ProjectReference Include="$(CloudUtils)" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <CloudGeneratorInputAssembly>$(SolutionDir)Sample\BookStore\BookStore.Api\bin\$(Configuration)\$(CoreFramework)\BookStore.Api.dll</CloudGeneratorInputAssembly>
+    <CloudGeneratorOutputFile>BookStore.Client.cs</CloudGeneratorOutputFile>
+    <CloudExtraOptions>Verbose</CloudExtraOptions>
+    <CloudGeneratorType>ClientSQLite</CloudGeneratorType>
+    <CloudGeneratorRootNamespace>BookStore.Client</CloudGeneratorRootNamespace>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\BuildTools\Cloud.Generator.targets" />
+
+
+</Project>

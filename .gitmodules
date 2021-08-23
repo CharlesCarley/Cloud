@@ -1,0 +1,3 @@
+[submodule "Content/Documentation/Extern"]
+	path = Content/Documentation/Extern
+	url = http://host.git.internal:8765/Cloud2/Documentation.git

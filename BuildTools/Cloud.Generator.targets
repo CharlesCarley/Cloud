@@ -1,0 +1,46 @@
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+
+    <CloudGeneratorInputAssembly Condition="'$(CloudGeneratorInputAssembly)' == ''"></CloudGeneratorInputAssembly>
+    <CloudGeneratorOutputFile    Condition="'$(CloudGeneratorOutputFile)' == ''"   ></CloudGeneratorOutputFile>
+    <CloudGeneratorType          Condition="'$(CloudGeneratorType)' == ''"         >ClientSQLite</CloudGeneratorType>
+    <CloudGeneratorRootNamespace Condition="'$(CloudGeneratorRootNamespace)' == ''" />
+
+    <CloudExtraOptions Condition="'$(CloudExtraOptions)' == ''"></CloudExtraOptions>
+    <CloudGeneratorProgram 
+      Condition="'$(CloudGeneratorProgram)' == '' and $([MSBuild]::IsOSPlatform('Linux'))=='true'"
+      >$(SolutionDir)Source\Cloud.Generator\bin\$(Configuration)\$(CoreFramework)\Cloud.Generator</CloudGeneratorProgram>
+    <CloudGeneratorProgram 
+      Condition="'$(CloudGeneratorProgram)' == '' and $([MSBuild]::IsOSPlatform('Windows'))=='true'"
+      >$(SolutionDir)Source\Cloud.Generator\bin\$(Configuration)\$(CoreFramework)\Cloud.Generator.exe</CloudGeneratorProgram>
+  </PropertyGroup>
+
+  <Target Name="CloudDbGenerator" 
+          BeforeTargets="BeforeBuild"
+          Outputs="$(CloudGeneratorOutputFile)">
+
+    <Message Importance="High"
+             Text="Generating -> $(CloudGeneratorOutputFile)"/>
+    <Exec Condition="'$(CloudExtraOptions)' == 'Verbose'"
+        Command="$(CloudGeneratorProgram) -v -i $(CloudGeneratorInputAssembly) -o obj\$(CloudGeneratorOutputFile) -t $(CloudGeneratorType) -n $(CloudGeneratorRootNamespace)"/>
+    <Exec Condition="'$(CloudExtraOptions)' != 'Verbose'"
+          Command="$(CloudGeneratorProgram) -i $(CloudGeneratorInputAssembly) -o obj\$(CloudGeneratorOutputFile) -t $(CloudGeneratorType) -n $(CloudGeneratorRootNamespace)"/>
+
+  </Target>
+
+  <Target Name="CloudDbGeneratorClean"
+          BeforeTargets="BeforeClean;BeforeRebuild">
+    <Message Importance="High"
+             Text="Deleting-> $(CloudGeneratorOutputFile)"/>
+    <Delete Files="$(CloudGeneratorOutputFile)"/>
+  </Target>
+
+
+  <ItemGroup>
+    <Compile Include="obj\$(CloudGeneratorOutputFile)">
+      <Link>$(CloudGeneratorOutputFile)</Link>
+    </Compile>
+  </ItemGroup>
+
+</Project>

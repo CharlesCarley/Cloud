@@ -1,0 +1,17 @@
+{
+    "Message": "Hello world",
+    "Integer": 123,
+    "Real": 1.56789,
+    "BoolTrue": true,
+    "BoolFalse": false,
+    "Null": null,
+
+    "JObject": {
+        "Message": "Hello world",
+        "Integer": 123,
+        "Real": 1.56789,
+        "BoolTrue": true,
+        "BoolFalse": false,
+        "Null": null
+    }
+}

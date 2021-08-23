@@ -1,0 +1,25 @@
+﻿@using Cloud.Transaction
+@{
+    ViewData["Title"] = "Connection Settings";
+}
+<div class="text-left">
+    <h1 class="grey-fg-11 text-left special-header">@ViewData["Title"]</h1>
+
+    <p class="text-dark mt-2 text-left indent-paragraph">
+    A green connection icon <span class="icon-connected green-fg-5"></span>
+    indicates that there is a present connection to the backend database.
+    A red icon indicates that there is no connection. Connection parameters are set on startup. 
+    If the icon is red, check the appsettings.json file for the following:
+<pre class="m-0 code-fragment"><code>"DataBaseHostConfig": {
+    "Host": "A full path to the database service.",
+    "Port": "The port that the service is listening on."
+}
+</code></pre>
+    <p>
+        The current application is trying to connect to: 
+        <code >@Transaction.Host:@Transaction.Port</code>. If 
+        that is correct, try pinging the service with curl.
+    </p>
+    <pre class="m-0 code-fragment" ><code>curl -v http://[path-to-service]:[port]/ping</code></pre>
+    <p>After a successful connection, the output from the ping route should be:<pre class="m-0 code-fragment">Cloud.Store running successfully</pre></p>
+</div>

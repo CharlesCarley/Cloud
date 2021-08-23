@@ -1,0 +1,7 @@
+ResourceCompiler <options> -o <output file> source[0], ... , source[N] 
+
+    where <options> is one or more of the following:
+
+         -n - Sets the output namespace name.
+         -c - Sets the output classes name.
+

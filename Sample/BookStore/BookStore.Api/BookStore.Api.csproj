@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$(SolutionDir)\BuildTools\Library.targets" />
+
+  <ItemGroup>
+    <ProjectReference Include="$(CloudReflection)" />
+  </ItemGroup>
+
+</Project>

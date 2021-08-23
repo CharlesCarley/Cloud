@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$(SolutionDir)\BuildTools\Library.targets" />
+
+
+  <PropertyGroup>
+    <DocumentationFileName>Cloud.ReflectionApi</DocumentationFileName>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\BuildTools\Cloud.Documentation.targets" />
+  <PropertyGroup>
+    <PackageName>$(DocumentationFileName)</PackageName>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\BuildTools\Publish.targets" />
+
+
+</Project>

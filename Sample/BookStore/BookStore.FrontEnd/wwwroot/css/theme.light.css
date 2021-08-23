@@ -1,0 +1,209 @@
+
+
+:root {
+    /*=================================================*/
+    --font-common: 400 18px/32px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-standard: 600 12px "Lucida Grande", "Geneva", "Helvetica", Arial, sans-serif;
+    --font-icon: 600 12px "Lucida Grande", "Geneva", "Helvetica", Arial, sans-serif;
+    /*=================================================
+                Color palette
+    */
+    --accent-blue: #0887e2;
+    --accent-blue-d1: #0970b9;
+    --accent-blue-ls: #d1e3f0;
+    --accent-red: #e90027;
+    --accent-red-d1: #96162c;
+    --accent-red-ls: #e297a4;
+    --accent-green: #83d129;
+    --accent-green-100: #82cf29;
+    --accent-green: #82cf29;
+    --accent-green-l1: #5cad00;
+    --accent-green-sel: #63a716;
+    --color-grey-01: #151515;
+    --color-grey-02: #1b1b1b;
+    --color-grey-03: #212121;
+    --color-grey-04: #272727;
+    --color-grey-05: #2d2d2d;
+    --color-grey-06: #333333;
+    --color-grey-07: #393939;
+    --color-grey-08: #3f3f3f;
+    --color-grey-09: #454545;
+    --color-grey-10: #4b4b4b;
+    --color-grey-11: #515151;
+    --color-grey-12: #575757;
+    --color-grey-13: #5d5d5d;
+    --color-grey-14: #636363;
+    --color-grey-15: #696969;
+    --color-grey-16: #6f6f6f;
+    --color-grey-17: #757575;
+    --color-grey-18: #7b7b7b;
+    --color-grey-19: #818181;
+    --color-grey-20: #878787;
+    --color-grey-21: #8d8d8d;
+    --color-grey-22: #939393;
+    --color-grey-23: #999999;
+    --color-grey-24: #9f9f9f;
+    --color-grey-25: #a5a5a5;
+    --color-grey-26: #ababab;
+    --color-grey-27: #b1b1b1;
+    --color-grey-28: #b7b7b7;
+    --color-grey-29: #bdbdbd;
+    --color-grey-30: #c3c3c3;
+    --color-grey-31: #c9c9c9;
+    --color-grey-32: #cfcfcf;
+    --color-grey-33: #d5d5d5;
+    --color-grey-34: #dbdbdb;
+    --color-grey-35: #e1e1e1;
+    --color-grey-36: #e7e7e7;
+    --color-grey-37: #ededed;
+    --color-grey-38: #f3f3f3;
+    --color-grey-39: #f9f9f9;
+    --color-grey-40: #ffffff;
+    --color-red-01: #ad0000;
+    --color-red-02: #b90c0c;
+    --color-red-03: #c51818;
+    --color-red-04: #d12424;
+    --color-red-05: #dd3030;
+    --color-red-06: #e93c3c;
+    --color-red-07: #f54848;
+    --color-red-08: #ff5454;
+    --color-red-09: #ff6060;
+    --color-red-10: #ff6c6c;
+    --color-green-01: #479500;
+    --color-green-02: #53a10c;
+    --color-green-03: #5fad18;
+    --color-green-04: #6bb924;
+    --color-green-05: #77c530;
+    --color-green-06: #83d13c;
+    --color-green-07: #8fdd48;
+    --color-green-08: #9be954;
+    --color-green-09: #a7f560;
+    --color-green-10: #b3ff6c;
+    --color-blue-01: #005fba;
+    --color-blue-02: #0867c2;
+    --color-blue-03: #106fca;
+    --color-blue-04: #1877d2;
+    --color-blue-05: #207fda;
+    --color-blue-06: #2887e2;
+    --color-blue-07: #308fea;
+    --color-blue-08: #3897f2;
+    --color-blue-09: #409ffa;
+    --color-blue-10: #48a7ff;
+    /*=================================================
+            Main title area
+    */
+    --header-bg: var(--color-grey-04);
+    --header-fg: var(--color-grey-30);
+    --header-font-size: var(--fs-h4);
+    --indent-header: 4pt;
+    --pad-header: 8pt;
+    /*=================================================
+        Frame area and content...
+    */
+    --frame-bg: var(--color-grey-38);
+    --frame-fg: var(--header-fg);
+    --content-bg: var(--color-grey-40);
+    --content-fg: var(--color-grey-10);
+    --content-even: var(--color-grey-38);
+    --content-bg-l1: var(--color-grey-38);
+    --content-bg-l2: #ff0000;
+    --content-border: var(--color-grey-32);
+    --border-common: var(--content-border);
+    --color-icon-fg: var(--color-blue-05);
+    --color-icon-bg: var(--color-grey-32);
+    --icon-size: 12pt;
+    /*=================================================*/
+    --baseline-font-size: 14px;
+    --pre-text-common: var(--color-grey-12);
+    /*=================================================*/
+    /*=================================================
+        Links
+    */
+    --link-common: var(--color-grey-10);
+    --link-visited: var(--color-grey-10);
+    --link-active: var(--color-grey-10);
+    --link-hover: var(--color-grey-10);
+    --arrow-w: 16px;
+    --arrow-h: 22px;
+    /*=================================================
+        Overall font scale definitions...
+    */
+    --fs-h1: 22pt;
+    --fs-h2: 18pt;
+    --fs-h3: 16pt;
+    --fs-h4: 15pt;
+    --fs-h5: 14pt;
+    --fs-h6: 12pt;
+    --fs-h7: 11pt;
+    --fs-h8: 10pt;
+    --fs-h9: 9pt;
+    --fs-h10: 8pt;
+    --indent: 12pt;
+    --spacing-sm: 2pt;
+    --spacing-no: 4pt;
+    --spacing-ex: 8pt;
+    --spacing-xx: 16pt;
+    /* =================================================
+            Code color definitions.
+    */
+    --code-bg: #ffebcd;
+    --code-fg: #333333;
+    --code-bd: #4665a2;
+    /* =================================================
+            Documentation page definitions.
+    */
+    --page-title-bg: var(--color-green-03);
+    --page-title-sz: var(--fs-h3);
+    --heading-color-h1: var(--color-blue-08);
+    --heading-color-h2: var(--color-blue-03);
+    --heading-color-h3: inherit;
+    --heading-color-h4: inherit;
+    --heading-color-h5: inherit;
+    --heading-color-h6: inherit;
+    /*--======== page-group ========--*/
+    --page-group-bg: inherit;
+    --page-group-fg: var(--color-blue-08);
+    --page-group-sz: var(--fs-head-02);
+    --page-group-sub-heading-sz: var(--fs-head-03);
+    /*--======== description text ========--*/
+    --paragraph-text-block-bg: inherit;
+    --paragraph-text-block-fg: inherit;
+    --paragraph-text-block-sz: var(--fs-h8);
+    /*----*/
+    --member-title: var(--color-blue-08);
+    --member-title-bg: var(--color-grey-38);
+    /*----*/
+    --member-prototype-fg: var(--color-grey-18);
+    --member-prototype-bg: var(--color-grey-37);
+    --member-name: inherit;
+    --member-modifier: var(--accent-blue);
+    /*----*/
+    --member-doc-bg: var(--color-grey-40);
+    --member-doc-fg: var(--color-grey-10);
+    --member-doc-bd: var(--color-grey-38);
+    /*----*/
+    --parameter-type: var(--color-green-04);
+    --parameter-name: var(--color-green-06);
+    /*----*/
+    --package-group-bg: var(--color-grey-38);
+    --package-group-fg: var(--color-grey-10);
+    --package-group-bd: var(--color-grey-34);
+    /*----*/
+    --font-size: 12px;
+    --text-color: var(--content-fg);
+    /* =================================================
+            Embedded SVG page definitions.
+    */
+    --mainpoly-fill: var(--frame-bg);
+    --mainpoly-stroke: var(--color-grey-16);
+    --mainpoly-stroke-width: 1px;
+    --inner-fill: var(--color-grey-39);
+    --inner-stroke: var(--color-grey-28);
+    --inner-stroke-width: 1px;
+    --path-width: 1.0px;
+    --path-color: var(--heading-color);
+    --path-end-point-color: var(--mainpoly-stroke);
+    --path-end-point-stroke: var(--path-end-point-color);
+    --body-bg: #000;
+    --body-color: #111;
+}

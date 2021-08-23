@@ -1,0 +1,35 @@
+﻿@model BookStore.FrontEnd.Models.BookModel;
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<table class="container w-100">
+    <tr>
+        <td class="w-auto">
+            <h1 class="special-header pl-2">@ViewData["Title"]</h1>
+        </td>
+    </tr>
+    <tr><td><p class="p-0 m-0 h6">Creates a new Book element then calls BookTransaction.Save() to push it to the server.</p></td></tr>
+    @if (!string.IsNullOrEmpty(BookModel.ErrorMessage))
+    {
+        <tr><td><p class="p-0 mt-2 h6 red-fg-5">@BookModel.ErrorMessage</p></td></tr>
+    }
+    <tr>
+        <td>
+            <form method="post">
+                <label asp-for="Key" class="control-label"></label>
+                <input asp-for="Key" class="form-control separate-bg" />
+                <label asp-for="Author" class="control-label"></label>
+                <input asp-for="Author" class="form-control separate-bg" />
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control separate-bg" />
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control-plaintext border separate-bg"></textarea>
+                <input type="submit" value="Create" class="mt-3 btn btn-dark green-bg-6" />
+            </form>
+        </td>
+    </tr>
+
+
+</table>

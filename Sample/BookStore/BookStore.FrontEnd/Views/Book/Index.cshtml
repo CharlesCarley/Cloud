@@ -1,0 +1,125 @@
+﻿@model BookStore.FrontEnd.Models.BookModel;
+
+@{
+    ViewData["Title"] = "Book Selection";
+}
+
+<div class="container">
+    <div class="row special-header">
+        <div class="col">
+            <h1>Overview</h1>
+        </div>
+    </div>
+</div>
+<p class="indent-paragraph">
+    Below are the list of books that have been added to the database.
+    The complete list has been fetched back out of the database one by one.
+
+    This is accomplished in a two stage process.
+    First a list of id's are pulled from the server.
+
+    This list contains pairs of the book's primary id and revision number.
+    Then for each id revision pair, the revision in the list is checked against the local revision.
+    If the local revision is newer than the server revision the local copy gets uploaded to the server.
+    If the server revision is newer than the local version the code will execute BookTransaction.SelectById()
+    which will merge the server content with the local content.
+</p>
+
+@if (StateManager.IsConnected)
+{
+    <div class="row special-header">
+        <div class="col">
+            <h2>Book selection</h2>
+        </div>
+
+        <div class="col-md-auto">
+            <button type="button" class="btn grey-bg-40 m-0" onclick="location.href='@Url.Action("Create")'">
+                <span class="icon-add-24 link-alert icon-link"></span>
+            </button>
+        </div>
+
+        <div class="col-md-auto">
+            <button type="button" class="btn grey-bg-40 m-0" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <span class="icon-clear-24 link-alert icon-link"></span>
+            </button>
+
+            @*<a asp-action="Clear" class="icon-clear-24 link-alert icon-link"></a>*@
+        </div>
+
+        <div class="modal fade" 
+             id="exampleModal" 
+             tabindex="-1" 
+             role="dialog" 
+             aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+
+            <div class="modal-dialog" 
+                 role="document">
+                
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Clear Server Data?</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>This will remove all elements from the server database for the book table. 
+                            <span class="red-fg-6">This cannot be undone!</span></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" 
+                                class="btn red-bg-5 grey-fg-40"
+                                onclick="location.href='@Url.Action("Clear")'">Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (!StateManager.HasElements)
+{
+    <p class="indent-paragraph">
+        From the perspective of the application as it currently stands,
+        this book store is looking a little bit light right now.
+
+    @if (StateManager.IsConnected)
+    {
+        <span>Try adding a few books.</span>
+    }
+    else
+    {
+        <span> However, It seems that there is no active connection to the backend database. 
+            So, new books can not be added to the until a connection can be established. 
+        </span>
+    }
+
+    </p>
+}
+else
+{
+    <table class="table">
+        <tbody>
+
+            @foreach (var item in BookModel.SelectArray())
+            {
+                var itemIndex = item.Index;
+                var style = "grey-bg-39";
+                if (item.Index % 2 == 0)
+                {
+                    style = "grey-bg-40";
+                }
+
+                <tr class="w-100 @style">
+                    <td class="d-table-cell text-center">@itemIndex</td>
+                    <td class="d-table-cell w-100">
+                        <a asp-action="Details" asp-route-id=@item.Index>@Html.DisplayName(item.Title)</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+

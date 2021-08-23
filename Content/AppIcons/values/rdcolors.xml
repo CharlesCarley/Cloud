@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="launcher_background">#484848</color>
+  <color name="colorPrimary">#3F51B5</color>
+  <color name="colorPrimaryDark">#303F9F</color>
+  <color name="colorAccent">#FF4081</color> 
+
+  <color name="Accent">#6FADD9</color>
+  <color name="ButtonFocusedBorderLight">#6FADD9</color>
+  <color name="ButtonDisabledBorderLight">#C2D1DB</color>
+  <color name="ButtonDisabledText">#C2D1DB</color>
+  <color name="MiddleText">#848484</color>
+  <color name="Background">#FFFFFF</color>
+  <color name="LabelText">#556069</color>
+  <color name="LabelAccent">#6FADD9</color>
+  <color name="LabelEmphasis3">#123551</color>
+  <color name="LabelEmphasis2">#617A8E</color>
+  <color name="LabelEmphasis1">#BEC9D2</color>
+  <color name="LabelEmphasisA3">#056CB7</color>
+  <color name="LabelEmphasisA2">#5BA0D3</color>
+  <color name="LabelEmphasisA1">#B9DAF2</color>
+  <color name="ButtonBackground">#F9F9F9</color>
+  <color name="ButtonText">#556069</color>
+  <color name="ButtonBorder">#C9D4DC</color>
+  <color name="PressedButtonBackground">#F0F0F0</color>
+  <color name="PressedButtonText">#B2C0CC</color>
+  <color name="PressedButtonBorder">#6FADD9</color>
+  <color name="FocusedButtonBackground">#F0F0F0</color>
+  <color name="FocusedButtonText">#556069</color>
+  <color name="FocusedButtonBorder">#6FADD9</color>
+  <color name="DisabledButtonBackground">#F0F0F0</color>
+  <color name="DisabledButtonText">#C2D1DB</color>
+  <color name="DisabledButtonBorder">#C2D1DB</color>
+  <color name="SelectionHighlightColor">#6FADD9</color>
+  <color name="BarBackground">#484848</color>
+  <color name="BarText">#B6B6B6</color>
+
+</resources>

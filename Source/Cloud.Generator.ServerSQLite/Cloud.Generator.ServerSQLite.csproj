@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$(SolutionDir)\BuildTools\Library.targets" />
+
+  <PropertyGroup>
+    <DocumentationFileName>Cloud.Generator.ServerSQLite</DocumentationFileName>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\BuildTools\Cloud.Documentation.targets" />
+  <PropertyGroup>
+    <PackageName>$(DocumentationFileName)</PackageName>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\BuildTools\Publish.targets" />
+
+
+  <!-- references -->
+  <ItemGroup>
+    <ProjectReference Include="$(CloudGeneratorApi)" />
+    <ProjectReference Include="$(CloudUtils)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Templates.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Templates.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Templates.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Templates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+</Project>

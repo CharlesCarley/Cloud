@@ -1,0 +1,13 @@
+.vs
+docs
+bin
+Help
+TestResults
+obj
+*.user
+Publish
+credentials.json
+secrets
+/Sample/BookStore/BookStore.FrontEnd/*.db
+/Sample/BookStore/BookStore.Test/VMTest/*.db
+/Sample/BookStore/BookStore.Cli/Properties/launchSettings.json

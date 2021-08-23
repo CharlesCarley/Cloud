@@ -1,0 +1,12 @@
+﻿@if (StateManager.IsConnected)
+{
+    <a class="connection-icon p-2 green-fg-4 icon-connected-24"
+       asp-controller="Home" 
+       asp-action="Connection"></a>
+}
+else
+{
+    <a class="connection-icon p-2 red-fg-4  icon-connected-24"
+       asp-controller="Home" 
+       asp-action="Connection"></a>
+}

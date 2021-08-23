@@ -1,0 +1,15 @@
+using System.Collections.Generic;
+using System.Text;
+
+namespace ${Namespace} {
+	public static class ${ClassName} {
+		${PrivateImpl}
+        private static string GetString(IEnumerable<byte> bytes)
+        {
+            var builder = new StringBuilder();
+            foreach (var b in bytes)
+                builder.Append((char)b);
+            return builder.ToString();
+        }
+	}
+}

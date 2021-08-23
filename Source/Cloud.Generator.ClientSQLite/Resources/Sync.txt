@@ -1,0 +1,172 @@
+	
+
+	public class ${ClassName}Transaction {
+		private readonly Bundle _bundle;
+		
+		public ${ClassName}Transaction(Bundle bundle) 
+        {
+            // do not allow the bundle to be null
+            if (bundle is null)
+                throw new ArgumentNullException(nameof(bundle));
+
+			_bundle = bundle;
+		}
+
+		public bool Save() 
+        {
+            var result = Transaction.Dispatch(
+                new Content(_bundle) {
+                    Function = Constants.Save,
+                    Table    = _bundle.TableId,
+                }, 
+                Constants.HttpPost, 
+                Constants.HttpContentApplication);
+
+            if (result.HasPackagedContent) {
+                // TODO: this needs the returned (ServerId, Revision)
+            }
+            return false;
+		}
+
+		public bool Drop() 
+        {
+            var result = Transaction.Dispatch(
+                new Content(_bundle.Key) {
+                    Function = Constants.Drop,
+                    Table    = _bundle.TableId,
+                }, 
+                Constants.HttpPost, 
+                Constants.HttpContentApplication);
+
+            return result.Code == ReceiptCode.True;
+		}
+        
+        public ReceiptCode ExistsRemotely() 
+        {
+            if (string.IsNullOrEmpty(_bundle.Key)) {
+
+                LogUtils.Log(LogLevel.Error, 
+                    nameof(ExistsRemotely),
+                    "The supplied argument is null or empty.");
+
+                return ReceiptCode.Fail;
+            }
+
+            var result = Transaction.Dispatch(
+                new Content(_bundle.Key) {
+                    Function = Constants.Contains,
+                    Table    = _bundle.TableId,
+                },
+                Constants.HttpPost,
+                Constants.HttpContentApplication);
+
+            return result.Code;
+        }
+
+		public static List<int> SelectArray() 
+        {
+            var result = Transaction.Dispatch(
+                    new Content(string.Empty) {
+                    Function = Constants.SelectArray,
+                    Table    = ${ClassName}.UniqueIdentifier,
+                },
+                Constants.HttpGet,
+                Constants.HttpContentApplication);
+
+            return result.UnpackList();
+		}
+       
+		public static ${ClassName} SelectById(int id) 
+        {
+            var result = Transaction.Dispatch(
+                new Content(id) {
+                    Function = Constants.SelectById,
+                    Table    = ${ClassName}.UniqueIdentifier,
+                },
+                Constants.HttpPost,
+                Constants.HttpContentApplication);
+
+            ${ClassName} returnValue = null;
+
+            if (result.HasPackagedContent) {
+                returnValue = (${ClassName})result.UnpackJson<${ClassName}>();
+            }
+            return returnValue;
+		} 
+
+
+        public static bool ContainsKey(string key) 
+        {
+            if (string.IsNullOrEmpty(key)) {
+
+                LogUtils.Log(LogLevel.Error, 
+                    nameof(ContainsKey),
+                    "The supplied argument is null or empty.");
+
+                return false;
+            }
+
+            var result = Transaction.Dispatch(
+                new Content(key) {
+                    Function = Constants.Contains,
+                    Table    = ${ClassName}.UniqueIdentifier,
+                },
+                Constants.HttpPost,
+                Constants.HttpContentApplication);
+
+
+            if (result is null) // Not the best 
+                return false;
+
+            return result.Code == ReceiptCode.True;
+        }
+
+
+        public static ${ClassName} SelectByKey(string key) 
+        {
+            if (string.IsNullOrEmpty(key))
+                return null;
+
+            var result = Transaction.Dispatch(
+                new Content(key) {
+                    Function = Constants.SelectByKey,
+                    Table    = ${ClassName}.UniqueIdentifier,
+                },
+                Constants.HttpPost,
+                Constants.HttpContentApplication);
+
+
+            ${ClassName} returnValue = null;
+            if (result.HasPackagedContent) {
+                returnValue = (${ClassName})result.UnpackJson<${ClassName}>();
+            }
+            return returnValue;
+		} 
+        
+        public static void Drop(string key) 
+        {
+            if (string.IsNullOrEmpty(key))
+                return;
+
+            Transaction.Dispatch(
+                new Content(key) {
+                    Function = Constants.Drop,
+                    Table    = ${ClassName}.UniqueIdentifier,
+                },
+                Constants.HttpPost,
+                Constants.HttpContentApplication);
+        
+            // TODO: Test the return code...
+		} 
+
+        public static void Clear() 
+        {
+            Transaction.Dispatch(
+                new Content {
+                    Function = Constants.Clear,
+                    Table    = ${ClassName}.UniqueIdentifier,
+                },
+                Constants.HttpPost,
+                Constants.HttpContentApplication);
+		} 
+    }

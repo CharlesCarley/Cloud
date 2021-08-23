@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$(SolutionDir)\BuildTools\Library.targets" />
+
+
+  <PropertyGroup>
+    <DoxygenOutput>$(SolutionDir)docs\index.html</DoxygenOutput>
+    <StyleMain>$(SolutionDir)Content/Documentation/Extern/style.css</StyleMain>
+    <Diagrams>$(SolutionDir)Content/Diagrams.svg</Diagrams>
+    <ThemeMain>$(SolutionDir)Content/Documentation/Extern/theme.light.css</ThemeMain>
+    <StyleDoxygen>$(SolutionDir)Content/Documentation/Extern/dox.css</StyleDoxygen>
+    <StyleDoxygenNav>$(SolutionDir)Content/Documentation/Extern/navtree.css</StyleDoxygenNav>
+    <DoxygenLayout>$(SolutionDir)Content/Documentation/Extern/Layout.xml</DoxygenLayout>
+    <DoxygenHeader>$(SolutionDir)Content/Documentation/Extern/header.html</DoxygenHeader>
+    <DoxygenFooter>$(SolutionDir)Content/Documentation/Extern/footer.html</DoxygenFooter>
+  </PropertyGroup>
+  <Target Name="Doxygen" Condition="'$(GenXMLDocs)'=='True'" BeforeTargets="BeforeBuild;BeforeRebuild" Outputs="$(DoxygenOutput)">
+    <Exec Command="doxygen Doxyfile" />
+  </Target>
+  <ItemGroup>
+    <None Include="$(Diagrams)">
+      <Link>content\Diagrams.svg</Link>
+    </None>
+    <None Include="$(StyleMain)">
+      <Link>content\style.css</Link>
+    </None>
+    <None Include="$(ThemeMain)">
+      <Link>content\theme.light.css</Link>
+    </None>
+    <None Include="$(StyleDoxygen)">
+      <Link>content\doxygen.css</Link>
+    </None>
+    <None Include="$(StyleDoxygenNav)">
+      <Link>content\navtree.css</Link>
+    </None>
+    <None Include="$(DoxygenFooter)">
+      <Link>templates\footer.html</Link>
+    </None>
+    <None Include="$(DoxygenHeader)">
+      <Link>templates\header.html</Link>
+    </None>
+    <None Include="$(DoxygenLayout)">
+      <Link>templates\layout.xml</Link>
+    </None>
+    <None Include="$(DoxygenOutput)">
+      <Link>index.html</Link>
+      <DependentUpon>Doxyfile</DependentUpon>
+    </None>
+  </ItemGroup>
+
+</Project>

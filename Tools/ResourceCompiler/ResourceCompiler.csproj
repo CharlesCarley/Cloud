@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <CoreFramework>netcoreapp3.1</CoreFramework>
+  </PropertyGroup>
+
+  <Import Project="$(SolutionDir)\BuildTools\Executable.targets" />
+
+  <PropertyGroup>
+    <DocumentationFileName>Cloud.Generator</DocumentationFileName>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\BuildTools\Cloud.Documentation.targets" />
+
+  <PropertyGroup>
+    <PackageName>$(DocumentationFileName)</PackageName>
+    <Version>0.0.1</Version>
+    <Description>Code generator source</Description>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\BuildTools\Publish.targets" />
+  <ItemGroup>
+    <Compile Remove="Properties\**" />
+    <EmbeddedResource Remove="Properties\**" />
+    <None Remove="Properties\**" />
+  </ItemGroup>
+
+  <!-- references -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Build.Framework" Version="16.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(CloudUtils)" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Compile Update="Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  
+</Project>

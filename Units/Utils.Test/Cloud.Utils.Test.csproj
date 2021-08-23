@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$(SolutionDir)\BuildTools\Extras.props" />
+  <Import Project="$(SolutionDir)\BuildTools\UnitTest.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(CloudUtils)" />
+  </ItemGroup>
+
+  <!-- Include the setup for auto testing -->
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="$(AutoTest)=='True'">
+    <Exec Command="dotnet test -v q $(TargetPath)" />
+  </Target>
+
+</Project>
