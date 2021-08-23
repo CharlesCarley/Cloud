@@ -1,8 +1,6 @@
 # CustomCloud 
 
- 
-CustomCloud is a collection of tools and libraries that allows a 
-movable cloud which can be set up on a local computer, virtual machine, or remote server.
+CustomCloud is a collection of tools and libraries that allows a  movable cloud which can be set up on a local computer, virtual machine, or remote server.
 
 _This project is still largely unfinished, and should be kept private. Not just because it shows how ambitiously mediocre I am, but i'm out of time to work on it. I'm making it public because it shows some database experience. Even though primitive at best_    
 
@@ -51,7 +49,6 @@ That API gets linked to a user module, which implements any desired data types.
 After that, the output of the user module gets fed back into the generator build tool. The generator defines a type switch that determines the output database code.
 The final output of the generator should be fed back into a project wishing to used the database types. 
 
-
 ## [Cloud.Store](Source/Cloud.Store)
 
 
@@ -62,14 +59,3 @@ The transaction layer communicates between the client and host.
 ![Overview](Content/Cloud.Transaction.svg)
 
 
-## Utilities
-
-[clean.sh](clean.sh) calls python [BuildTools/DeleteFiles.py](BuildTools/DeleteFiles.py) which loads the contents of .gitignore and deletes matches from the filesystem.
-
-
-
-
-## References
-
-+ [w3.org - Root](https://www.w3.org/Protocols/)
-+ [w3.org - Semantics and Content](https://datatracker.ietf.org/doc/html/rfc7231#section-4.3)
