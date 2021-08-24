@@ -2,8 +2,7 @@
 
 CustomCloud is a collection of tools and libraries that allows a movable cloud, which can be set 
 up on a local computer, virtual machine, or remote server.
-
-_This project is still largely unfinished. I'm out of time to work on it, so I'm making it public because it shows some database / REST experience._    
+_    
 
 ## Architectural overview
 
