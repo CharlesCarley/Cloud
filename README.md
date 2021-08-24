@@ -1,15 +1,18 @@
 # CustomCloud 
 
-CustomCloud is a collection of tools and libraries that allows a  movable cloud which can be set up on a local computer, virtual machine, or remote server.
+CustomCloud is a collection of tools and libraries that allows a movable cloud, which can be set 
+up on a local computer, virtual machine, or remote server.
 
-_This project is still largely unfinished, and should be kept private. Not just because it shows how ambitiously mediocre I am, but it's unfinished.  I'm out of time to work on it, so I'm making it public because it shows some database / REST experience. (Even though primitive at best)_    
+_This project is still largely unfinished. I'm out of time to work on it, so I'm making it public because it shows some database / REST experience._    
 
 ## Architectural overview
 
-The basic idea for this design is be able to define specific types and properties that should be persisted in both local and external databases. The primary goal is to make the database easy to manage under two use cases. __Case 1:__ _It is being developed and changes to it's structure happen frequently._ __Case 2:__ _After an idea has been developed and something new needs to be added in order to extend functionality._
+The primary goal is to make the database easy to manage under two use cases. 
 
-The solution implemented here for both cases is to isolate a core data API then 
-generate the backend database functionality. 
+__Case 1:__ _It is being developed and changes to it's structure happen frequently._
+__Case 2:__ _After an idea has been developed and something new needs to be added in order to extend functionality._
+
+The solution implemented here, is to isolate a core API then generate the backend database functionality. 
 
 __Overview__
 
@@ -18,14 +21,13 @@ __Overview__
 
 ## [Cloud.ReflectionApi](Source/Cloud..ReflectionApi)
 
-In order to use this system, an API should be defined with Cloud.ReflectionApi, which contains the data structures that define how the API will be generated. 
-The Cloud.Generator will use the user defined API to generate both the local, and the server backend database code. 
+In order to use this system, an API should be defined with Cloud.ReflectionApi, which contains the attributes
+that define how the API will be generated. The Cloud.Generator will use that API to generate both the local, and the server 
+backend code. 
 
 ## [Cloud.Generator](Source/Cloud.Generator)
 
-Is the program that will generate the code.
-The generator can be set to automatically 
-run during build by embedding [Cloud.Generator.targets](BuildTools/Cloud.Generator.targets) file.
+The generator can be set to automatically run during build by embedding [Cloud.Generator.targets](BuildTools/Cloud.Generator.targets) file
 into a project. 
 
 
@@ -40,8 +42,6 @@ into a project.
 <Import Project="Cloud.Generator.targets" />
 ```
 
-![Overview](Content/Cloud.Database.svg)
-
 
 
 The cloud database module is responsible for defining the reflection API. 
@@ -55,9 +55,6 @@ The final output of the generator should be fed back into a project wishing to u
 ## [Cloud.Transaction](Source/Cloud.Transaction)
 
 The transaction layer communicates between the client and host.
-
-![Overview](Content/Cloud.Transaction.svg)
-
 
 ## Basic testing
 
