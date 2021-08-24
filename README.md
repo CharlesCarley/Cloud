@@ -2,7 +2,7 @@
 
 CustomCloud is a collection of tools and libraries that allows a movable cloud, which can be set 
 up on a local computer, virtual machine, or remote server.
-_    
+
 
 ## Architectural overview
 
@@ -27,11 +27,10 @@ backend code.
 ## [Cloud.Generator](Source/Cloud.Generator)
 
 
-The user defined Api gets fed back into the generator build tool. It defines a type switch that determines the output database code.
+The generator defines a type switch that determines the output database code.
 _At the moment, only the SQLite back-ends are implemented._
 
-
-The final output of the generator should be fed back into another user defined project in-order to use database types. 
+The final output of the generator should be fed back into another user defined project in order to use database types. 
 
 The generator can be set to automatically run during build by embedding the [Cloud.Generator.targets](BuildTools/Cloud.Generator.targets) file
 into a project.  
@@ -47,8 +46,6 @@ into a project.
 <Import Project="Cloud.Generator.targets" />
 ```
 
-## [Cloud.Store](Source/Cloud.Store)
-
 
 ## [Cloud.Transaction](Source/Cloud.Transaction)
 
@@ -56,6 +53,7 @@ The transaction layer is a utility layer which communicates between the client a
 The generated database code uses it to communicate with the server.
 
 ```
+
 var book = new Book{
     Key = "SomeUniqueName",
     Author = "SomeName"
