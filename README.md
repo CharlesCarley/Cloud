@@ -3,7 +3,6 @@
 CustomCloud is a collection of tools and libraries that allows a movable cloud, which can be set 
 up on a local computer, virtual machine, or remote server.
 
-
 ## Architectural overview
 
 The primary goal is to make the database easy to manage under two use cases. 
@@ -56,8 +55,8 @@ The generated database code uses it to communicate with the server.
 
 var book = new Book{
     Key = "SomeUniqueName",
-    Author = "SomeName"
-}
+    Author = "SomeName",
+};
 
 book.Save(); // saves locally
 book.CreateTransaction().Save(); // saves externally
