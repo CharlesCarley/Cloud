@@ -64,7 +64,7 @@ book.CreateTransaction().Save(); // saves externally
 
 ```
 
-## [Rest API]
+## Rest API
 
 The REST API is defined a bit differently. Rather than using plain english routes into the server. It uses randomly generated codes to represent the path to the data. Right now the codes are static, but the idea is to be able to cycle the codes in order to shift Api access periodically.           
 
