@@ -18,7 +18,7 @@ __Overview__
 ![](Content/CloudDoxy.svg)
 
 
-## [Cloud.ReflectionApi](Source/Cloud..ReflectionApi)
+## [Cloud.ReflectionApi](Source/Cloud.ReflectionApi)
 
 In order to use this system, an API should be defined with Cloud.ReflectionApi, which contains the attributes
 that define how the API will be generated. The Cloud.Generator will use that API to generate both the local, and the server 
@@ -26,9 +26,15 @@ backend code.
 
 ## [Cloud.Generator](Source/Cloud.Generator)
 
-The generator can be set to automatically run during build by embedding [Cloud.Generator.targets](BuildTools/Cloud.Generator.targets) file
-into a project. 
 
+The user defined Api gets fed back into the generator build tool. It defines a type switch that determines the output database code.
+_At the moment, only the SQLite back-ends are implemented._
+
+
+The final output of the generator should be fed back into another user defined project in-order to use database types. 
+
+The generator can be set to automatically run during build by embedding the [Cloud.Generator.targets](BuildTools/Cloud.Generator.targets) file
+into a project.  
 
 ```xml
 <PropertyGroup>
@@ -41,19 +47,24 @@ into a project.
 <Import Project="Cloud.Generator.targets" />
 ```
 
-
-
-The cloud database module is responsible for defining the reflection API. 
-That API gets linked to a user module, which implements any desired data types.
-After that, the output of the user module gets fed back into the generator build tool. The generator defines a type switch that determines the output database code.
-The final output of the generator should be fed back into a project wishing to used the database types. 
-
 ## [Cloud.Store](Source/Cloud.Store)
 
 
 ## [Cloud.Transaction](Source/Cloud.Transaction)
 
-The transaction layer communicates between the client and host.
+The transaction layer is a utility layer which communicates between the client and host.
+The generated database code uses it to communicate with the server.
+
+```
+var book = new Book{
+    Key = "SomeUniqueName",
+    Author = "SomeName"
+}
+
+book.Save(); // saves locally
+book.CreateTransaction().Save(); // saves externally
+
+```
 
 ## Basic testing
 
