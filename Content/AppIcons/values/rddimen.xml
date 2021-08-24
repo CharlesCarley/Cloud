@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-  <dimen name="ButtonHeight">32dp</dimen>
-  <dimen name="ButtonWidth">72dp</dimen>
-  <dimen name="LabelNormal">14sp</dimen>
-  <dimen name="DefaultPadding">5dp</dimen>
-
-</resources>
