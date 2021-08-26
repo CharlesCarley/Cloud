@@ -7,8 +7,6 @@
   </PropertyGroup>
   <Import Project="$(SolutionDir)\BuildTools\Cloud.Documentation.targets" />
 
-
-
   <!-- references -->
   <ItemGroup>
     <PackageReference Include="Microsoft.Build.Framework" Version="16.10.0" />

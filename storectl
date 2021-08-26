@@ -1,0 +1,110 @@
+#!/bin/bash
+
+function echo_r() {
+    echo -e "\e[1;31m$1\e[0m"
+}
+function echo_g() {
+    echo -e "\e[1;32m$1\e[0m"
+}
+function echo_y() {
+    echo -e "\e[1;33m$1\e[0m"
+}
+function echo_b() {
+    echo -e "\e[1;34m$1\e[0m"
+}
+function echo_m() {
+    echo -e "\e[1;35m$1\e[0m"
+}
+function echo_c() {
+    echo -e "\e[1;36m$1\e[0m"
+}
+
+function echo_g1() {
+    echo -e "\e[1;37m$1\e[0m"
+}
+
+function echo_g0() {
+    echo -e "\e[1;30m$1\e[0m"
+}
+
+
+Project="$PWD/Cloud.sln"
+Publish="$HOME/Public/"
+Binary="$HOME/Public/BookStore.Store"
+
+export SolutionDir="$PWD"
+export AutoTest="false"
+export GenXMLDocs="false"
+
+function log_env  {
+    echo_r  "Cloud.Store build tool."
+    echo    ""
+    echo_g1 "  Environment variables:"
+    echo    "    \$Project     = $Project"
+    echo    "    \$Publish     = $Publish"
+    echo    "    \$SolutionDir = $SolutionDir"
+}
+
+function usage {
+    SEP="==========================================================="
+    echo_g0 $SEP
+    log_env
+    echo  ""
+    echo_g1 "Usage: ./storectl <opts>"
+    echo  ""
+    echo  "  Where <opts> is one of the following:"
+    echo_g1 "    build, run, rebuild, clean, help"
+    echo  ""
+    echo_g0 $SEP
+}
+
+function  runStore {
+    if [ "$1" = "--development" ]; then
+        echo_g "Development....."
+        $Binary --development --cfg $SolutionDir/BuildTools/runConfig.json
+    else
+        $Binary --cfg $SolutionDir/BuildTools/runConfig.json
+    fi
+}
+
+if [ "$1" = "help" ]; then
+    usage;
+
+elif [ "$1" = "run" ]; then
+    $Binary --cfg $SolutionDir/BuildTools/runConfig.json
+
+elif [ "$1" = "clean" ]; then
+
+    git clean -d -fx $SolutionDir
+
+elif [ "$1" = "rebuild" ]; then
+    git clean -d -fx $SolutionDir
+
+    dotnet restore $Project
+    dotnet build $Project -c Release
+    dotnet publish $Project -c Release --no-build -o $Publish
+
+    if [ "$2" = "run" ]; then
+        runStore $3;
+    fi
+
+elif [ "$1" = "build" ]; then
+
+    dotnet restore $Project
+    dotnet build $Project -c Release
+    dotnet publish $Project -c Release --no-build -o $Publish
+
+    if [ "$2" = "run" ]; then
+        runStore $3;
+    fi
+
+else
+    usage;
+fi
+    
+    
+
+
+
+
+

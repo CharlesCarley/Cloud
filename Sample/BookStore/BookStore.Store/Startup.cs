@@ -21,7 +21,6 @@
 */
 
 using System;
-using Cloud.Common;
 using Cloud.Store;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -64,8 +63,6 @@ namespace BookStore.Store
 
             app.UseAuthorization();
             app.UseMvc();
-
-            LogUtils.Log($"==> ContentRootPath=({env.ContentRootPath})");
             Database.Register($"{env.ContentRootPath}/BookStore.db");
         }
     }

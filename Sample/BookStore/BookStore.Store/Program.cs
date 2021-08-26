@@ -19,6 +19,8 @@
   3. This notice may not be removed or altered from any source distribution.
 -------------------------------------------------------------------------------
 */
+
+using System;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
@@ -31,7 +33,35 @@ namespace BookStore.Store
             var builder = WebHost.CreateDefaultBuilder(args);
             builder.UseStartup<DevelopmentStartup>();
 
-            builder.UseUrls("http://127.0.0.1:8080");
+
+            var host = new Cloud.Transaction.HostConfig
+            {
+                Host = "127.0.0.1",
+                Port = 8080,
+            };
+
+            for (var i = 0; i < args.Length; i++)
+            {
+                var arg = args[i];
+
+                if (arg.Equals("--cfg"))
+                {
+                    if (i + 1 < args.Length)
+                    {
+                        var path = args[++i];
+
+                        if (host.LoadFromStorage(path))
+                            Console.WriteLine($"Loaded {path}");
+                        else
+                            Console.WriteLine($"Failed to load {path}");
+                    }
+                    else
+                        Console.WriteLine("Missing argument for --cfg");
+                }
+
+            }
+
+            builder.UseUrls($"http://{host.Host}:{host.Port}");
             builder.Build().Run();
         }
     }

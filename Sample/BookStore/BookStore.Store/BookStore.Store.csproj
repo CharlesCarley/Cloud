@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="$(CloudUtils)" />
     <ProjectReference Include="$(CloudStore)" />
+    <ProjectReference Include="$(CloudTransaction)" />
     <ProjectReference Include="..\BookStore.Api\BookStore.Api.csproj" />
   </ItemGroup>
 

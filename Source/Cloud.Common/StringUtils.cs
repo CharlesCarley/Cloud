@@ -408,7 +408,6 @@ namespace Cloud.Common
 
         public static bool IsValidDatabaseValue(string value)
         {
-            // re?
             return (from c in value where c != '=' &&
                                           c != '.' &&
                                           c != '-' &&

@@ -20,7 +20,6 @@
 -------------------------------------------------------------------------------
 */
 
-using System;
 using Cloud.ReflectionApi;
 
 namespace BookStore.Api
@@ -30,22 +29,22 @@ namespace BookStore.Api
         [ItemProperty("Untitled")]
         public string Title { get; set; }
 
-        [ItemProperty("Unknown")] //
+        [ItemProperty("Unknown")] 
         public string Author { get; set; }
 
-        [ItemProperty] //
+        [ItemProperty] 
         public string PublishDate { get; set; }
 
-        [ItemProperty] //
+        [ItemProperty] 
         public string Url { get; set; }
 
-        [ItemProperty] //
+        [ItemProperty] 
         public string ISBN { get; set; }
 
-        [ItemProperty("0.0")] //
+        [ItemProperty("0.0")] 
         public float Price { get; set; }
 
-        [ItemProperty(ItemPropertyOptions.MultiLineString)] //
+        [ItemProperty(ItemPropertyOptions.MultiLineString)] 
         public string Description { get; set; }
     }
 
@@ -54,8 +53,10 @@ namespace BookStore.Api
         [ItemProperty]
         public int Timeout { get; set; }
 
-        [ItemProperty] public string Host { get; set; }
+        [ItemProperty] 
+        public string Host { get; set; }
 
-        [ItemProperty] public int Port { get; set; }
+        [ItemProperty] 
+        public int Port { get; set; }
     }
 }
