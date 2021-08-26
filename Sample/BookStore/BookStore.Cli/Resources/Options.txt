@@ -1,14 +1,12 @@
-
 <action>
 
-    <action> is one of the following:
+   help - Displays this screen.
+   quit - Exits the program.
+  clear - Clears the console.
+   ping - Tests the connection to the database.
 
-          help - Displays this screen.
-          quit - Exits the program.
-         clear - Clears the console.
+ config - Handles settings related to the connection with the host.
+          See <config> <help> for more information.
 
-        config - Handles settings related to the store database connection.
-                    See <config> <help> for more information.
-
-          book - Handles book API objects.
-                    See <book> <help> for more information.
+   book - Handles book API objects.
+          See <book> <help> for more information.

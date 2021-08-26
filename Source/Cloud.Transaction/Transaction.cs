@@ -302,7 +302,8 @@ namespace Cloud.Transaction
                 var response = await webRequest.GetResponseAsync();
                 response.Dispose();
                 return true;
-            } catch {
+            } catch (Exception ex) { 
+                LogUtils.Log(ex.Message);
                 return false;
             }
         }

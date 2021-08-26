@@ -1,16 +1,12 @@
 
-config: <action>
+    help - Displays this screen.
+    list - Prints the current configuration.
 
-    <action> is one of the following:
+    host - Sets the host address to the supplied argument.
+            <string> Host Ipv4 address or domain name.
 
-          help - Displays this screen.
-          list - Prints the current configuration.
+    port - Sets the host port to the supplied argument.
+            <int> Port in the set [80, 443, 1024-65535]
 
-          host - Sets the host address to the supplied argument.
-                    <string> Host Ipv4 address or domain name.
-
-          port - Sets the host port to the supplied argument.
-                    <int> Port in the set [80, 443, 1024-65535]
-
-       timeout - Sets the timeout for store transactions.
-                    <int> Time in milliseconds in the range of [10-30000]
+ timeout - Sets the timeout for store transactions.
+            <int> Time in milliseconds in the range of [10-30000]

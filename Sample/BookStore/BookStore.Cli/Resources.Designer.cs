@@ -127,6 +127,15 @@ namespace BookStore.Cli {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connected.
+        /// </summary>
+        internal static string ConnectedMessage {
+            get {
+                return ResourceManager.GetString("ConnectedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to parse the supplied value as a 32bit integer..
         /// </summary>
         internal static string IntConversionFail {
@@ -163,6 +172,15 @@ namespace BookStore.Cli {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not Connected.
+        /// </summary>
+        internal static string NotConnectedMessage {
+            get {
+                return ResourceManager.GetString("NotConnectedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to not found..
         /// </summary>
         internal static string NotFound {
@@ -180,6 +198,7 @@ namespace BookStore.Cli {
         ///          help - Displays this screen.
         ///          quit - Exits the program.
         ///         clear - Clears the console.
+        ///          ping - Tests the connection to the database.
         ///
         ///        config - Handles settings related to the store database connection.
         ///                    See &lt;config&gt; &lt;help&gt; for more information.

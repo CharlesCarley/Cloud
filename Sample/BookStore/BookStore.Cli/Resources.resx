@@ -171,4 +171,10 @@
     <value>Warning this will clear the Book table. Are you sure? (yes)/(no)</value>
     <comment>Yes no prompt</comment>
   </data>
+  <data name="ConnectedMessage" xml:space="preserve">
+    <value>Connected</value>
+  </data>
+  <data name="NotConnectedMessage" xml:space="preserve">
+    <value>Not Connected</value>
+  </data>
 </root>

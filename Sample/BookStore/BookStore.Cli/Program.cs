@@ -207,6 +207,7 @@ namespace BookStore.Cli
             _actionQueryTable.Add("ls", () => Console.WriteLine(Resources.Options));
             _actionQueryTable.Add("quit", () => Quit = true);
             _actionQueryTable.Add("clear", Console.Clear);
+            _actionQueryTable.Add("ping", PingHost);
             _actionQueryTable.Add("cls", Console.Clear);
 
             var config = new ActionQuery();
@@ -325,6 +326,14 @@ namespace BookStore.Cli
             } else {
                 Console.WriteLine(Resources.InvalidHost);
             }
+        }
+
+
+        private void PingHost()
+        {
+            Console.WriteLine(Transaction.PingDatabase(10000)
+                ? Resources.ConnectedMessage
+                : Resources.NotConnectedMessage);
         }
 
         public void Usage()

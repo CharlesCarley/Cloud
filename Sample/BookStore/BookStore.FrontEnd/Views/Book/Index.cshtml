@@ -4,26 +4,6 @@
     ViewData["Title"] = "Book Selection";
 }
 
-<div class="container">
-    <div class="row special-header">
-        <div class="col">
-            <h1>Overview</h1>
-        </div>
-    </div>
-</div>
-<p class="indent-paragraph">
-    Below are the list of books that have been added to the database.
-    The complete list has been fetched back out of the database one by one.
-
-    This is accomplished in a two stage process.
-    First a list of id's are pulled from the server.
-
-    This list contains pairs of the book's primary id and revision number.
-    Then for each id revision pair, the revision in the list is checked against the local revision.
-    If the local revision is newer than the server revision the local copy gets uploaded to the server.
-    If the server revision is newer than the local version the code will execute BookTransaction.SelectById()
-    which will merge the server content with the local content.
-</p>
 
 @if (StateManager.IsConnected)
 {
@@ -81,18 +61,9 @@
 @if (!StateManager.HasElements)
 {
     <p class="indent-paragraph">
-        From the perspective of the application as it currently stands,
-        this book store is looking a little bit light right now.
-
-    @if (StateManager.IsConnected)
+    @if (!StateManager.IsConnected)
     {
-        <span>Try adding a few books.</span>
-    }
-    else
-    {
-        <span> However, It seems that there is no active connection to the backend database. 
-            So, new books can not be added to the until a connection can be established. 
-        </span>
+        <span>There is no active connection to the backend database.</span>
     }
 
     </p>
