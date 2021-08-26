@@ -1,7 +1,8 @@
 # CustomCloud 
 
 CustomCloud is a collection of tools and libraries that allows a movable cloud, which can be set 
-up on a local computer, virtual machine, or remote server.
+up on a local computer, virtual machine, or remote server. 
+
 
 ## Architectural overview
 
@@ -65,11 +66,13 @@ book.CreateTransaction().Save(); // saves externally
 
 ## Rest API
 
-The REST API is defined a bit differently. Rather than using plain english routes into the server. It uses randomly generated codes to represent the path to the data. Right now the codes are static, but the idea is to be able to cycle the codes in order to shift Api access periodically.           
+The REST API is defined a bit differently. Rather than using plain English routes into the server. It uses randomly generated codes to represent the path to the data. Right now the codes are static, but the idea is to be able to cycle the codes in order to shift API access periodically.           
 
 ## Basic testing
 
-In the Visual Studio solution explorer, right click on the root of the solution tree
-and select Properties. Select Common Properties / Startup Project.
-From the list of projects enable BookStore.Store and BookStore.FrontEnd as the projects 
-to start. Then Ctrl+F5 will launch both projects for testing. 
+In the Visual Studio solution explorer, right click on the root of the solution tree and select Properties. Select Common Properties / Startup Project. From the list of projects enable BookStore.Store and BookStore.FrontEnd as the projects to start. Then Ctrl+F5 will launch both projects for testing. 
+
+
+## Dependencies
+
+This project makes use of the [sqlite-net](https://github.com/praeclarum/sqlite-net) project.
