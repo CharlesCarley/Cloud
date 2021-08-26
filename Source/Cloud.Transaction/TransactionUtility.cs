@@ -128,31 +128,31 @@ namespace Cloud.Transaction {
         /// <see cref="Common.Constants.UnknownError">UnknownError</see>
         /// </returns>
         public static int ReplicateExceptionStatus(WebException exception) {
-            // ... Replicating the return code in order to have
-            // a single spot for determining possible errors
-            //var code = exception.Status switch {
-            //    WebExceptionStatus.NameResolutionFailure          => Constants.NameResolutionFailure,
-            //    WebExceptionStatus.ConnectFailure                 => Constants.ConnectFailure,
-            //    WebExceptionStatus.ReceiveFailure                 => Constants.ReceiveFailure,
-            //    WebExceptionStatus.ConnectionClosed               => Constants.ConnectionClosed,
-            //    WebExceptionStatus.Timeout                        => Constants.Timeout,
-            //    WebExceptionStatus.ProtocolError                  => Constants.ProtocolError,
-            //    WebExceptionStatus.SecureChannelFailure           => Constants.SecureChannelFailure,
-            //    WebExceptionStatus.SendFailure                    => Constants.SendFailure,
-            //    WebExceptionStatus.CacheEntryNotFound             => Constants.CacheEntryNotFound,
-            //    WebExceptionStatus.KeepAliveFailure               => Constants.KeepAliveFailure,
-            //    WebExceptionStatus.MessageLengthLimitExceeded     => Constants.MessageLengthLimitExceeded,
-            //    WebExceptionStatus.Pending                        => Constants.Pending,
-            //    WebExceptionStatus.PipelineFailure                => Constants.PipelineFailure,
-            //    WebExceptionStatus.ProxyNameResolutionFailure     => Constants.ProxyNameResolutionFailure,
-            //    WebExceptionStatus.RequestCanceled                => Constants.RequestCanceled,
+
+            //var code = exception.Status switch
+            //{
+            //    WebExceptionStatus.NameResolutionFailure => Constants.NameResolutionFailure,
+            //    WebExceptionStatus.ConnectFailure => Constants.ConnectFailure,
+            //    WebExceptionStatus.ReceiveFailure => Constants.ReceiveFailure,
+            //    WebExceptionStatus.ConnectionClosed => Constants.ConnectionClosed,
+            //    WebExceptionStatus.Timeout => Constants.Timeout,
+            //    WebExceptionStatus.ProtocolError => Constants.ProtocolError,
+            //    WebExceptionStatus.SecureChannelFailure => Constants.SecureChannelFailure,
+            //    WebExceptionStatus.SendFailure => Constants.SendFailure,
+            //    WebExceptionStatus.CacheEntryNotFound => Constants.CacheEntryNotFound,
+            //    WebExceptionStatus.KeepAliveFailure => Constants.KeepAliveFailure,
+            //    WebExceptionStatus.MessageLengthLimitExceeded => Constants.MessageLengthLimitExceeded,
+            //    WebExceptionStatus.Pending => Constants.Pending,
+            //    WebExceptionStatus.PipelineFailure => Constants.PipelineFailure,
+            //    WebExceptionStatus.ProxyNameResolutionFailure => Constants.ProxyNameResolutionFailure,
+            //    WebExceptionStatus.RequestCanceled => Constants.RequestCanceled,
             //    WebExceptionStatus.RequestProhibitedByCachePolicy => Constants.RequestProhibitedByCachePolicy,
-            //    WebExceptionStatus.RequestProhibitedByProxy       => Constants.RequestProhibitedByProxy,
-            //    WebExceptionStatus.ServerProtocolViolation        => Constants.ServerProtocolViolation,
-            //    WebExceptionStatus.Success                        => Constants.Success,
-            //    WebExceptionStatus.TrustFailure                   => Constants.TrustFailure,
-            //    WebExceptionStatus.UnknownError                   => Constants.UnknownError,
-            //    _                                                 => Constants.UnknownError
+            //    WebExceptionStatus.RequestProhibitedByProxy => Constants.RequestProhibitedByProxy,
+            //    WebExceptionStatus.ServerProtocolViolation => Constants.ServerProtocolViolation,
+            //    WebExceptionStatus.Success => Constants.Success,
+            //    WebExceptionStatus.TrustFailure => Constants.TrustFailure,
+            //    WebExceptionStatus.UnknownError => Constants.UnknownError,
+            //    _ => Constants.UnknownError
             //};
             return -1;
         }

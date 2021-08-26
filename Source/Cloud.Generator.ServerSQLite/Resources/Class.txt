@@ -77,7 +77,6 @@
                 }
             } catch (SQLiteException ex) {
                 result = false;
-
                 LogUtils.Log(LogLevel.Error,
                     nameof(Save),
                     ex.Message);
@@ -105,18 +104,8 @@
     public class ${ClassName}Controller : Controller 
     {
         [Ignore]
-        public static TableQuery<${ClassName}> Query => 
-            Database.Connection?.Table<${ClassName}>();
+        public static TableQuery<${ClassName}> Query => Database.Connection?.Table<${ClassName}>();
 
-
-        /// <summary>
-        /// Attempts to select all pairs of [ServerId, Revision] codes 
-        /// from the database.
-        /// </summary>
-        /// <returns>
-        ///  If not connected: an empty string list '[]' otherwise a list
-        ///  formatted as: id[0], rev[0], ... id[n], rev[n]
-        /// </returns>
         [Route("${SelectArray}/${UniqueId}")] [HttpGet]
         public string SelectArray() 
         {
@@ -129,30 +118,43 @@
                     nameof(SelectArray), 
                     "no connection to the database.");
 
-                // cant do it so bail out with an empty list.
+                // Can't do it so bail out with an empty list.
                 return Constants.ReturnNone;
             }
 
-            // pull all items 
-            var result = Database.Connection?.Query<RevisionId>(
-                "SELECT ServerId, Revision FROM ${ClassName};");
+            // Try to pull all of the indices.
 
-            string returnString  = null;
+            string returnString;
+            try {
 
-            if (result != null && result.Count > 0) {
+                var result = Database.Connection?.Query<RevisionId>(
+                    "SELECT ServerId, Revision FROM ${ClassName};");
 
-                // Build a CSV list formatted as: id[0], rev[0], ... id[n], rev[n]
+                if (result != null && result.Count > 0) {
 
-                var list = new List<int>();
-                foreach (var id in result) {
-                    list.Add(id.ServerId);
-                    list.Add(id.Revision);
+                    // Build the CSV list.
+
+                    var list = new List<int>();
+
+                    foreach (var id in result) {
+                        list.Add(id.ServerId);
+                        list.Add(id.Revision);
+                    }
+
+                    // serialize the list as a string
+
+                    returnString = StringUtils.IntListToString(list, true);
+
+                } else {
+                    returnString = Constants.ReturnNone;
                 }
-
-                returnString = StringUtils.IntListToString(list, true);
-            } else {
-                returnString = Constants.ReturnNone;
             }
+            catch (Exception ex)
+            {
+                returnString = Constants.ReturnNone;
+                LogUtils.Log(LogLevel.Error, nameof(SelectArray), ex.Message);
+            }
+
             Database.Close();
             return returnString;
         }
@@ -165,17 +167,16 @@
             if (bundle is null) {
                 LogUtils.Log(LogLevel.Warn, 
                     nameof(ContainsKey), 
-                    "the supplied bundle is null");
+                    "The supplied bundle is null.");
                 return Constants.ReturnFailure;
             }
 
             if (string.IsNullOrEmpty(bundle.Content)) {
                 LogUtils.Log(LogLevel.Warn, 
                     nameof(ContainsKey), 
-                    "Missing bundle content");
+                    "The bundle is missing content.");
                 return Constants.ReturnFailure;
             }
-
 
             // extract the content back out
 
@@ -183,18 +184,37 @@
             if (string.IsNullOrEmpty(lookupKey))  {
 
                 LogUtils.Log(LogLevel.Error, 
-                    nameof(ContainsKey), 
+                    nameof(ContainsKey),  
                     "Failed to extract bundle content.");
+
                 return Constants.ReturnFailure;
             }
 
             // try to connect and query it
+            try {
+                Database.Connect();
 
-            Database.Connect();
-            var item   = Query?.FirstOrDefault(obj => obj.Key == lookupKey) != null;
-            var result = item ? Constants.ReturnTrue : Constants.ReturnFalse;
-            Database.Close();
-            return result;
+                if (Database.IsConnected) {
+
+                    var item   = Query?.FirstOrDefault(obj => obj.Key == lookupKey) != null;
+                    var result = item ? Constants.ReturnTrue : Constants.ReturnFalse;
+
+                    Database.Close();
+                    return result;
+                }
+                else
+                {
+                    LogUtils.Log(LogLevel.Error, 
+                        nameof(ContainsKey), 
+                        "Failed to open a connection to the database.");
+                    return Constants.ReturnFailure;
+                }
+
+            } catch (Exception ex) {
+
+                LogUtils.Log(LogLevel.Error, nameof(ContainsKey), ex.Message);
+                return Constants.ReturnFailure;
+            }
         }
 
 

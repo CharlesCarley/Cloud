@@ -18,7 +18,6 @@
   <PropertyGroup>
     <CloudGeneratorInputAssembly>$(SolutionDir)Sample\BookStore\BookStore.Api\bin\$(Configuration)\$(CoreFramework)\BookStore.Api.dll</CloudGeneratorInputAssembly>
     <CloudGeneratorOutputFile>BookStore.Client.cs</CloudGeneratorOutputFile>
-    <CloudExtraOptions>Verbose</CloudExtraOptions>
     <CloudGeneratorType>ClientSQLite</CloudGeneratorType>
     <CloudGeneratorRootNamespace>BookStore.Client</CloudGeneratorRootNamespace>
   </PropertyGroup>

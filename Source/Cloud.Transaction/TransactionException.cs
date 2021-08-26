@@ -27,7 +27,7 @@ using Cloud.Transaction.Properties;
 namespace Cloud.Transaction
 {
     /// <summary>
-    /// General exception type for know events when preforming a transaction.
+    /// General exception type for known exceptions when preforming a transaction.
     /// </summary>
     public class TransactionException : Exception
     {
@@ -37,26 +37,41 @@ namespace Cloud.Transaction
         /// </summary>
         public int Code { get; }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="message"></param>
         public TransactionException(int code, string message) :
             base(message)
         {
             Code = code;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="code"></param>
         public TransactionException(int code)
         {
             Code = code;
         }
 
-        // ReSharper disable once UnusedMember.Global
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="message"></param>
+        /// <param name="innerException"></param>
         public TransactionException(int code, string message, Exception innerException) :
             base(message, innerException)
         {
             Code = code;
         }
 
-        // ReSharper disable once UnusedMember.Global
+        /// <summary>
+        /// 
+        /// </summary>
         public TransactionException() :
             base(Resources.UnknownTransaction)
         {

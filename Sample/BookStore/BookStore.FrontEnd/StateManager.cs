@@ -20,10 +20,7 @@
 -------------------------------------------------------------------------------
 */
 
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using BookStore.FrontEnd.Controllers;
 using Cloud.Common;
 using Cloud.Transaction;
 using Microsoft.AspNetCore.Hosting;

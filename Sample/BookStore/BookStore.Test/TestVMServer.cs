@@ -30,13 +30,14 @@ namespace BookStore.Test
 {
     /// <summary>
     /// This test needs to have an up to date instance of the BookStore.Store application
-    /// running in order to pass.
-    ///
+    /// running externally in order to pass. The host configuration should be placed in a
+    /// file named testExternalServer.json
     /// </summary>
     [TestClass]
     public class TestVMServer {
         private HostConfig    _hostConfig;
-        private static string Content => AppContext.BaseDirectory + "..\\..\\..\\VMTest\\";
+        private static string Content      => AppContext.BaseDirectory + "..\\..\\..\\VMTest\\";
+        private static string HostSettings => $"{Content}..\\testExternalServer.json";
 
         private void Populate()
         {
@@ -68,25 +69,27 @@ namespace BookStore.Test
         [TestInitialize]
         public void Initialize()
         {
-            _hostConfig = new HostConfig {
-                Host = "192.168.1.13",
-                Port = 8765
-            };
+            _hostConfig = new HostConfig();
+            if (!_hostConfig.LoadFromStorage(HostSettings)) {
+                Assert.Fail("Failed to load the host configuration.");
+            }
+            Transaction.SetConnectionParameters(_hostConfig);
+
+            Assert.IsTrue(
+                Transaction.PingDatabase(_hostConfig.Timeout),
+                $"Failed to connect to the database located at 'http://{_hostConfig.Host}:{_hostConfig.Port}' ");
 
             // set up a temp destination directory
 
-            if (!Directory.Exists(Content))
+            if (!Directory.Exists(Content)) {
                 Directory.CreateDirectory(Content);
-            else {
+            } else {
                 Directory.Delete(Content, true);
                 Directory.CreateDirectory(Content);
             }
 
             Client.Database.Register($"{Content}\\LocalTestServer.Client.db");
             Client.Database.Open();
-
-            Transaction.SetConnectionParameters(_hostConfig);
-
             Client.BookTransaction.Clear();
         }
 
@@ -139,7 +142,7 @@ namespace BookStore.Test
         {
             Populate();
 
-            // 
+            //
             var list = Client.BookTransaction.SelectArray();
             Assert.AreEqual(4, list.Count);
 
@@ -176,6 +179,5 @@ namespace BookStore.Test
             Assert.IsNotNull(list);
             Assert.AreEqual(0, list.Count);
         }
-
     }
 }

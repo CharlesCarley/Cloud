@@ -20,7 +20,6 @@
 -------------------------------------------------------------------------------
 */
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
@@ -30,8 +29,7 @@ using static Cloud.Transaction.TransactionUtility;
 namespace Cloud.Transaction
 {
     // TODO: this also needs to account for asynchronous tasks
-    // TODO: ... when the response is not immediately necessary.
-
+ 
     /// <summary>
     /// </summary>
     public static class Transaction {
@@ -262,6 +260,9 @@ namespace Cloud.Transaction
                                                 int    timeout, // not checked
                                                 string path)
         {
+            if (Config is  null)
+                throw new TransactionException(Constants.InvalidHost);
+
             var methodString = IntHttpMethodToString(method);
             if (string.IsNullOrEmpty(methodString))
                 throw new TransactionException(Constants.InvalidMethod);

@@ -5,33 +5,44 @@
 @{
     ViewData["Title"] = "Detail";
 }
-
-
 <div class="container w-100">
+    @if (BookController.CurrentItem != null)
+    {
+        <div class="row special-header">
 
+            <div class="col">
+                <h2>@Html.DisplayName(BookController.CurrentItem.Title)</h2>
+            </div>
 
-@if (BookController.CurrentItem != null)
-{
-    <div class="row w-auto">
-        <div class="col w-100">
-            <h1 class="special-header">@Html.DisplayName(BookController.CurrentItem.Title)</h1>
+            <div class="col-md-auto">
+                <button type="button" class="btn grey-bg-40 m-0" onclick="location.href='@Url.Action("Edit", BookController.CurrentItem.Index)'">
+                    <span class="icon-pencil-24 link-alert icon-link"></span>
+                </button>
+            </div>
+
+            <div class="col-md-auto">
+                <button type="button" class="btn grey-bg-40 m-0" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <span class="icon-trash-24 link-alert icon-link"></span>
+                </button>
+                @*<a asp-action="Clear" class="icon-clear-24 link-alert icon-link"></a>*@
+            </div>
+
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-auto p-1 indent-paragraph">By</div>
-        <div class="col p-1">@Html.DisplayName(BookController.CurrentItem.Author)</div>
-    </div>
-    <div class="row">
-        <div class="col indent-paragraph">
-            <pre class="line"><code>
-@StringUtils.FromBase64(BookController.CurrentItem.Description)
-</code></pre>
+        <div class="row">
+            <div class="col">
+                <table>
+                    <tr>
+                        <td>Author</td>
+                        <td>@Html.DisplayName(BookController.CurrentItem.Author)</td>
+                    </tr>
+                    <tr>
+                        <td>Description</td>
+                        <td>@StringUtils.FromBase64(Html.DisplayName(BookController.CurrentItem.Description))</td>
+                    </tr>
+                </table>
+
+            </div>
         </div>
-    </div>
-}
-else
-{
-
-}
+    }
 </div>

@@ -1,5 +1,3 @@
-<action>
-
    help - Displays this screen.
    quit - Exits the program.
   clear - Clears the console.

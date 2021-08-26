@@ -4,7 +4,6 @@
   <PropertyGroup>
     <CloudGeneratorInputAssembly>$(SolutionDir)Sample\BookStore\BookStore.Api\bin\$(Configuration)\$(CoreFramework)\BookStore.Api.dll</CloudGeneratorInputAssembly>
     <CloudGeneratorOutputFile>BookStore.Store.cs</CloudGeneratorOutputFile>
-    <CloudExtraOptions>Verbose</CloudExtraOptions>
     <CloudGeneratorType>ServerSQLite</CloudGeneratorType>
     <CloudGeneratorRootNamespace>BookStore.Store</CloudGeneratorRootNamespace>
   </PropertyGroup>

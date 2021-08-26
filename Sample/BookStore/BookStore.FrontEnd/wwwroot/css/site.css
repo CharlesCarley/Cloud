@@ -603,9 +603,22 @@
     content: "\000061";
     font-size: 24px;
 }
+
 .icon-list-24:after {
     font-family: 'icon-set';
     content: "\00004B";
+    font-size: 24px;
+}
+
+.icon-pencil-24:after {
+    font-family: 'icon-set';
+    content: "\000021";
+    font-size: 24px;
+}
+
+.icon-trash-24:after {
+    font-family: 'icon-set';
+    content: "\000022";
     font-size: 24px;
 }
 
@@ -627,7 +640,7 @@
 }
 
 a.icon-link {
-    color: var(--color-grey-09);
+    color: var(--color-grey-15);
 }
 
 

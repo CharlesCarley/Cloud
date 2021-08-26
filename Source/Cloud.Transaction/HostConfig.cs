@@ -21,8 +21,8 @@
 */
 
 using System;
+using System.IO;
 using System.Security.Cryptography;
-using System.Threading.Tasks;
 using Cloud.Common;
 
 namespace Cloud.Transaction
@@ -58,7 +58,11 @@ namespace Cloud.Transaction
         /// <returns>True if the file was loaded </returns>
         public bool LoadFromStorage(string storage)
         {
-            try {
+            try
+            {
+                if (!File.Exists(storage))
+                    return false;
+
                 var obj = JsonObject.ParseFile(storage);
                 if (obj == null)
                     return false;
@@ -67,11 +71,13 @@ namespace Cloud.Transaction
 
                 // this is tied in via utils because it needs to
                 // be available in server code as well.
-                return Common.CredentialStore.LoadFromStorage(CredentialStore);
+                Common.CredentialStore.LoadFromStorage(CredentialStore);
+                return true;
+
             } catch (Exception ex) {
                 LogUtils.Log(typeof(HostConfig), ex.Message);
+                return false;
             }
-            return true;
         }
 
         public static bool IsValidPort(int port)

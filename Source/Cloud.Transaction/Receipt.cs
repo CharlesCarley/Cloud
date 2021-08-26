@@ -19,10 +19,7 @@
   3. This notice may not be removed or altered from any source distribution.
 -------------------------------------------------------------------------------
 */
-
-using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Cloud.Common;
 
 namespace Cloud.Transaction
@@ -132,7 +129,6 @@ namespace Cloud.Transaction
             }
         }
 
-
         public List<int> UnpackList()
         {
             var list = new List<int>();
@@ -162,14 +158,11 @@ namespace Cloud.Transaction
             return null;
         }
 
-
-
         public object UnpackJson<T>()
         {
             if (Return?.Package != null && Code == ReceiptCode.Json)
                 return JsonParser.Unwrap(Return.Package, typeof(T), false);
             return null;
         }
-
     }
 }

@@ -23,45 +23,67 @@
 using System.IO;
 using Cloud.Common;
 
-namespace Cloud.Transaction {
+namespace Cloud.Transaction
+{
+    /// <summary>
+    ///
+    /// </summary>
     public class Content {
         public int    Table { get; set; }    = Constants.Undefined;
         public int    Function { get; set; } = Constants.Undefined;
         public Bundle Payload { get; }
 
-        public Content(string data) {
-            Payload = new Bundle {
-                Package      = data,
-                Type = BundleType.String,
-                Revision     = Constants.Undefined,
-                ServerId     = Constants.Undefined,
-                TableId      = Constants.Undefined,
-                UserId       = Constants.Undefined
-            };
-        }
-        public Content(int data)
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="data"></param>
+        public Content(string data)
         {
-            Payload = new Bundle
-            {
-                Package = data.ToString(),
-                Type = BundleType.Int,
+            Payload = new Bundle {
+                Package  = data,
+                Type     = BundleType.String,
                 Revision = Constants.Undefined,
                 ServerId = Constants.Undefined,
-                TableId = Constants.Undefined,
-                UserId = Constants.Undefined
+                TableId  = Constants.Undefined,
+                UserId   = Constants.Undefined
             };
         }
 
-        public Content(Bundle data) {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="data"></param>
+        public Content(int data)
+        {
+            Payload = new Bundle {
+                Package  = data.ToString(),
+                Type     = BundleType.Int,
+                Revision = Constants.Undefined,
+                ServerId = Constants.Undefined,
+                TableId  = Constants.Undefined,
+                UserId   = Constants.Undefined
+            };
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        public Content(Bundle data)
+        {
             Payload = data;
             if (Payload != null)
                 Payload.Type = BundleType.Json;
         }
 
-        public Content() {
+        /// <summary>
+        /// 
+        /// </summary>
+        public Content()
+        {
             Payload = new Bundle {
                 Package  = null,
-                Type = BundleType.None,
+                Type     = BundleType.None,
                 Revision = Constants.Undefined,
                 ServerId = Constants.Undefined,
                 TableId  = Constants.Undefined,
@@ -74,7 +96,8 @@ namespace Cloud.Transaction {
         /// </summary>
         /// <param name="writer">The stream to write to.</param>
         /// <param name="requestPayload">The bundle to write.</param>
-        public void WritePayload(StreamWriter writer, Bundle requestPayload) {
+        public void WritePayload(StreamWriter writer, Bundle requestPayload)
+        {
             if (writer is null || requestPayload is null) {
                 // The desired behavior is to skip writing any data
                 // and just query a get request.

@@ -247,7 +247,6 @@
         /// </returns>
         public static bool Save(${ClassName} obj) 
         {
-            Database.Open();
             if (!IsConnected || obj is null)
                 return false;
 
@@ -303,8 +302,6 @@
                     exception.Message
                     );
             }
-
-            Database.Close();
             return result;
         }
         /// <summary>
