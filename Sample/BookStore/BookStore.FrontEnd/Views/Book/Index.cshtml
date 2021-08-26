@@ -13,24 +13,18 @@
         </div>
 
         <div class="col-md-auto">
-            <button type="button" class="btn grey-bg-40 m-0" onclick="location.href='@Url.Action("Create")'">
-                <span class="icon-add-24 link-alert icon-link"></span>
-            </button>
+            <a asp-action="Create" class="icon-add-24 icon-link"></a>
         </div>
 
         <div class="col-md-auto">
-            <button type="button" class="btn grey-bg-40 m-0" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                <span class="icon-clear-24 link-alert icon-link"></span>
-            </button>
-
-            @*<a asp-action="Clear" class="icon-clear-24 link-alert icon-link"></a>*@
+            <a data-bs-toggle="modal" data-bs-target="#clearModal" class="icon-clear-24 link-alert icon-link"></a>
         </div>
 
         <div class="modal fade" 
-             id="exampleModal" 
+             id="clearModal" 
              tabindex="-1" 
              role="dialog" 
-             aria-labelledby="exampleModalLabel"
+             aria-labelledby="clearModalLabel"
              aria-hidden="true">
 
             <div class="modal-dialog" 
@@ -38,7 +32,7 @@
                 
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Clear Server Data?</h5>
+                        <h5 class="modal-title" id="clearModalLabel">Clear Server Data?</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         </button>
                     </div>

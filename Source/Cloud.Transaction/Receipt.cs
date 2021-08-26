@@ -41,13 +41,13 @@ namespace Cloud.Transaction
     public class Receipt {
         public ReceiptCode Code { get; internal set; }
 
-        public Bundle Return { get; private set; }
+        public Bundle Value { get; private set; }
 
         public bool HasPackagedContent
         {
             get {
-                if (Return != null)
-                    return !string.IsNullOrEmpty(Return.Package);
+                if (Value != null)
+                    return !string.IsNullOrEmpty(Value.Package);
                 return false;
             }
         }
@@ -57,7 +57,7 @@ namespace Cloud.Transaction
             if (string.IsNullOrEmpty(stream)) {
                 // ignore here, because the server might
                 // not have returned anything.
-                Return = null;
+                Value = null;
                 Code   = ReceiptCode.Undefined;
                 return true;
             }
@@ -91,7 +91,7 @@ namespace Cloud.Transaction
             stream = StringUtils.FromBase64(stream);
             if (string.IsNullOrEmpty(stream)) {
                 Code   = ReceiptCode.Fail;
-                Return = null;
+                Value = null;
                 LogUtils.Log(LogLevel.Error,
                              nameof(Process),
                              "Failed to extract a base 64 return value from the server's response.");
@@ -100,12 +100,12 @@ namespace Cloud.Transaction
 
             if (stream.StartsWith("{")) {
                 // try and unwrap the json bundle.
-                Return = (Bundle)JsonParser.Unwrap(stream, typeof(Bundle), false);
+                Value = (Bundle)JsonParser.Unwrap(stream, typeof(Bundle), false);
 
                 // it's composed of two json files, codes and content.
-                if (Return != null && !string.IsNullOrEmpty(Return.Package)) {
+                if (Value != null && !string.IsNullOrEmpty(Value.Package)) {
                     // the package is the content.
-                    Return.Package = StringUtils.FromBase64(Return.Package);
+                    Value.Package = StringUtils.FromBase64(Value.Package);
                     Code           = ReceiptCode.Json;
                 } else {
                     LogUtils.Log(LogLevel.Error,
@@ -118,7 +118,7 @@ namespace Cloud.Transaction
             } else if (stream.StartsWith("[")) {
                 // The server returned an int list
                 Code   = ReceiptCode.List;
-                Return = new Bundle {
+                Value = new Bundle {
                     Package = stream
                 };
             } else {
@@ -132,36 +132,36 @@ namespace Cloud.Transaction
         public List<int> UnpackList()
         {
             var list = new List<int>();
-            if (Return?.Package != null && Code == ReceiptCode.List)
-                StringUtils.ToIntArrayNoCount(Return.Package, ref list);
+            if (Value?.Package != null && Code == ReceiptCode.List)
+                StringUtils.ToIntArrayNoCount(Value.Package, ref list);
             return list;
         }
 
         public string UnpackString()
         {
-            if (Return?.Package != null && Code == ReceiptCode.String)
-                return StringUtils.FromBase64(Return.Package);
+            if (Value?.Package != null && Code == ReceiptCode.String)
+                return StringUtils.FromBase64(Value.Package);
             return string.Empty;
         }
 
         public int UnpackInteger()
         {
-            if (Return?.Package != null && Code == ReceiptCode.Int)
-                return StringUtils.ToInt(Return.Package);
+            if (Value?.Package != null && Code == ReceiptCode.Int)
+                return StringUtils.ToInt(Value.Package);
             return -1;
         }
 
         public JsonObject UnpackJson()
         {
-            if (Return?.Package != null && Code == ReceiptCode.Json)
-                return JsonObject.TryParse(Return.Package);
+            if (Value?.Package != null && Code == ReceiptCode.Json)
+                return JsonObject.TryParse(Value.Package);
             return null;
         }
 
         public object UnpackJson<T>()
         {
-            if (Return?.Package != null && Code == ReceiptCode.Json)
-                return JsonParser.Unwrap(Return.Package, typeof(T), false);
+            if (Value?.Package != null && Code == ReceiptCode.Json)
+                return JsonParser.Unwrap(Value.Package, typeof(T), false);
             return null;
         }
     }

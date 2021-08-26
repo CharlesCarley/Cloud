@@ -44,7 +44,7 @@ namespace BookStore.FrontEnd.Controllers
         public ActionResult Details(int id)
         {
             CurrentItem = null;
-            var book = BookTransaction.SelectById(id);
+            var book    = BookTransaction.SelectById(id);
             if (book != null)
                 CurrentItem = new BookModel(book, id);
             return View();
@@ -62,26 +62,18 @@ namespace BookStore.FrontEnd.Controllers
         public ActionResult Create(IFormCollection collection)
         {
             try {
-                //
                 if (!collection.ContainsKey("Key")) {
-                    // Something is wrong, an internal form parameter did not map correctly
-                    // to the collection....
-                    // TODO: display an error message of some sort...
                     return View();
                 }
 
                 var key = collection["Key"];
                 if (string.IsNullOrEmpty(key)) {
-                    // Something else is wrong, it should be a valid ptr....
-                    // TODO: display an error message of some sort...
                     BookModel.ErrorMessage = "The key field is required.";
                     return View();
                 }
 
-                if (BookTransaction.ContainsKey(key)) // Be aware this transaction could fail too...
+                if (BookTransaction.ContainsKey(key)) 
                 {
-                    // error -- duplicate key....
-                    // TODO: Add a hidden Error Variable to update the html...
                     BookModel.ErrorMessage = "Duplicate key...";
                     return View();
                 }
@@ -109,6 +101,10 @@ namespace BookStore.FrontEnd.Controllers
         // GET: BookController/Edit/5
         public ActionResult Edit(int id)
         {
+            CurrentItem = null;
+            var book    = BookTransaction.SelectById(id);
+            if (book != null)
+                CurrentItem = new BookModel(book, id);
             return View();
         }
 
@@ -118,28 +114,53 @@ namespace BookStore.FrontEnd.Controllers
         public ActionResult Edit(int id, IFormCollection collection)
         {
             try {
+                if (!collection.ContainsKey("Key")) {
+                    return View();
+                }
+
+                var key = collection["Key"];
+                if (string.IsNullOrEmpty(key)) {
+                    BookModel.ErrorMessage = "The key field is required.";
+                    return View();
+                }
+
+                if (!BookTransaction.ContainsKey(key)) {
+                    BookModel.ErrorMessage = "Unknown item";
+                    return View();
+                }
+
+                var book = BookTransaction.SelectByKey(key);
+                if (book is null) {
+                    // Something else is wrong, it should be a valid ptr....
+                    BookModel.ErrorMessage = "Failed to extract the book.";
+                    return View();
+                }
+
+                if (collection.ContainsKey("Author"))
+                    book.Author = collection["Author"];
+                if (collection.ContainsKey("Title"))
+                    book.Title = collection["Title"];
+                if (collection.ContainsKey("Description"))
+                    book.Description = collection["Description"];
+
+                book.CreateTransaction().Save();
+
+                BookModel.ErrorMessage = null;
                 return RedirectToAction(nameof(Index));
+
             } catch {
                 return View();
             }
         }
-
-        // GET: BookController/Delete/5
+        
+        
         public ActionResult Delete(int id)
         {
-            return View();
-        }
-
-        // POST: BookController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try {
-                return RedirectToAction(nameof(Index));
-            } catch {
-                return View();
-            }
+            CurrentItem = null;
+            var book = BookTransaction.SelectById(id);
+            if (book != null && BookTransaction.ContainsKey(book.Key))
+                BookTransaction.Drop(book.Key);
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult OnCreate()
@@ -152,13 +173,13 @@ namespace BookStore.FrontEnd.Controllers
 
         public IActionResult Clear()
         {
-            // clear is a part of the create page...
             try {
                 BookTransaction.Clear();
-                return RedirectToAction(nameof(Index));
             } catch {
-                return RedirectToAction(nameof(Create));
+                // ignore
+                // TODO: setup a specific error page.
             }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

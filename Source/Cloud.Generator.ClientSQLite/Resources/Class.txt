@@ -23,23 +23,23 @@
         /// </summary>
         public string  Key { get; set; } = string.Empty;
         /// <summary>
-        /// Private read only reference to this elements server id.
+        /// Reference to this elements server id.
         /// <remarks>
         /// If this element is not synchronized with the server, 
         /// then the value is defined to be the constant: 
         ///  <see cref="Cloud.Common.Constants.Undefined">Undefined</see>
         /// </remarks>
         /// </summary>
-        public int ServerId { get; } = Constants.Undefined;
+        public int ServerId { get;  set;} = Constants.Undefined;
         /// <summary>
-        /// Private read only reference to this elements revision number.
+        /// Reference to this elements revision number.
         /// <remarks>
         /// If this element is not synchronized with the server, 
         /// then the value is defined to be the constant: 
         ///  <see cref="Cloud.Common.Constants.Undefined">Undefined</see>
         /// </remarks>
         /// </summary>
-        public int Revision { get; } = Constants.Undefined;
+        public int Revision { get; set; } = Constants.Undefined;
         /// <summary>
         /// Provides access to the database connection.
         /// </summary>

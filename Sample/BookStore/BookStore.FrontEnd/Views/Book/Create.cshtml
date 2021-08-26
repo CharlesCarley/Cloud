@@ -10,7 +10,6 @@
             <h1 class="special-header pl-2">@ViewData["Title"]</h1>
         </td>
     </tr>
-    <tr><td><p class="p-0 m-0 h6">Creates a new Book element then calls BookTransaction.Save() to push it to the server.</p></td></tr>
     @if (!string.IsNullOrEmpty(BookModel.ErrorMessage))
     {
         <tr><td><p class="p-0 mt-2 h6 red-fg-5">@BookModel.ErrorMessage</p></td></tr>

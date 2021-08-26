@@ -24,17 +24,15 @@ using System.Collections.Generic;
 namespace BookStore.FrontEnd.Models
 {
     public class BookModel {
-        public BookModel()
-        {
-        }
 
         public BookModel(Client.Book book, int index)
         {
             Key         = book.Key;
             Author      = book.Author?.Trim();
             Title       = book.Title?.Trim();
-            Description = book.Description?.Trim();
-            Index       = index;
+            Description = book.Description;
+            Index       = book.ServerId;
+            Element     = index;
         }
 
         public static IEnumerable<BookModel> SelectArray()
@@ -46,7 +44,7 @@ namespace BookStore.FrontEnd.Models
                     var idx  = array[i];
                     var book = Client.BookTransaction.SelectById(idx);
                     if (book != null) {
-                        list.Add(new BookModel(book, idx));
+                        list.Add(new BookModel(book, i));
                     }
                 }
                 StateManager.HasElements = list.Count > 0;
@@ -56,17 +54,13 @@ namespace BookStore.FrontEnd.Models
                 return list;
             }
         }
+        public static string ErrorMessage { get; set; }
 
         public string Key { get; set; }
         public string Title { get; set; }
         public string Author { get; set; }
         public string Description { get; set; }
-
-        /// <summary>
-        /// Any extra public facing error message..
-        /// </summary>
-        public static string ErrorMessage { get; set; }
-
-        public int Index { get; }
+        public int    Index { get; }
+        public int    Element { get; }
     }
 }

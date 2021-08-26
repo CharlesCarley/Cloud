@@ -75,6 +75,30 @@
 
             return result.UnpackList();
 		}
+
+        private static ${ClassName} ExtractFromReceipt(Receipt receipt)
+        {
+            if (receipt is null || !receipt.HasPackagedContent) {                    
+
+                LogUtils.Log(LogLevel.Error, 
+                        nameof(ExtractFromReceipt),
+                        "Invalid receipt.");
+                return null;
+            }
+
+            var returnValue = (${ClassName})receipt.UnpackJson<${ClassName}>();
+            if (returnValue != null) {
+                  
+                returnValue.ServerId = receipt.Value.ServerId;
+                returnValue.Revision = receipt.Value.Revision;
+            } else {
+                LogUtils.Log(LogLevel.Error, 
+                    nameof(ExtractFromReceipt),
+                    "Failed to unpack the transaction receipt.");
+            }
+
+            return returnValue;
+        }
        
 		public static ${ClassName} SelectById(int id) 
         {
@@ -89,7 +113,7 @@
             ${ClassName} returnValue = null;
 
             if (result.HasPackagedContent) {
-                returnValue = (${ClassName})result.UnpackJson<${ClassName}>();
+                returnValue = ExtractFromReceipt(result);
             }
             return returnValue;
 		} 
@@ -138,10 +162,10 @@
 
             ${ClassName} returnValue = null;
             if (result.HasPackagedContent) {
-                returnValue = (${ClassName})result.UnpackJson<${ClassName}>();
+                returnValue = ExtractFromReceipt(result);
             }
             return returnValue;
-		} 
+        } 
         
         public static void Drop(string key) 
         {

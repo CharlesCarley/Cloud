@@ -1,34 +1,55 @@
 ﻿@using BookStore.FrontEnd.Controllers
 @using Cloud.Common
 @model BookStore.FrontEnd.Models.BookModel;
+@{ ViewData["Title"] = "Detail"; }
 
-@{
-    ViewData["Title"] = "Detail";
-}
 <div class="container w-100">
     @if (BookController.CurrentItem != null)
     {
         <div class="row special-header">
-
             <div class="col">
                 <h2>@Html.DisplayName(BookController.CurrentItem.Title)</h2>
             </div>
 
             <div class="col-md-auto">
-                <button type="button" class="btn grey-bg-40 m-0" onclick="location.href='@Url.Action("Edit", BookController.CurrentItem.Index)'">
-                    <span class="icon-pencil-24 link-alert icon-link"></span>
-                </button>
+                <a asp-action="Edit" asp-route-id="@BookController.CurrentItem.Index" class="icon-pencil-24 icon-link"></a>
             </div>
 
             <div class="col-md-auto">
-                <button type="button" class="btn grey-bg-40 m-0" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <span class="icon-trash-24 link-alert icon-link"></span>
-                </button>
-                @*<a asp-action="Clear" class="icon-clear-24 link-alert icon-link"></a>*@
+                <a class="icon-trash-24 link-alert icon-link" data-bs-toggle="modal" data-bs-target="#delete"></a>
             </div>
 
-        </div>
+            <div class="modal fade" 
+                 id="delete" 
+                 tabindex="-1" 
+                 role="dialog" 
+                 aria-labelledby="deleteLabel"
+                 aria-hidden="true">
 
+                <div class="modal-dialog" 
+                     role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteLabel">Delete @Html.DisplayText(BookController.CurrentItem.Title)?</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                                This will drop the @BookController.CurrentItem.Title element from the server database.
+                                <span class="red-fg-6">This cannot be undone!</span>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" 
+                                    class="btn red-bg-5 grey-fg-40"
+                                    onclick="location.href='@Url.Action("Delete", new {id = BookController.CurrentItem.Index})'">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col">
                 <table>
@@ -41,7 +62,6 @@
                         <td>@StringUtils.FromBase64(Html.DisplayName(BookController.CurrentItem.Description))</td>
                     </tr>
                 </table>
-
             </div>
         </div>
     }

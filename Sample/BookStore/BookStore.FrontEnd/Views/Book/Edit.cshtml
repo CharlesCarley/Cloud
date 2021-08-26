@@ -1,5 +1,47 @@
-﻿@model BookStore.FrontEnd.Models.BookModel;
+﻿@using BookStore.FrontEnd.Controllers
+@using Cloud.Common
+@model BookStore.FrontEnd.Models.BookModel;
 
 @{
     ViewData["Title"] = "Edit";
+}
+
+@if (BookController.CurrentItem != null)
+{
+    <table class="container w-100">
+        <tr>
+            <td class="w-auto">
+                <h1 class="special-header pl-2">@ViewData["Title"]</h1>
+            </td>
+        </tr>
+        @if (!string.IsNullOrEmpty(BookModel.ErrorMessage))
+        {
+            <tr><td><p class="p-0 mt-2 h6 red-fg-5">@BookModel.ErrorMessage</p></td></tr>
+        }
+        <tr>
+            <td>
+                <form method="post">
+
+                    <label asp-for="Key" class="control-label"></label>
+                    <input asp-for="Key" readonly 
+                           class="form-control separate-bg" 
+                           value="@BookController.CurrentItem.Key" />
+                    <label asp-for="Author" class="control-label"></label>
+                    <input asp-for="Author" class="form-control separate-bg" 
+                           value="@BookController.CurrentItem.Author" />
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control separate-bg" 
+                           value="@BookController.CurrentItem.Title" />
+                    <label asp-for="Description" class="control-label"></label>
+                    <textarea asp-for="Description" class="form-control-plaintext border separate-bg">
+                            @Html.DisplayText(StringUtils.FromBase64(BookController.CurrentItem.Description))
+                    </textarea>
+
+                    <input type="submit" 
+                           value="Update" 
+                           class="mt-3 btn btn-dark green-bg-6" />
+                </form>
+            </td>
+        </tr>
+    </table>
 }

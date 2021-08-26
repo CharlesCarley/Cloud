@@ -92,6 +92,7 @@
         {
             if (obj is null)
                 return string.Empty;
+
             var json = new JsonObject();
             json.AddValue("ServerId", obj.ServerId);
             json.AddValue("Revision", obj.Revision);

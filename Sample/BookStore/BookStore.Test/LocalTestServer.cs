@@ -22,29 +22,28 @@
 
 using System;
 using System.IO;
-using Cloud.Common;
 using Cloud.Transaction;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.VisualStudio.TestPlatform.Utilities;
 
-namespace BookStore.Test {
-
-
+namespace BookStore.Test
+{
     public class LocalTestServer {
         private static string Content => AppContext.BaseDirectory + "..\\..\\..\\LocalTestServer\\";
 
         private readonly IWebHost _host;
         private HostConfig        _hostConfig;
 
-        public LocalTestServer() {
+        public LocalTestServer()
+        {
             _host = InitializeHost();
         }
 
-        private IWebHost InitializeHost() {
+        private IWebHost InitializeHost()
+        {
             _hostConfig = new HostConfig {
                 Host = "localhost",
-                Port = 4423
+                Port = 5000
             };
 
             // set up a temp destination directory
@@ -76,11 +75,13 @@ namespace BookStore.Test {
             return host.Build();
         }
 
-        public void Start() {
+        public void Start()
+        {
             _host.StartAsync();
         }
 
-        public void Stop() {
+        public void Stop()
+        {
             Client.Database.Close();
             _host.StopAsync().Wait();
             _host.Dispose();

@@ -22,8 +22,6 @@
 using System;
 using System.IO;
 using BookStore.Client;
-using Cloud.Common;
-using Microsoft.VisualStudio.TestPlatform.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BookStore.Test
