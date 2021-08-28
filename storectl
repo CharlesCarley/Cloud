@@ -75,7 +75,7 @@ function  buildStore {
     echo "Building Solution"
     dotnet build $Project -c Release
     echo_g0 $SEP
-    echo "Publising Solution"
+    echo "Publishing Solution"
     dotnet publish $Project -c Release --no-build -o $Publish
     echo_g0 $SEP
 }
