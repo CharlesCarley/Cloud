@@ -38,7 +38,7 @@ def swapFileContent(rootPath, fileName, content):
 
 def main(argc, argv):
     if (argc < 2):
-        print("Usage <> <input> .")
+        print("Usage <input_file> <from_directory>")
         return
 
 
