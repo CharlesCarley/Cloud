@@ -60,6 +60,8 @@ function  runStore {
     if [ "$1" = "--development" ]; then
         echo_g "Development....."
         $Binary --development --cfg $SolutionDir/BuildTools/runConfig.json
+    elif [ "$1" = "--cfg" ]; then
+        $Binary --cfg $2
     else
         $Binary --cfg $SolutionDir/BuildTools/runConfig.json
     fi
@@ -84,13 +86,12 @@ function  clean {
     git clean -d -fx $SolutionDir
 }
 
-
 if [ "$1" = "help" ]; then
     usage
 
 elif [ "$1" = "run" ]; then
 
-    runStore
+    runStore $2 $3
 
 elif [ "$1" = "clean" ]; then
 
