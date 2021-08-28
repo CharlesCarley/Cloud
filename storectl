@@ -83,7 +83,7 @@ function  buildStore {
 }
 
 function  clean {
-    git clean -d -fx $SolutionDir
+    git clean -dfx $SolutionDir
 }
 
 if [ "$1" = "help" ]; then

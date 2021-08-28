@@ -3,11 +3,10 @@
 @{
     ViewData["Title"] = "Create";
 }
-
 <table class="container w-100">
     <tr>
         <td class="w-auto">
-            <h1 class="special-header pl-2">@ViewData["Title"]</h1>
+            <h1 class="special-header">@ViewData["Title"]</h1>
         </td>
     </tr>
     @if (!string.IsNullOrEmpty(BookModel.ErrorMessage))

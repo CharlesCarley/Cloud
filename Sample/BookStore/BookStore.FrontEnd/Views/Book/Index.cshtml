@@ -1,18 +1,14 @@
 ﻿@model BookStore.FrontEnd.Models.BookModel;
-
 @{
     ViewData["Title"] = "Book Selection";
 }
-
 <div>
-
-@if (StateManager.IsConnected)
-{
+@if (StateManager.IsConnected) {
     <div class="row special-header">
         <div class="col">
             <h2>Book selection</h2>
         </div>
-
+        
         <div class="col-md-auto">
             <a asp-action="Create" class="icon-add-24 icon-link"></a>
         </div>
@@ -27,7 +23,6 @@
              role="dialog" 
              aria-labelledby="clearModalLabel"
              aria-hidden="true">
-
             <div class="modal-dialog" 
                  role="document">
                 
@@ -53,30 +48,21 @@
     </div>
 }
 
-@if (!StateManager.HasElements)
-{
+@if (!StateManager.HasElements) {
     <p class="indent-paragraph">
-    @if (!StateManager.IsConnected)
-    {
+    @if (!StateManager.IsConnected) {
         <span>There is no active connection to the backend database.</span>
     }
-
     </p>
-}
-else
-{
+} else {
     <table class="table">
         <tbody>
-
-            @foreach (var item in BookModel.SelectArray())
-            {
+            @foreach (var item in BookModel.SelectArray()) {
                 var itemIndex = item.Index;
                 var style = "grey-bg-39";
-                if (item.Index % 2 == 0)
-                {
+                if (item.Index % 2 == 0) {
                     style = "grey-bg-40";
                 }
-
                 <tr class="w-100 @style">
                     <td class="d-table-cell text-center">@itemIndex</td>
                     <td class="d-table-cell w-100">
@@ -86,7 +72,5 @@ else
             }
         </tbody>
     </table>
-
 }
-
 </div>
