@@ -26,10 +26,12 @@ function echo_g0() {
 }
 
 Project="$PWD/Cloud.sln"
+Generator="$PWD/Source/Cloud.Generator/Cloud.Generator.csproj"
 Publish="$HOME/Public/"
 Binary="$HOME/Public/BookStore.Store"
+SEP="==========================================================="
 
-export SolutionDir="$PWD"
+export SolutionDir="$PWD/"
 export AutoTest="false"
 
 function log_env  {
@@ -43,7 +45,6 @@ function log_env  {
 }
 
 function usage {
-    SEP="==========================================================="
     echo_g0 $SEP
     log_env
     echo  ""
@@ -64,35 +65,54 @@ function  runStore {
     fi
 }
 
-if [ "$1" = "help" ]; then
-    usage;
-
-elif [ "$1" = "run" ]; then
-    $Binary --cfg $SolutionDir/BuildTools/runConfig.json
-
-elif [ "$1" = "clean" ]; then
-    git clean -d -fx $SolutionDir
-
-elif [ "$1" = "rebuild" ]; then
-    git clean -d -fx $SolutionDir
+function  buildStore {
 
     dotnet restore $Project
+    echo_g0 $SEP
+    echo "Building Generator"
+    dotnet build $Generator -c Release
+    echo_g0 $SEP
+    echo "Building Solution"
     dotnet build $Project -c Release
+    echo_g0 $SEP
+    echo "Publising Solution"
     dotnet publish $Project -c Release --no-build -o $Publish
+    echo_g0 $SEP
+}
+
+function  clean {
+    git clean -d -fx $SolutionDir
+}
+
+
+if [ "$1" = "help" ]; then
+    usage
+
+elif [ "$1" = "run" ]; then
+
+    runStore
+
+elif [ "$1" = "clean" ]; then
+
+    clean
+
+elif [ "$1" = "rebuild" ]; then
+    clean
+
+    buildStore
 
     if [ "$2" = "run" ]; then
-        runStore $3;
+        runStore $3
     fi
 
 elif [ "$1" = "build" ]; then
-    dotnet restore $Project
-    dotnet build $Project -c Release
-    dotnet publish $Project -c Release --no-build -o $Publish
+
+    buildStore
 
     if [ "$2" = "run" ]; then
-        runStore $3;
+        runStore $3
     fi
 
 else
-    usage;
+    usage
 fi
