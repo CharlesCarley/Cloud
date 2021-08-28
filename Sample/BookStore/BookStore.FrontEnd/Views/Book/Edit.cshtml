@@ -33,9 +33,8 @@
                     <input asp-for="Title" class="form-control separate-bg" 
                            value="@BookController.CurrentItem.Title" />
                     <label asp-for="Description" class="control-label"></label>
-                    <textarea asp-for="Description" class="form-control-plaintext border separate-bg">
-                            @Html.DisplayText(StringUtils.FromBase64(BookController.CurrentItem.Description))
-                    </textarea>
+
+                    @Html.TextArea("Description", StringUtils.FromBase64(BookController.CurrentItem.Description), new {@class= "form-control-plaintext border separate-bg" })
 
                     <input type="submit" 
                            value="Update" 

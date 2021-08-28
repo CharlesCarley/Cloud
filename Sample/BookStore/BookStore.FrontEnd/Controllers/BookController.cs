@@ -146,7 +146,7 @@ namespace BookStore.FrontEnd.Controllers
                 book.CreateTransaction().Save();
 
                 BookModel.ErrorMessage = null;
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), new {id = CurrentItem.Index});
 
             } catch {
                 return View();

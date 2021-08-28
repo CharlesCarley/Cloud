@@ -54,11 +54,11 @@
             <div class="col">
                 <table>
                     <tr>
-                        <td>Author</td>
+                        <td class="p-2 text-end">Author</td>
                         <td>@Html.DisplayName(BookController.CurrentItem.Author)</td>
                     </tr>
                     <tr>
-                        <td>Description</td>
+                        <td class="p-2 text-end">Description</td>
                         <td>@StringUtils.FromBase64(Html.DisplayName(BookController.CurrentItem.Description))</td>
                     </tr>
                 </table>
