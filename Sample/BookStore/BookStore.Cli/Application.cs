@@ -251,7 +251,10 @@ namespace BookStore.Cli
         {
             InitializeDatabase();
             Usage();
-            Console.Write(Resources.ActionPrompt, Settings.Host, Settings.Port);
+            Console.Write(Resources.ActionPrompt,
+                Settings.Host,
+                Settings.Port);
+
 
             Quit = false;
 
