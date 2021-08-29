@@ -31,15 +31,14 @@ using Cloud.ReflectionApi;
 
 namespace Cloud.Generator
 {
-    public class GeneratorImpl
-    {
-        public string Namespace { get; set; }
-        public string Input { get; set; }
-        public bool Verbose { get; set; }
-        public string Output { get; set; }
-        public string Type { get; set; }
+    public class GeneratorImpl {
+        public string            Namespace { get; set; }
+        public string            Input { get; set; }
+        public bool              Verbose { get; set; }
+        public string            Output { get; set; }
+        public string            Type { get; set; }
         private StoreItemManager Manager { get; }
-        private IStoreGenerator Generator { get; set; }
+        private IStoreGenerator  Generator { get; set; }
 
         public GeneratorImpl()
         {
@@ -48,13 +47,10 @@ namespace Cloud.Generator
 
         public void Run()
         {
-            try
-            {
+            try {
                 RunImpl();
                 Environment.ExitCode = 0;
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 LogUtils.Log(ex.Message);
                 Environment.ExitCode = -1;
             }
@@ -63,33 +59,29 @@ namespace Cloud.Generator
         private void RunImpl()
         {
             CreateGeneratorBackend();
+
             var assembly = Assembly.LoadFile(Input);
 
             var definedTypes = assembly.DefinedTypes;
-            foreach (var definedType in definedTypes)
-            {
+            foreach (var definedType in definedTypes) {
                 if (!Manager.UsedNamespaces.Contains(definedType.Namespace))
                     Manager.UsedNamespaces.Add(definedType.Namespace);
             }
 
-            if (Namespace == null)
-            {
+            if (Namespace == null) {
                 // Note: This assumes that the input assembly classes
                 // are all defined in the same namespace...
                 var first = assembly.DefinedTypes.First();
                 if (first != null)
                     Manager.Namespace = first.Namespace;
-            }
-            else
-            {
+            } else {
                 Manager.Namespace = Namespace;
             }
 
             if (Verbose)
                 LogUtils.Log(Resources.VerboseNamespace, Manager.Namespace);
 
-            if (string.IsNullOrEmpty(Manager.Namespace))
-            {
+            if (string.IsNullOrEmpty(Manager.Namespace)) {
                 LogUtils.Log(Resources.MissingNamespace);
                 Environment.Exit(1);
             }
@@ -105,28 +97,25 @@ namespace Cloud.Generator
             var classAttributes = type.GetCustomAttributes();
 
             ItemAttribute topLevelItem = null;
-            foreach (var clsAttr in classAttributes)
-            {
+            foreach (var clsAttr in classAttributes) {
                 if (clsAttr is ItemAttribute attr)
                     topLevelItem = attr;
             }
 
-            if (topLevelItem is null)
-            {
+            if (topLevelItem is null) {
                 // skip this type
                 if (Verbose)
                     LogUtils.Log(Resources.SkipClass, type.Name);
                 return;
             }
 
-            var storeItem = new StoreItem
-            {
-                UserName = topLevelItem.Name,
+            var storeItem = new StoreItem {
+                UserName      = topLevelItem.Name,
                 InterfaceName = type.Name,
                 // TODO: add a filter to determine if the supplied code is unique within the content of this API.
-                UniqueID = topLevelItem.Code,
+                UniqueID       = topLevelItem.Code,
                 CanSynchronize = topLevelItem.CanSynchronize,
-                Attribute = topLevelItem,
+                Attribute      = topLevelItem,
             };
 
             if (Verbose)
@@ -135,27 +124,24 @@ namespace Cloud.Generator
             Manager.Items.Add(storeItem);
 
             var properties = type.GetProperties();
-            foreach (var prop in properties)
-            {
+            foreach (var prop in properties) {
                 if (!prop.CanRead) // filter private
                     continue;
 
                 var attributes = prop.GetCustomAttributes();
-                foreach (var attribute in attributes)
-                {
+                foreach (var attribute in attributes) {
                     if (attribute is ItemPropertyAttribute attr)
                         BuildAttributeForType(storeItem, attr, prop);
                 }
             }
         }
 
-        private void BuildAttributeForType(StoreItem storeItem,
+        private void BuildAttributeForType(StoreItem             storeItem,
                                            ItemPropertyAttribute attribute,
-                                           PropertyInfo propertyInfo)
+                                           PropertyInfo          propertyInfo)
         {
-            var property = new StoreItemProperty
-            {
-                Name = propertyInfo.Name,
+            var property = new StoreItemProperty {
+                Name     = propertyInfo.Name,
                 Property = attribute,
             };
 
@@ -170,12 +156,11 @@ namespace Cloud.Generator
                 property.Type = PropertyType.String;
 
             property.IsAutoProperty = attribute.IsAutoProperty;
-            property.MaximumSize = attribute.MaximumSize;
-            property.MinimumSize = attribute.MinimumSize;
-            property.Default = attribute.Default;
+            property.MaximumSize    = attribute.MaximumSize;
+            property.MinimumSize    = attribute.MinimumSize;
+            property.Default        = attribute.Default;
 
-            if (Verbose)
-            {
+            if (Verbose) {
                 LogUtils.LogF(Resources.VerboseType1, property.Name);
                 LogUtils.LogF(Resources.VerboseType2, property.Type);
                 LogUtils.LogF(Resources.VerboseType3, property.IsAutoProperty);
@@ -189,18 +174,15 @@ namespace Cloud.Generator
 
         private void CreateGeneratorBackend()
         {
-            switch (Type)
-            {
-                case "ClientSQLite":
-                    Generator = new ClientSQLiteGenerator();
-                    break;
-                case "ServerSQLite":
-                    Generator = new ServerSQLiteGenerator();
-                    break;
-                default:
-                    throw new NotImplementedException();
-
-
+            switch (Type) {
+            case "ClientSQLite":
+                Generator = new ClientSQLiteGenerator();
+                break;
+            case "ServerSQLite":
+                Generator = new ServerSQLiteGenerator();
+                break;
+            default:
+                throw new NotImplementedException();
             }
         }
     }

@@ -43,6 +43,9 @@ namespace Cloud.Common
 
         private static void LogDetail(LogLevel detail, string method, string message)
         {
+            // Todo: This needs to be formatted differently.
+            // For now it should be fine, it's not used for much, but use lightly...
+
             if (method is null) {
                 if (detail <= Detail)
                     Log($"{detail,-8}:[{DateTime.Now:MM/dd/yy@HH:mm:ss:fffffff(K)}] | {message}");

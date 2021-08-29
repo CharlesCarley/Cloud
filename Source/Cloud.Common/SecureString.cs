@@ -24,27 +24,18 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Cloud.Common {
-    /// <summary>
-    /// Steps to encrypt.
-    ///
-    ///  1) Generate a random key for use with AES.
-    ///  2) Encrypt data with the key using AES.
-    ///  2) Encrypt the key with RSA.
-    ///  ---
-    ///  3) Decrypt the key with RSA
-    ///  4) Use the decrypted key to decrypt with AES.
-    ///
-    /// </summary>
-
+namespace Cloud.Common
+{
     public class SecureString {
         private readonly string _value;
 
-        private SecureString(string input) {
+        private SecureString(string input)
+        {
             _value = input;
         }
 
-        private string HandleInput(bool encrypt, RSAParameters key) {
+        private string HandleInput(bool encrypt, RSAParameters key)
+        {
             if (string.IsNullOrEmpty(_value))
                 return null;
 
@@ -67,7 +58,8 @@ namespace Cloud.Common {
             return null;
         }
 
-        private static byte[] EncryptedImpl(byte[] value, RSAParameters exportParameters) {
+        private static byte[] EncryptedImpl(byte[] value, RSAParameters exportParameters)
+        {
             if (value is null)
                 return null;
 
@@ -84,7 +76,8 @@ namespace Cloud.Common {
             return result;
         }
 
-        private static byte[] DecryptedImpl(byte[] value, RSAParameters exportParameters) {
+        private static byte[] DecryptedImpl(byte[] value, RSAParameters exportParameters)
+        {
             if (value is null)
                 return null;
 
@@ -102,23 +95,13 @@ namespace Cloud.Common {
             return result;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="publicKey"></param>
-        /// <returns></returns>
-        public static string Encrypt(string value, RSAParameters publicKey) {
+        public static string Encrypt(string value, RSAParameters publicKey)
+        {
             return new SecureString(value).HandleInput(true, publicKey);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="privateKey"></param>
-        /// <returns></returns>
-        public static string Decrypt(string value, RSAParameters privateKey) {
+        public static string Decrypt(string value, RSAParameters privateKey)
+        {
             return new SecureString(value).HandleInput(false, privateKey);
         }
     }

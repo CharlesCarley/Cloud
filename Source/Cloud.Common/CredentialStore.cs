@@ -27,17 +27,8 @@ using System.Xml.Serialization;
 
 namespace Cloud.Common
 {
-    /// <summary>
-    ///
-    /// </summary>
     public class CredentialStore {
-        /// <summary>
-        ///
-        /// </summary>
-        public static string PublicKeyPath { get; private set; } = string.Empty;
-        /// <summary>
-        ///
-        /// </summary>
+        public static string PublicKeyPath { get; private set; }  = string.Empty;
         public static string PrivateKeyPath { get; private set; } = string.Empty;
 
         /// <summary>
@@ -84,19 +75,11 @@ namespace Cloud.Common
             return new RSAParameters();
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
         public static RSAParameters GetPublicKey()
         {
             return GetKey(PublicKeyPath);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
         public static RSAParameters GetPrivateKey()
         {
             return GetKey(PrivateKeyPath);

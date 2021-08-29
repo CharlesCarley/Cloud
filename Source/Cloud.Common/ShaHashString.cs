@@ -38,7 +38,7 @@ namespace Cloud.Common
 
             using (var hash = SHA512.Create())
             {
-                var input = Encoding.ASCII.GetBytes(value);
+                var input  = Encoding.ASCII.GetBytes(value);
                 var result = hash.ComputeHash(input);
                 return StringUtils.ToHexString(result);
             }
@@ -55,7 +55,7 @@ namespace Cloud.Common
 
             using (var hash = SHA1.Create())
             {
-                var input = Encoding.ASCII.GetBytes(value);
+                var input  = Encoding.ASCII.GetBytes(value);
                 var result = hash.ComputeHash(input);
                 return StringUtils.ToHexString(result);
             }
