@@ -1,10 +1,19 @@
-﻿
-         help - Displays this screen.
-         list - Pulls all books from the server and prints them to the console.
-        clear - Clears the entire book table.
+﻿book:
+  save           Creates, or updates, a element with the contents of the supplied JSON. 
+                      <string> JSON text.
+                      <file>   JSON file.
+  selectArray    Pulls a list of all server id and revision pairs.
+                      The list is in the form of [id[0], rev[0] ... id[n], rev[n]]
+  selectById     Pulls a book item with the specified id.
+                      <int> Server id.
+  selectByKey    Pulls a book item with the specified key.
+                      <string> Lookup key.
+  containsKey    Looks up an item with the specified key.
+                      <string> Lookup key.
+  deleteById     Deletes an item with the specified id.
+                      <int> Server id.
+  deleteByKey    Deletes an item with the specified key.
+                      <string> Lookup key.
+  list           Pulls all books from the server and prints them to the console.
+  clear          Clears the entire book table.
 
-  selectArray - Pulls a list of all server id and revision pairs.
-                 The list is in the form of [id[0], rev[0] ... id[n], rev[n]]
-
-  selectById  - Pulls a book item with the specified id.
-                 <int> Server id

@@ -1,5 +1,5 @@
+config:
 
-    help - Displays this screen.
     list - Prints the current configuration.
 
     host - Sets the host address to the supplied argument.

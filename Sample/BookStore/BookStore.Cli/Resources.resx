@@ -148,7 +148,7 @@
     <comment>Not found message.</comment>
   </data>
   <data name="MissingArgument" xml:space="preserve">
-    <value>Failed to determine the sub command for the input string '{0}'</value>
+    <value>Failed to determine the sub-command for the input string '{0}'</value>
     <comment>MissingArgument message</comment>
   </data>
   <data name="InvalidHost" xml:space="preserve">

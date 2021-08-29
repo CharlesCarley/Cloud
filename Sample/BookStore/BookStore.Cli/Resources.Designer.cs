@@ -70,22 +70,15 @@ namespace BookStore.Cli {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///book: &lt;action&gt;
-        ///
-        ///    &lt;action&gt; is one of the following:
-        ///
-        ///          help - Displays this screen.
-        ///          list - Pulls all books from the server and prints them to the console.
-        ///         clear - Clears the entire book store.
-        ///
-        ///   selectArray - Pulls a list of all server id and revision pairs.
-        ///                    The list is in the form of [id[0], rev[0] ... id[n], rev[n]]
-        ///
-        ///   selectById  - Pulls a book item with the specified id.
-        ///                    &lt;int&gt; Server id
-        ///
-        ///.
+        ///   Looks up a localized string similar to book:
+        ///         list - Pulls all books from the server and prints them to the console.
+        ///        clear - Clears the entire book table.
+        ///         save - Creates, or updates, a element with the contents of the supplied JSON. 
+        ///                      &lt;string&gt; JSON text.
+        ///                      &lt;file&gt;   JSON file.
+        ///  selectArray - Pulls a list of all server id and revision pairs.
+        ///                      The list is in the form of [id[0], rev[0] ... id[n], rev[n]]
+        ///   selectById - Pulls a book item with the specifie [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Book {
             get {
@@ -103,22 +96,19 @@ namespace BookStore.Cli {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///config: &lt;action&gt;
+        ///   Looks up a localized string similar to config:
         ///
-        ///    &lt;action&gt; is one of the following:
+        ///    list - Prints the current configuration.
         ///
-        ///          help - Displays this screen.
-        ///          list - Prints the current configuration.
+        ///    host - Sets the host address to the supplied argument.
+        ///            &lt;string&gt; Host Ipv4 address or domain name.
         ///
-        ///          host - Sets the host address to the supplied argument.
-        ///                    &lt;string&gt; Host Ipv4 address or domain name.
+        ///    port - Sets the host port to the supplied argument.
+        ///            &lt;int&gt; Port in the set [80, 443, 1024-65535]
         ///
-        ///          port - Sets the host port to the supplied argument.
-        ///                    &lt;int&gt; Port in the set [80, 443, 1024-65535]
-        ///
-        ///       timeout - Sets the timeout for store transactions.
-        ///                    &lt;int&gt; Time in  [rest of string was truncated]&quot;;.
+        /// timeout - Sets the timeout for store transactions.
+        ///            &lt;int&gt; Time in milliseconds in the range of [10-30000]
+        ///.
         /// </summary>
         internal static string Configuration {
             get {
@@ -163,7 +153,7 @@ namespace BookStore.Cli {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to determine the sub command for the input string &apos;{0}&apos;.
+        ///   Looks up a localized string similar to Failed to determine the sub-command for the input string &apos;{0}&apos;.
         /// </summary>
         internal static string MissingArgument {
             get {
@@ -190,21 +180,14 @@ namespace BookStore.Cli {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///&lt;action&gt;
+        ///   Looks up a localized string similar to   clear - Clears the console.
+        ///   ping - Tests the connection to the database.
+        /// config - Handles settings related to the connection with the host.
+        ///          See &lt;config&gt; &lt;help&gt; for more information.
+        ///   book - Handles book API objects.
+        ///          See &lt;book&gt; &lt;help&gt; for more information.
         ///
-        ///    &lt;action&gt; is one of the following:
-        ///
-        ///          help - Displays this screen.
-        ///          quit - Exits the program.
-        ///         clear - Clears the console.
-        ///          ping - Tests the connection to the database.
-        ///
-        ///        config - Handles settings related to the store database connection.
-        ///                    See &lt;config&gt; &lt;help&gt; for more information.
-        ///
-        ///          book - Handles book API objects.
-        ///                    See &lt;book&gt; &lt;help&gt; for more information.
+        ///    quit - Exits the program.
         ///.
         /// </summary>
         internal static string Options {
