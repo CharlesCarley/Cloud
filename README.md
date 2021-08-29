@@ -74,8 +74,7 @@ Defines common server functionality that should be shared with the generated ser
 
 ### Cloud.Transaction
 
-The transaction layer is a utility library that allows communication between the client and server.
-
+Is a utility library that allows communication between the client and server.
 
 It uses the REST API routes in the generated server code to know where the class data should be sent.     
 
@@ -84,6 +83,9 @@ __The REST API__ is defined a bit differently. Rather than using plain English r
 ## Basic testing 
 
 In the Visual Studio solution explorer, right click on the root of the solution tree and select Properties. Select Common Properties / Startup Project. From the list of projects enable BookStore.Store and BookStore.FrontEnd as the projects to start. Then Ctrl+F5 will launch both projects for testing. 
+
+See also, [Running in Linux](Content/LinuxStore.md)
+
 
 ## Dependencies
 
