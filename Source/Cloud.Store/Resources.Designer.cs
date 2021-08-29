@@ -61,6 +61,15 @@ namespace Cloud.Store {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to load {0}.
+        /// </summary>
+        public static string ConfigNotLoaded {
+            get {
+                return ResourceManager.GetString("ConfigNotLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to load credentials..
         /// </summary>
         public static string CredentialLoadFailed {
@@ -138,6 +147,24 @@ namespace Cloud.Store {
         public static string InvalidValue {
             get {
                 return ResourceManager.GetString("InvalidValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loaded {0}.
+        /// </summary>
+        public static string LoadedConfig {
+            get {
+                return ResourceManager.GetString("LoadedConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing argument for --cfg.
+        /// </summary>
+        public static string MissingConfigArg {
+            get {
+                return ResourceManager.GetString("MissingConfigArg", resourceCulture);
             }
         }
         

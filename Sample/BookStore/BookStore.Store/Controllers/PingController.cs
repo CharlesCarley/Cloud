@@ -24,12 +24,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookStore.Store.Controllers
 {
-    public class RootController : Controller {
+    public class PingController : Controller {
         [Route("ping")]
         [HttpGet]
         public string Ping()
         {
-            return "Cloud.Store running successfully";
+            return "Cloud.Store running successfully.";
         }
     }
 }

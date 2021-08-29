@@ -183,4 +183,13 @@
   <data name="InvalidValue" xml:space="preserve">
     <value>Invalid data supplied as a value field.</value>
   </data>
+  <data name="LoadedConfig" xml:space="preserve">
+    <value>Loaded {0}</value>
+  </data>
+  <data name="ConfigNotLoaded" xml:space="preserve">
+    <value>Failed to load {0}</value>
+  </data>
+  <data name="MissingConfigArg" xml:space="preserve">
+    <value>Missing argument for --cfg</value>
+  </data>
 </root>

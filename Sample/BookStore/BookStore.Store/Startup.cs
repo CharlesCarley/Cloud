@@ -30,8 +30,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace BookStore.Store
 {
-    public class DevelopmentStartup
-    {
+    public class DevelopmentStartup {
         public DevelopmentStartup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -43,10 +42,10 @@ namespace BookStore.Store
         public static void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc(o =>
-            {
-                o.EnableEndpointRouting = false;
-                o.InputFormatters.Insert(0, new PostBundleFormatter());
-            });
+                            {
+                                o.EnableEndpointRouting = false;
+                                o.InputFormatters.Insert(0, new PostBundleFormatter());
+                            });
         }
 
         // Use this method to configure the HTTP request pipeline.
@@ -55,8 +54,7 @@ namespace BookStore.Store
             if (app == null) throw new ArgumentNullException(nameof(app));
             if (env == null) throw new ArgumentNullException(nameof(env));
 
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
-            {
+            app.UseForwardedHeaders(new ForwardedHeadersOptions {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor |
                                    ForwardedHeaders.XForwardedProto,
             });
