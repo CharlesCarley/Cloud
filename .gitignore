@@ -8,7 +8,6 @@ obj
 Publish
 credentials.json
 secrets
-/Sample/BookStore/BookStore.FrontEnd/*.db
-/Sample/BookStore/BookStore.Test/VMTest/*.db
-/Sample/BookStore/BookStore.Cli/Properties/launchSettings.json
-/Sample/BookStore/BookStore.Store/*.db
+*.db
+credentials.json
+HostConnect.json

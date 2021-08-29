@@ -43,21 +43,32 @@ namespace BookStore.FrontEnd
         /// <param name="cfg"></param>
         public static void Initialize(IWebHostEnvironment env, IConfiguration cfg)
         {
-            var client = (string)cfg.GetValue(typeof(string), "Client");
+            var client = (string)cfg.GetValue(typeof(string), "Client", string.Empty);
             if (!string.IsNullOrEmpty(client)) {
                 Client.Database.Register(client);
             }
 
-            var host    = cfg["DataBaseHostConfig:Host"];
-            var port    = cfg["DataBaseHostConfig:Port"];
-            var timeout = cfg["DataBaseHostConfig:Timeout"];
+            HostConfig settings = null;
 
-            Transaction.SetConnectionParameters(
-                new HostConfig {
+            var externHost = (string)cfg.GetValue(typeof(string), "HostFile", string.Empty);
+            if (!string.IsNullOrEmpty(externHost)) {
+                settings = HostConfig.Load(externHost);
+                if (settings is null)
+                    LogUtils.Log($"Failed to load the supplied host file '{externHost}'. Using default settings.");
+            }
+
+            if (settings is null) {
+                var host    = (string)cfg.GetValue(typeof(string), "DataBaseHostConfig:Host", "127.0.0.1");
+                var port    = (string)cfg.GetValue(typeof(string), "DataBaseHostConfig:Port", "5000");
+                var timeout = (string)cfg.GetValue(typeof(string), "DataBaseHostConfig:Timeout", "10000");
+                settings = new HostConfig {
                     Host    = host,
                     Port    = StringUtils.ToIntRange(port, 80, ushort.MaxValue),
                     Timeout = StringUtils.ToIntRange(timeout, 1, 10000, 500),
-                });
+                };
+            }
+
+            Transaction.SetConnectionParameters(settings);
 
             CheckConnectionAsync().ConfigureAwait(false);
         }

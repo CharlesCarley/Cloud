@@ -58,8 +58,7 @@ namespace Cloud.Transaction
         /// <returns>True if the file was loaded </returns>
         public bool LoadFromStorage(string storage)
         {
-            try
-            {
+            try {
                 if (!File.Exists(storage))
                     return false;
 
@@ -138,6 +137,12 @@ namespace Cloud.Transaction
         public RSAParameters GetPrivateKey()
         {
             return Common.CredentialStore.GetPrivateKey();
+        }
+
+        public static HostConfig Load(string path)
+        {
+            var cfg = new HostConfig();
+            return cfg.LoadFromStorage(path) ? cfg : null;
         }
     }
 }
