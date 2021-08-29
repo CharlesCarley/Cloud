@@ -29,7 +29,7 @@ Defines a class library that contains the code that is common to all other libra
 
 ### Cloud.Generator
 
-Is responsible for sending a user-defined API to a backend code generator to output the database source. It defines a type switch so that different generators may be specified during the build stage. This is accomplished by embedding the [Cloud.Generator.targets](BuildTools/Cloud.Generator.targets) file into a project.  
+Is responsible for sending a user-defined API to a backend code generator. It defines a type switch so that different generators may be specified during the build stage. This is accomplished by embedding the [Cloud.Generator.targets](BuildTools/Cloud.Generator.targets) file into a project.  
 
 __Example:__ This would be placed in a user-defined project for the specific database. IE the client or server.
 
