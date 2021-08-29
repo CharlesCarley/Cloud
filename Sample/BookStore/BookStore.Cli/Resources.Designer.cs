@@ -71,14 +71,15 @@ namespace BookStore.Cli {
         
         /// <summary>
         ///   Looks up a localized string similar to book:
-        ///         list - Pulls all books from the server and prints them to the console.
-        ///        clear - Clears the entire book table.
-        ///         save - Creates, or updates, a element with the contents of the supplied JSON. 
+        ///  save           Creates, or updates, a element with the contents of the supplied JSON. 
         ///                      &lt;string&gt; JSON text.
         ///                      &lt;file&gt;   JSON file.
-        ///  selectArray - Pulls a list of all server id and revision pairs.
+        ///  selectArray    Pulls a list of all server id and revision pairs.
         ///                      The list is in the form of [id[0], rev[0] ... id[n], rev[n]]
-        ///   selectById - Pulls a book item with the specifie [rest of string was truncated]&quot;;.
+        ///  selectById     Pulls a book item with the specified id.
+        ///                      &lt;int&gt; Server id.
+        ///  selectByKey    Pulls a book item with the specified key.
+        ///                   [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Book {
             get {
@@ -97,17 +98,13 @@ namespace BookStore.Cli {
         
         /// <summary>
         ///   Looks up a localized string similar to config:
-        ///
-        ///    list - Prints the current configuration.
-        ///
-        ///    host - Sets the host address to the supplied argument.
-        ///            &lt;string&gt; Host Ipv4 address or domain name.
-        ///
-        ///    port - Sets the host port to the supplied argument.
-        ///            &lt;int&gt; Port in the set [80, 443, 1024-65535]
-        ///
-        /// timeout - Sets the timeout for store transactions.
-        ///            &lt;int&gt; Time in milliseconds in the range of [10-30000]
+        ///  host       Sets the host address to the supplied argument.
+        ///                 &lt;string&gt; Host Ipv4 address or domain name.
+        ///  port       Sets the host port to the supplied argument.
+        ///                 &lt;int&gt; Port in the set [80, 443, 1024-65535]
+        ///  timeout    Sets the timeout for store transactions.
+        ///                 &lt;int&gt; Time in milliseconds in the range of [10-30000]
+        ///  list       Prints the current configuration.
         ///.
         /// </summary>
         internal static string Configuration {
@@ -153,6 +150,15 @@ namespace BookStore.Cli {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not implemented..
+        /// </summary>
+        internal static string MessageNA {
+            get {
+                return ResourceManager.GetString("MessageNA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to determine the sub-command for the input string &apos;{0}&apos;.
         /// </summary>
         internal static string MissingArgument {
@@ -180,19 +186,29 @@ namespace BookStore.Cli {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to   clear - Clears the console.
-        ///   ping - Tests the connection to the database.
-        /// config - Handles settings related to the connection with the host.
-        ///          See &lt;config&gt; &lt;help&gt; for more information.
-        ///   book - Handles book API objects.
-        ///          See &lt;book&gt; &lt;help&gt; for more information.
+        ///   Looks up a localized string similar to 
+        ///  clear     Clears the console.
+        ///  ping      Tests the connection to the database.
+        ///  config    Handles settings related to the connection with the host.
+        ///                See &lt;config&gt; &lt;help&gt; for more information. 
+        ///  book      Handles book API objects.
+        ///                See &lt;book&gt; &lt;help&gt; for more information.
         ///
-        ///    quit - Exits the program.
+        ///  quit      Exits the program.
         ///.
         /// </summary>
         internal static string Options {
             get {
                 return ResourceManager.GetString("Options", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checking connection to: {0}:{1}.
+        /// </summary>
+        internal static string PingMessage {
+            get {
+                return ResourceManager.GetString("PingMessage", resourceCulture);
             }
         }
         

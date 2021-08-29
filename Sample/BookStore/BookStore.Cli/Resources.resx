@@ -177,4 +177,10 @@
   <data name="NotConnectedMessage" xml:space="preserve">
     <value>Not Connected</value>
   </data>
+  <data name="PingMessage" xml:space="preserve">
+    <value>Checking connection to: {0}:{1}</value>
+  </data>
+  <data name="MessageNA" xml:space="preserve">
+    <value>Not implemented.</value>
+  </data>
 </root>

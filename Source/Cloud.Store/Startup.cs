@@ -29,9 +29,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Cloud.Store
 {
-    public class ProductionStartup
-    {
-        public ProductionStartup(IConfiguration configuration)
+    public class Startup {
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
@@ -41,24 +40,25 @@ namespace Cloud.Store
         // Use this method to add services to the container.
         public static void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(o => {
-                o.EnableEndpointRouting = false;
-                o.InputFormatters.Insert(0, new PostBundleFormatter());
-            });
+            services.AddMvc(o =>
+                            {
+                                o.EnableEndpointRouting = false;
+                                o.InputFormatters.Insert(0, new PostBundleFormatter());
+                            });
         }
 
         // Use this method to configure the HTTP request pipeline.
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (app == null)
-                throw new ArgumentNullException(nameof(app));
+            if (app == null) throw new ArgumentNullException(nameof(app));
+            if (env == null) throw new ArgumentNullException(nameof(env));
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor |
                                    ForwardedHeaders.XForwardedProto,
             });
-            
-            app.UseAuthentication();
+
+            app.UseAuthorization();
             app.UseMvc();
         }
     }

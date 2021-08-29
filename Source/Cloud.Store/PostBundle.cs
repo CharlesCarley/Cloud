@@ -22,17 +22,15 @@
 
 namespace Cloud.Store
 {
-
     /// <summary>
-    /// 
+    ///
     /// </summary>
-    public class PostBundle
-    {
+    public class PostBundle {
         /// <summary>
         /// Application origin token
         /// </summary>
         public string Origin { get; set; }
-        
+
         /// <summary>
         /// User token
         /// </summary>

@@ -54,7 +54,6 @@ namespace BookStore.Cli
 
         private void BuildActionTable()
         {
-
             // main screen actions.
 
             _actionQueryTable = new ActionQuery();
@@ -71,10 +70,8 @@ namespace BookStore.Cli
             var config = new ActionQuery();
 
             config.Add("help", () => Console.WriteLine(Resources.Configuration));
-            config.Add("ls", () => Console.WriteLine(Resources.Configuration));
-            config.Add("list", () => {
-                Console.WriteLine(Settings.ToJson().AsPrettyPrint());
-            });
+            config.Add("ls", ConfigList);
+            config.Add("list", ConfigList);
 
             config.Add("host", ConfigSetHost);
             config.Add("port", ConfigSetPort);
@@ -82,13 +79,12 @@ namespace BookStore.Cli
 
             _actionQueryTable.Add("config", config);
 
-
             // book table actions.
 
             var book = new ActionQuery();
-            
+
             book.Add("help", () => Console.WriteLine(Resources.Book));
-            book.Add("ls", () => Console.WriteLine(Resources.Book));
+            book.Add("ls", BookSelectAll);
             book.Add("list", BookSelectAll);
             book.Add("clear", BookClear);
 
@@ -103,75 +99,14 @@ namespace BookStore.Cli
             _actionQueryTable.Add("book", book);
         }
 
-        private void TodoAction()
+        private static void TodoAction()
         {
-            Console.WriteLine("Not implemented");
+            Console.WriteLine(Resources.MessageNA);
         }
 
-
-        private void BookClear()
+        private void ConfigList()
         {
-            Console.WriteLine(Resources.BookClearMessage);
-
-            string input;
-            do {
-                input = _actionQueryTable.ReadInput().Trim();
-                if (input.Equals("yes")) {
-                    try {
-                        BookTransaction.Clear();
-                    } catch (Exception ex) {
-                        Console.WriteLine(ex.Message);
-                    }
-                }
-            } while (!input.Equals("yes") && !input.Equals("no"));
-        }
-
-        public bool ParseCommandLine(string[] args)
-        {
-            if (args.Length <= 0)
-                CurrentState = StateCodes.Interactive;
-            else {
-                CurrentState = StateCodes.CommandLine;
-                _args        = args;
-            }
-            return true;
-        }
-
-        private void BookSelectAll()
-        {
-            try {
-                var pairs = BookTransaction.SelectArray();
-                if (pairs == null) return;
-
-                for (var i = 0; i < pairs.Count; i += 2)
-                    BookSelectById(pairs[i]);
-            } catch (Exception e) {
-                Console.WriteLine(e.Message);
-            }
-        }
-
-        private void BookSelectById(int obj)
-        {
-            try {
-                var book = BookTransaction.SelectById(obj);
-                Console.WriteLine(
-                    book is null ? Resources.NotFound
-                                 : book.ToJson().AsPrettyPrint());
-            } catch (Exception e) {
-                Console.WriteLine(e.Message);
-            }
-        }
-
-
-        private void BookSelectArray()
-        {
-            try {
-                var pairs = BookTransaction.SelectArray();
-                if (pairs != null)
-                    Console.WriteLine(StringUtils.IntListToString(pairs));
-            } catch (Exception e) {
-                Console.WriteLine(e.Message);
-            }
+            Console.WriteLine(Settings.ToJson().AsPrettyPrint());
         }
 
         private void ConfigSetTimeout(int timeout)
@@ -204,16 +139,80 @@ namespace BookStore.Cli
             }
         }
 
-        private void PingHost()
+        private static void PingHost()
         {
-            Console.WriteLine("Checking connection to: {0}:{1}", Transaction.Host, Transaction.Port);
+            Console.WriteLine(Resources.PingMessage, Transaction.Host, Transaction.Port);
 
             Console.WriteLine(Transaction.PingDatabase(10000)
                                   ? Resources.ConnectedMessage
                                   : Resources.NotConnectedMessage);
         }
 
-        public void Usage()
+        private void BookClear()
+        {
+            Console.WriteLine(Resources.BookClearMessage);
+
+            string input;
+            do {
+                input = _actionQueryTable.ReadInput().Trim();
+                if (input.Equals("yes")) {
+                    try {
+                        BookTransaction.Clear();
+                    } catch (Exception ex) {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+            } while (!input.Equals("yes") && !input.Equals("no"));
+        }
+
+        public bool ParseCommandLine(string[] args)
+        {
+            if (args.Length <= 0)
+                CurrentState = StateCodes.Interactive;
+            else {
+                CurrentState = StateCodes.CommandLine;
+                _args        = args;
+            }
+            return true;
+        }
+
+        private static void BookSelectAll()
+        {
+            try {
+                var pairs = BookTransaction.SelectArray();
+                if (pairs == null) return;
+
+                for (var i = 0; i < pairs.Count; i += 2)
+                    BookSelectById(pairs[i]);
+            } catch (Exception e) {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        private static void BookSelectById(int obj)
+        {
+            try {
+                var book = BookTransaction.SelectById(obj);
+                Console.WriteLine(
+                    book is null ? Resources.NotFound
+                                 : book.ToJson().AsPrettyPrint());
+            } catch (Exception e) {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        private static void BookSelectArray()
+        {
+            try {
+                var pairs = BookTransaction.SelectArray();
+                if (pairs != null)
+                    Console.WriteLine(StringUtils.IntListToString(pairs));
+            } catch (Exception e) {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        private static void Usage()
         {
             Console.WriteLine(Resources.Options);
         }
@@ -252,9 +251,8 @@ namespace BookStore.Cli
             InitializeDatabase();
             Usage();
             Console.Write(Resources.ActionPrompt,
-                Settings.Host,
-                Settings.Port);
-
+                          Settings.Host,
+                          Settings.Port);
 
             Quit = false;
 
@@ -289,7 +287,7 @@ namespace BookStore.Cli
             string input;
             do {
                 input = _actionQueryTable.ReadInput().Trim();
-                if (string.IsNullOrEmpty(input)) 
+                if (string.IsNullOrEmpty(input))
                     continue;
 
                 if (!_actionQueryTable.InvokeIf(input))

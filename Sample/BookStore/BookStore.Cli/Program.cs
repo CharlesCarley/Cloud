@@ -28,7 +28,6 @@ namespace BookStore.Cli
         public static void Main(string[] args)
         {
             try {
-
                 var app = new Application();
                 if (app.ParseCommandLine(args))
                     app.Run();

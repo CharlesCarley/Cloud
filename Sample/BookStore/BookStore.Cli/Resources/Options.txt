@@ -6,4 +6,4 @@
   book      Handles book API objects.
                 See <book> <help> for more information.
 
-                       (Q)uit - Exits the program.
+  quit      Exits the program.

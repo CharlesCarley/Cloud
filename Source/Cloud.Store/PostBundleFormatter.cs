@@ -29,8 +29,8 @@ using LogUtils = Cloud.Common.LogUtils;
 
 namespace Cloud.Store
 {
-    public class PostBundleFormatter : InputFormatter
-    {
+    public class PostBundleFormatter : InputFormatter {
+
         public static void LogPackage(string text)
         {
             if (text == null)
@@ -43,7 +43,6 @@ namespace Cloud.Store
             LogUtils.Log("");
         }
 
-
         public static void LogError(string text)
         {
             if (text == null)
@@ -55,7 +54,6 @@ namespace Cloud.Store
             LogUtils.Log($"Size: {text.Length}");
             LogUtils.Log("");
         }
-
 
         public PostBundleFormatter()
         {
@@ -71,8 +69,7 @@ namespace Cloud.Store
 
         public override async Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context)
         {
-            try
-            {
+            try {
                 if (context is null)
                     return await InputFormatterResult.FailureAsync().ConfigureAwait(false);
 
@@ -80,11 +77,10 @@ namespace Cloud.Store
                 using var reader = new StreamReader(context.HttpContext.Request.Body);
 
                 // this is the entire encrypted package bundle...
+
                 var package = await reader.ReadToEndAsync().ConfigureAwait(false);
 
-
-                if (string.IsNullOrEmpty(package))
-                {
+                if (string.IsNullOrEmpty(package)) {
                     LogError("Missing Package....");
                     return await InputFormatterResult.FailureAsync().ConfigureAwait(false);
                 }
@@ -96,9 +92,7 @@ namespace Cloud.Store
                 // log it and route it down the line.
                 LogPackage(package);
                 return await InputFormatterResult.SuccessAsync(body).ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 LogError(ex.Message);
             }
 
