@@ -26,3 +26,11 @@ It is formatted as JSON and expects a Host, and Port entry.
     "Port": 5000
 }
 ```
+
+Depending on where it is running it can be tested in the browser by going to the address. `http://127.0.0.1:5000/ping`
+
+The output should be:
+```
+Cloud.Store running successfully
+```
+
