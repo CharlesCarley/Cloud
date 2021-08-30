@@ -32,7 +32,6 @@ Binary="$HOME/Public/BookStore.Store"
 SEP="==========================================================="
 
 export SolutionDir="$PWD/"
-export AutoTest="false"
 
 function log_env  {
     echo_r  "storectl build tool."
