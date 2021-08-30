@@ -45,13 +45,13 @@ __Example:__ This would be placed in a user-defined project for the specific dat
 ```
 
 The generator will search through the input assembly and collect any attributes defined in the reflection API.  
-It will then use what it finds to swap template code with the final source output. 
+It will use what it finds to swap variables in template code then write the final source file. 
 
-Projects can make use of the generated types by adding a reference to the user-defined project that contains this snippet. 
+Projects can make use of the generated types by adding a reference to the user-defined project that contains the previous snippet. 
 
 ### Cloud.GeneratorApi
 
-This library houses the structures that are used to store information about a user defined type before calling a backend generator.
+Houses the structures that are used to store information about a user defined type before calling a backend generator.
 
 #### Cloud.Generator.ClientSQLite
 
@@ -81,9 +81,7 @@ Defines common server functionality that should be shared with the generated ser
 
 Is a utility library that allows communication between the client and server.
 
-It uses the REST API routes in the server code to know where the class data should be sent.     
-
-__The REST API__ is defined a bit differently. Rather than using plain English routes into the server. It uses randomly generated codes to represent the path to the data. Right now the codes are static, but the idea is to be able to cycle the codes in order to shift API access periodically.           
+It uses REST API route codes in the server code to know where the class data should be sent. It is defined a bit differently. Rather than using plain English routes into the server. It uses randomly generated codes to represent the path to the data. Right now the codes are static, but the idea is to be able to cycle the codes in order to shift API access periodically.           
 
 ## Basic testing 
 
@@ -95,5 +93,3 @@ See also, [Running in Linux](Content/LinuxStore.md)
 ## Dependencies
 
 This project makes use of the [sqlite-net](https://github.com/praeclarum/sqlite-net) project.
-
-
