@@ -2,7 +2,7 @@
 
 In order to run in a Linux environment the [dotnet tools](https://docs.microsoft.com/en-us/dotnet/core/install/linux) need to be installed. 
 
-The current source uses `.NET Core 3.1`.
+The current source uses `.NET Core 3.1`, which will need to be modified in the above description.
 
 ## Building 
 
@@ -17,8 +17,7 @@ chmod +x storectl
 
 This will start the server on localhost port 5000. 
 
-The `--cfg <path>` argument will allow changing the address.
-It is formatted as JSON and expects a Host, and Port entry.
+The `--cfg <path>` argument will allow the address to be changed. It is formatted as JSON and expects Host and Port entries.
 
 ```.json
 {

@@ -279,29 +279,20 @@ namespace Cloud.Common
             return value.All(ch => ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z');
         }
 
+        /// <summary>
+        /// Determines whether the specified character is in the set [a-zA-Z].
+        /// </summary>
         public static bool IsLetter(char ch)
         {
             return ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z';
         }
 
-        public static bool IsStringOnlyLetters(string value)
+        /// <summary>
+        /// Determines whether the specified character is in the set [0-9].
+        /// </summary>
+        public static bool IsDigit(int ch)
         {
-            if (string.IsNullOrEmpty(value))
-                return false;
-
-            return IsLetter(value[0]) &&
-                   value.All(
-                       ch => ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z');
-        }
-
-        public static bool IsIdentifier(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-                return false;
-            return IsLetter(value[0]) || value[0] == '_' &&
-                                             value.All(
-                                                 ch => ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z' || ch >= '0' && ch <= '9' ||
-                                                       ch == '_' || ch == '.');
+            return ch >= '0' && ch <= '9';
         }
 
         /// <summary>

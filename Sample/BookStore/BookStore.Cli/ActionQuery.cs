@@ -180,11 +180,6 @@ namespace BookStore.Cli
             return ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z' || ch == '.';
         }
 
-        private static bool IsDigit(int ch)
-        {
-            return ch >= '0' && ch <= '9';
-        }
-
         public ActionQueryResult ReadAction()
         {
             var result = new ActionQueryResult { Type = ActionToken.Error };
@@ -214,7 +209,7 @@ namespace BookStore.Cli
                     while (Console.In.Peek() == ' ') {
                         Console.Read();
                     }
-                    if (i > 0)
+                    if (i > 0)  // trim space in front of the text.
                         done = true;
                     break;
                 }
@@ -225,10 +220,6 @@ namespace BookStore.Cli
                         if (StringUtils.IsInJsonCharacterSet((char)ch))
                             _builder.Append((char)ch);
                     }
-
-                    if (Console.In.Peek() == '`')
-                        Console.Read();
-
                     done = true;
                     break;
                 }
@@ -236,7 +227,7 @@ namespace BookStore.Cli
                     if (IsAlphabet(ch)) {
                         _builder.Append((char)ch);
 
-                    } else if (IsDigit(ch)) {
+                    } else if (StringUtils.IsDigit(ch)) {
                         _builder.Append((char)ch);
                     } else {
                         // undefined
@@ -257,7 +248,7 @@ namespace BookStore.Cli
                 result.Type = ActionToken.Identifier;
             } else if (StringUtils.IsNumber(result.Value)) {
                 result.Type = ActionToken.Integer;
-            } else if (StringUtils.IsStringOnlyLetters(result.Value)) {
+            } else if (StringUtils.IsLetter(result.Value)) {
                 result.Type = ActionToken.Identifier;
             } else if (result.Type != ActionToken.Eof) {
                 result.Type = ActionToken.Error;

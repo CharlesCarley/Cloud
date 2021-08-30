@@ -135,7 +135,7 @@ namespace BookStore.Test
 
             Assert.IsNotNull(book);
             Assert.AreEqual(1, book.Identifier);
-            Assert.AreEqual(-1, book.ServerId);
+            Assert.AreEqual(1, book.ServerId);
 
             Assert.AreEqual("9780534534653", book.Key);
             Assert.AreEqual("Danial Kolak & Raymond  Martin", book.Author);
