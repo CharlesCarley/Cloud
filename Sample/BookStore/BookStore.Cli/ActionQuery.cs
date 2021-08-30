@@ -97,8 +97,9 @@ namespace BookStore.Cli
             // A result of true means that the command was processed,
             // with or without error.
             var result = false;
-            if (input.Type != ActionToken.String) {
+            if (input.Type != ActionToken.Identifier) {
                 // unknown at this point
+                Console.WriteLine(Resources.NotFound, input.Value);
                 return false;
             }
 
@@ -117,10 +118,23 @@ namespace BookStore.Cli
                 // Handle actions with an integer parameter
 
                 var action = ReadAction();
-                if (action.Type == ActionToken.Integer) {
+
+                switch (action.Type) {
+                case ActionToken.Integer:
                     IntActions[input.Value]?.Invoke(StringUtils.ToInt(action.Value));
-                } else {
-                    Console.WriteLine(Resources.ReadInvalidInt);
+                    break;
+                case ActionToken.Identifier:
+                    Console.WriteLine(Resources.IntReadIdentifer);
+                    break;
+                case ActionToken.String:
+                    Console.WriteLine(Resources.IntReadString);
+                    break;
+                case ActionToken.Empty:
+                    Console.WriteLine(Resources.IntReadSpace);
+                    break;
+                default:
+                    Console.WriteLine(Resources.IntReadError);
+                    break;
                 }
 
                 result = true;
@@ -128,10 +142,12 @@ namespace BookStore.Cli
                 // Handle actions with a string parameter.
 
                 var action = ReadAction();
-                if (action.Type == ActionToken.String) {
+                if (action.Type == ActionToken.Identifier ||
+                    action.Type == ActionToken.String ||
+                    action.Type == ActionToken.Json) {
                     StringActions[input.Value]?.Invoke(action.Value);
                 } else {
-                    Console.WriteLine(Resources.ReadInvalidString);
+                    Console.WriteLine(Resources.ReadInvalidString, action.Value);
                 }
 
                 result = true;
@@ -142,8 +158,8 @@ namespace BookStore.Cli
 
                 var action = ReadAction();
                 result     = true;
-                if (action.Type != ActionToken.String)
-                    Console.WriteLine(Resources.ReadActionNotFound, input, action);
+                if (action.Type != ActionToken.Identifier)
+                    Console.WriteLine(Resources.ReadActionNotFound, input.Value, action.Value);
                 else
                     result = SubActions[input.Value].InvokeIf(action);
             } else {
@@ -174,10 +190,10 @@ namespace BookStore.Cli
             var result = new ActionQueryResult { Type = ActionToken.Error };
             _builder.Clear();
 
-            var i    = -1;
+            var i    = 0;
             var done = false;
 
-            while (!done && ++i < 16) {
+            do {
                 var ch = Console.Read();
                 switch (ch) {
                 case -1:
@@ -198,8 +214,22 @@ namespace BookStore.Cli
                     while (Console.In.Peek() == ' ') {
                         Console.Read();
                     }
-                    if (_builder.Length != 0)
+                    if (i > 0)
                         done = true;
+                    break;
+                }
+                case '`': {
+                    ch = Console.In.Peek();
+                    while (ch != '`') {
+                        ch = Console.Read();
+                        if (StringUtils.IsInJsonCharacterSet((char)ch))
+                            _builder.Append((char)ch);
+                    }
+
+                    if (Console.In.Peek() == '`')
+                        Console.Read();
+
+                    done = true;
                     break;
                 }
                 default: {
@@ -214,15 +244,21 @@ namespace BookStore.Cli
                     }
                 } break;
                 }
-            }
+            } while (!done && ++i < 16);
 
             result.Value = _builder.ToString();
-            if (StringUtils.IsIpAddressOrDomain(result.Value)) {
-                result.Type = ActionToken.String;
+            if (string.IsNullOrEmpty(result.Value)) {
+                result.Type = ActionToken.Empty;
+            } else if (result.Value.StartsWith('{') && result.Value.EndsWith('}')) {
+                result.Type = ActionToken.Json;
+            } else if (result.Value.StartsWith('[') && result.Value.EndsWith(']')) {
+                result.Type = ActionToken.Json;
+            } else if (StringUtils.IsIpAddressOrDomain(result.Value)) {
+                result.Type = ActionToken.Identifier;
             } else if (StringUtils.IsNumber(result.Value)) {
                 result.Type = ActionToken.Integer;
             } else if (StringUtils.IsStringOnlyLetters(result.Value)) {
-                result.Type = ActionToken.String;
+                result.Type = ActionToken.Identifier;
             } else if (result.Type != ActionToken.Eof) {
                 result.Type = ActionToken.Error;
             }

@@ -416,6 +416,41 @@ namespace Cloud.Common
                 select c).All(c => c >= 'A' && c <= 'Z');
         }
 
+        /// <summary>
+        /// Checks to see if the supplied character is a valid JSON character.
+        /// </summary>
+        /// <param name="ch">The character to test.</param>
+        public static bool IsInJsonCharacterSet(char ch)
+        {
+            if (ch >= '0' && ch <= '9')
+                return true;
+            if (ch >= 'a' && ch <= 'z')
+                return true;
+            if (ch >= 'A' && ch <= 'Z')
+                return true;
+
+            switch (ch) {
+            case '{':
+            case '}':
+            case '[':
+            case ']':
+            case '\r':
+            case '\n':
+            case ' ':
+            case '\t':
+            case '-':
+            case ',':
+            case '\"':
+            case ':':
+            case '.':
+            case '/':
+            case '@':
+                return true;
+            default:
+                return false;
+            }
+        }
+
         public static bool IsValidDatabaseValue(string value)
         {
             return (from c in value where c != '=' &&

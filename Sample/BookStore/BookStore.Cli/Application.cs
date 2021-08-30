@@ -78,6 +78,7 @@ namespace BookStore.Cli
             config.Add("timeout", ConfigSetTimeout);
 
             _actionQueryTable.Add("config", config);
+            _actionQueryTable.Add("cfg", config);
 
             // book table actions.
 
@@ -90,11 +91,12 @@ namespace BookStore.Cli
 
             book.Add("selectArray", BookSelectArray);
             book.Add("selectById", BookSelectById);
-            book.Add("selectByKey", TodoAction);
-            book.Add("containsKey", TodoAction);
-            book.Add("deleteById", TodoAction);
-            book.Add("deleteByKey", TodoAction);
-            book.Add("save", TodoAction);
+
+            book.Add("selectByKey", BookSelectByKey);
+            book.Add("containsKey", BookContainsKey);
+            book.Add("deleteById", BookDropById);
+            book.Add("deleteByKey", BookDropByKey);
+            book.Add("save", BookSave);
 
             _actionQueryTable.Add("book", book);
         }
@@ -125,7 +127,7 @@ namespace BookStore.Cli
                 Settings.Port = port;
                 Settings.Save();
             } else {
-                Console.WriteLine(Resources.InvalidPort);
+                Console.WriteLine(Resources.ConfigInvalidPort);
             }
         }
 
@@ -135,7 +137,7 @@ namespace BookStore.Cli
                 Settings.Host = input;
                 Settings.Save();
             } else {
-                Console.WriteLine(Resources.InvalidHost);
+                Console.WriteLine(Resources.ConfigInvalidHost);
             }
         }
 
@@ -181,10 +183,16 @@ namespace BookStore.Cli
         {
             try {
                 var pairs = BookTransaction.SelectArray();
-                if (pairs == null) return;
+                if (pairs == null)
+                    return;
 
-                for (var i = 0; i < pairs.Count; i += 2)
-                    BookSelectById(pairs[i]);
+                if (pairs.Count <= 0) {
+                    Console.WriteLine(Resources.BlankArray);
+                } else {
+                    for (var i = 0; i < pairs.Count; i += 2)
+                        BookSelectById(pairs[i]);
+                }
+
             } catch (Exception e) {
                 Console.WriteLine(e.Message);
             }
@@ -205,12 +213,86 @@ namespace BookStore.Cli
             }
         }
 
+        private static void BookDropById(int obj)
+        {
+            try {
+                var book = BookTransaction.SelectById(obj);
+                if (book != null) {
+                    // this needs a return status
+                    BookTransaction.Drop(book.Key);
+                }
+
+            } catch (Exception e) {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        private static void BookDropByKey(string key)
+        {
+            try {
+                // this needs a return status
+                BookTransaction.Drop(key);
+
+            } catch (Exception e) {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        private static void BookSave(string text)
+        {
+            try {
+                var book = (Book)JsonParser.Unwrap(text, typeof(Book), false);
+
+                if (book is null)
+                    Console.WriteLine(Resources.BookInvalidUnwrap);
+                else {
+                    if (string.IsNullOrEmpty(book.Key)) {
+                        Console.WriteLine(Resources.BookInvalidKey, text);
+                    } else {
+                        book.CreateTransaction().Save();
+                    }
+                }
+            } catch (Exception e) {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        private static void BookSelectByKey(string key)
+        {
+            try {
+                var book = BookTransaction.SelectByKey(key);
+
+                if (book is null)
+                    Console.WriteLine(Resources.SelectKeyError, key);
+                else
+                    Console.WriteLine(book.ToJson().AsPrettyPrint());
+
+            } catch (Exception e) {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        private static void BookContainsKey(string key)
+        {
+            try {
+                var book = BookTransaction.ContainsKey(key);
+                Console.WriteLine(book);
+            } catch (Exception e) {
+                Console.WriteLine(e.Message);
+            }
+        }
+
         private static void BookSelectArray()
         {
             try {
                 var pairs = BookTransaction.SelectArray();
-                if (pairs != null)
+
+                if (pairs is null || pairs.Count <= 0) {
+                    Console.WriteLine(Resources.BlankArray);
+                } else {
                     Console.WriteLine(StringUtils.IntListToString(pairs));
+                }
+
             } catch (Exception e) {
                 Console.WriteLine(e.Message);
             }
@@ -257,8 +339,8 @@ namespace BookStore.Cli
 
             Quit = false;
 
-            Console.Write('\n');
             while (!Quit) {
+                Console.Write('\n');
                 Console.Write(Resources.ActionPrompt,
                               Settings.Host,
                               Settings.Port);
@@ -278,9 +360,13 @@ namespace BookStore.Cli
             InitializeDatabase();
 
             var builder = new StringBuilder();
-            foreach (var arg in _args) {
+            for (var index = 0; index < _args.Length; index++) {
+                var arg = _args[index];
+
+                if (index > 0)
+                    builder.Append(' ');
+
                 builder.Append(arg);
-                builder.Append(' ');
             }
 
             var inputStream = new StringReader(builder.ToString());

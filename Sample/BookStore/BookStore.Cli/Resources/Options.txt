@@ -1,9 +1,9 @@
 
-  clear     Clears the console
-  ping      Tests the connection to the database
+  clear        Clears the console
+  ping         Tests the connection to the database
 
-  config    Handles settings related to the connection with the host
-  book      Handles book API objects
-                See [item help] for more information
+  config       Handles settings related to the connection with the host
+  book         Handles book API objects
+                 See [item help] for more information
 
-  quit      Exits the program
+  quit         Exits the program

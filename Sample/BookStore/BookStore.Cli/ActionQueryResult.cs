@@ -25,9 +25,11 @@ namespace BookStore.Cli
     public enum ActionToken
     {
         Error,
+        Identifier,
         String,
         Integer,
         File,
+        Empty,
         Json,
         Eof,
     }

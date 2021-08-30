@@ -70,18 +70,27 @@ namespace BookStore.Cli {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///  list           Pulls all books from the server and prints them to the console
-        ///  clear          Clears the entire book table
+        ///   Looks up a localized string similar to [].
+        /// </summary>
+        internal static string BlankArray {
+            get {
+                return ResourceManager.GetString("BlankArray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to                
+        ///  list         Pulls all books from the server and prints them to the console
+        ///  clear        Clears the entire book table
         ///
-        ///  selectArray    Pulls a list of all server id and revision pairs
-        ///                  The list is in the form of [id[0], rev[0] ... id[n], rev[n]]
+        ///  selectArray  Pulls a list of all server id and revision pairs
+        ///                 The list is in the form of [id[0], rev[0] ... id[n], rev[n]]
         ///
-        ///  save           Creates, or updates an element with the contents of the supplied JSON
-        ///                   [string|file] JSON
+        ///  save         Creates, or updates an element with the contents of the supplied JSON
+        ///                 [string|file] JSON
         ///
-        ///  selectById     Pulls a book item with the specified id
-        ///  deleteById     Deletes an item with the sp [rest of string was truncated]&quot;;.
+        ///  selectById   Pulls a book item with the specified id
+        ///  deleteById   Deletes an item with the sp [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Book {
             get {
@@ -99,16 +108,55 @@ namespace BookStore.Cli {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to   list       Prints the current configuration
+        ///   Looks up a localized string similar to Failed determine a suitable key from &apos;{0}&apos;
+        ///    .
+        /// </summary>
+        internal static string BookInvalidKey {
+            get {
+                return ResourceManager.GetString("BookInvalidKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to reconstruct a book object from the supplied JSON..
+        /// </summary>
+        internal static string BookInvalidUnwrap {
+            get {
+                return ResourceManager.GetString("BookInvalidUnwrap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid host name supplied.
+        /// </summary>
+        internal static string ConfigInvalidHost {
+            get {
+                return ResourceManager.GetString("ConfigInvalidHost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid port range supplied. 
+        ///    Ports are limited to [80,443, 1024-65535].
+        /// </summary>
+        internal static string ConfigInvalidPort {
+            get {
+                return ResourceManager.GetString("ConfigInvalidPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///  list         Prints the current configuration
         ///
-        ///  host       Sets the host address to the supplied argument
-        ///               [string] Host Ipv4 address or domain name
+        ///  host         Sets the host address to the supplied argument
+        ///                 [string] Host Ipv4 address or domain name
         ///  
-        ///  port       Sets the host port to the supplied argument
-        ///               [int] Port in the set [80, 443, 1024-65535]
+        ///  port         Sets the host port to the supplied argument
+        ///                 [int] Port in the set [80, 443, 1024-65535]
         ///  
-        ///  timeout    Sets the timeout for store transactions
-        ///               [int] Time in milliseconds in the range of [10-30000]
+        ///  timeout      Sets the timeout for store transactions
+        ///                 [int] Time in milliseconds in the range of [10-30000]
         ///  .
         /// </summary>
         internal static string Configuration {
@@ -136,29 +184,47 @@ namespace BookStore.Cli {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to read a valid integer from the console.
+        /// </summary>
+        internal static string IntReadError {
+            get {
+                return ResourceManager.GetString("IntReadError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Found an identifier when attempting to read an integer.
+        /// </summary>
+        internal static string IntReadIdentifer {
+            get {
+                return ResourceManager.GetString("IntReadIdentifer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Found a white space when attempting to read an integer.
+        /// </summary>
+        internal static string IntReadSpace {
+            get {
+                return ResourceManager.GetString("IntReadSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Found a string when attempting to read an integer.
+        /// </summary>
+        internal static string IntReadString {
+            get {
+                return ResourceManager.GetString("IntReadString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid character 0x{0:2X}.
         /// </summary>
         internal static string InvalidChar {
             get {
                 return ResourceManager.GetString("InvalidChar", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid host name supplied.
-        /// </summary>
-        internal static string InvalidHost {
-            get {
-                return ResourceManager.GetString("InvalidHost", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid port range supplied. Ports are limited to [80,443, 1024-65535].
-        /// </summary>
-        internal static string InvalidPort {
-            get {
-                return ResourceManager.GetString("InvalidPort", resourceCulture);
             }
         }
         
@@ -181,7 +247,8 @@ namespace BookStore.Cli {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The command &apos;{0}&apos; was not found.
+        ///   Looks up a localized string similar to The command &apos;{0}&apos; was not found
+        ///    See &apos;help&apos; for more information.
         /// </summary>
         internal static string NotFound {
             get {
@@ -191,14 +258,14 @@ namespace BookStore.Cli {
         
         /// <summary>
         ///   Looks up a localized string similar to 
-        ///  clear     Clears the console
-        ///  ping      Tests the connection to the database
+        ///  clear        Clears the console
+        ///  ping         Tests the connection to the database
         ///
-        ///  config    Handles settings related to the connection with the host
-        ///  book      Handles book API objects
-        ///                See [item help] for more information
+        ///  config       Handles settings related to the connection with the host
+        ///  book         Handles book API objects
+        ///                 See [item help] for more information
         ///
-        ///  quit      Exits the program
+        ///  quit         Exits the program
         ///.
         /// </summary>
         internal static string Options {
@@ -208,7 +275,8 @@ namespace BookStore.Cli {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Checking connection to: {0}:{1}.
+        ///   Looks up a localized string similar to Checking connection to: {0}:{1}
+        ///    .
         /// </summary>
         internal static string PingMessage {
             get {
@@ -217,7 +285,9 @@ namespace BookStore.Cli {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The command &apos;{0} {1}&apos; was not found.
+        ///   Looks up a localized string similar to The command &apos;{0} {1}&apos; was not found
+        ///    See `{0} help` for more information
+        ///  .
         /// </summary>
         internal static string ReadActionNotFound {
             get {
@@ -235,16 +305,8 @@ namespace BookStore.Cli {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to read a valid integer from the console.
-        /// </summary>
-        internal static string ReadInvalidInt {
-            get {
-                return ResourceManager.GetString("ReadInvalidInt", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Failed to read a valid string from the console.
+        ///   Looks up a localized string similar to Failed to extract a valid string from the console while reading `{0}`
+        ///    .
         /// </summary>
         internal static string ReadInvalidString {
             get {
@@ -258,6 +320,15 @@ namespace BookStore.Cli {
         internal static string SelectError {
             get {
                 return ResourceManager.GetString("SelectError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to select by the supplied key &apos;{0}&apos;.
+        /// </summary>
+        internal static string SelectKeyError {
+            get {
+                return ResourceManager.GetString("SelectKeyError", resourceCulture);
             }
         }
         
