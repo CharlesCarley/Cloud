@@ -90,61 +90,65 @@ namespace BookStore.Cli
                 _parent?.TryDisplayLocalHelp();
         }
 
-        public bool InvokeIf(string input)
+        public bool InvokeIf(ActionQueryResult input)
         {
             // Attempts to invoke the action mapped to the supplied input.
 
-            
             // A result of true means that the command was processed,
             // with or without error.
             var result = false;
+            if (input.Type != ActionToken.String) {
+                // unknown at this point
+                return false;
+            }
 
-            if (string.IsNullOrEmpty(input)) {
+            if (string.IsNullOrEmpty(input.Value)) {
                 //  Just print the help if it's available.
 
                 TryDisplayLocalHelp();
 
-            } else if (VoidActions.ContainsKey(input)) {
+            } else if (VoidActions.ContainsKey(input.Value)) {
                 // Handle actions with no parameter
 
-                VoidActions[input]?.Invoke();
+                VoidActions[input.Value]?.Invoke();
                 result = true;
 
-            } else if (IntActions.ContainsKey(input)) {
+            } else if (IntActions.ContainsKey(input.Value)) {
                 // Handle actions with an integer parameter
 
-                if (ReadIntInput(out var value)) {
-                    IntActions[input]?.Invoke(value);
+                var action = ReadAction();
+                if (action.Type == ActionToken.Integer) {
+                    IntActions[input.Value]?.Invoke(StringUtils.ToInt(action.Value));
                 } else {
                     Console.WriteLine(Resources.ReadInvalidInt);
                 }
 
                 result = true;
-            } else if (StringActions.ContainsKey(input)) {
+            } else if (StringActions.ContainsKey(input.Value)) {
                 // Handle actions with a string parameter.
 
-                var str = ReadInput().Trim();
-
-                if (!string.IsNullOrEmpty(str)) {
-                    // Validation of the argument should happen on a case by case basis.
-
-                    StringActions[input]?.Invoke(str);
+                var action = ReadAction();
+                if (action.Type == ActionToken.String) {
+                    StringActions[input.Value]?.Invoke(action.Value);
                 } else {
                     Console.WriteLine(Resources.ReadInvalidString);
                 }
+
                 result = true;
 
-            } else if (SubActions.ContainsKey(input)) {
-                // The input is mapped to another table, invoke its
-                // query method.
+            } else if (SubActions.ContainsKey(input.Value)) {
+                // The input is mapped to another table, so
+                // invoke it's query method.
 
-                var str = ReadInput().Trim();
-                if (!string.IsNullOrEmpty(str)) {
-                    result = SubActions[input].InvokeIf(str);
-                } else {
-                    Console.WriteLine(Resources.MissingArgument, input);
-                    result = true;
-                }
+                var action = ReadAction();
+                result     = true;
+                if (action.Type != ActionToken.String)
+                    Console.WriteLine(Resources.ReadActionNotFound, input, action);
+                else
+                    result = SubActions[input.Value].InvokeIf(action);
+            } else {
+                Console.WriteLine(Resources.NotFound, input.Value);
+                result = true;
             }
 
             return result;
@@ -155,42 +159,75 @@ namespace BookStore.Cli
             Console.WriteLine(Resources.UnknownOption, input);
         }
 
-        private bool IsStopCharacter(int ch)
+        private static bool IsAlphabet(int ch)
         {
-            return ch == -1 || ch == ' ' || ch == '\n' || ch == '\r';
+            return ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z' || ch == '.';
         }
 
-        public string ReadInput()
+        private static bool IsDigit(int ch)
         {
-            // Scan a short string sequence until a stop character is recognized,
-            // or until the number of characters goes beyond the maximum character limit.
+            return ch >= '0' && ch <= '9';
+        }
 
+        public ActionQueryResult ReadAction()
+        {
+            var result = new ActionQueryResult { Type = ActionToken.Error };
             _builder.Clear();
-            var read = 0;
-            int ch;
 
-            do {
-                ++read;
-                ch = Console.Read();
-                if (!IsStopCharacter(ch))
-                    _builder.Append((char)ch);
+            var i    = -1;
+            var done = false;
 
-            } while (read < 32 && !IsStopCharacter(ch));
+            while (!done && ++i < 16) {
+                var ch = Console.Read();
+                switch (ch) {
+                case -1:
+                    result.Type = ActionToken.Eof;
+                    done        = true;
+                    break;
+                case '\r': {
+                    if (Console.In.Peek() == '\n')
+                        Console.In.Read();
+                    done = true;
+                    break;
+                }
+                case '\n':
+                    Console.In.Read();
+                    done = true;
+                    break;
+                case ' ': {
+                    while (Console.In.Peek() == ' ') {
+                        Console.Read();
+                    }
+                    if (_builder.Length != 0)
+                        done = true;
+                    break;
+                }
+                default: {
+                    if (IsAlphabet(ch)) {
+                        _builder.Append((char)ch);
 
-            return _builder.ToString();
-        }
-
-        public bool ReadIntInput(out int value)
-        {
-            var str = ReadInput();
-            if (StringUtils.IsNumber(str)) {
-                if (int.TryParse(str, out value))
-                    return true;
+                    } else if (IsDigit(ch)) {
+                        _builder.Append((char)ch);
+                    } else {
+                        // undefined
+                        done = true;
+                    }
+                } break;
+                }
             }
 
-            value = 0;
-            Console.WriteLine(Resources.IntConversionFail);
-            return false;
+            result.Value = _builder.ToString();
+            if (StringUtils.IsIpAddressOrDomain(result.Value)) {
+                result.Type = ActionToken.String;
+            } else if (StringUtils.IsNumber(result.Value)) {
+                result.Type = ActionToken.Integer;
+            } else if (StringUtils.IsStringOnlyLetters(result.Value)) {
+                result.Type = ActionToken.String;
+            } else if (result.Type != ActionToken.Eof) {
+                result.Type = ActionToken.Error;
+            }
+
+            return result;
         }
     }
 }

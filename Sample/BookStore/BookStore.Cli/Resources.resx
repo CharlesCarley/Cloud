@@ -126,8 +126,8 @@
     <comment>Action prompt string</comment>
   </data>
   <data name="UnknownOption" xml:space="preserve">
-    <value>Unknown option: '{0}'.</value>
-    <comment>Error message for an argument that is not mapped.</comment>
+    <value>Unknown option: '{0}'</value>
+    <comment>Error message for an argument that is not mapped</comment>
   </data>
   <data name="Book" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\Book.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
@@ -136,20 +136,21 @@
     <value>Resources\Configuration.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="ReadInvalidInt" xml:space="preserve">
-    <value>failed to read a valid integer from the console.</value>
+    <value>Failed to read a valid integer from the console</value>
+    <comment>Invalid int message.</comment>
+  </data>
+  <data name="SelectError"
+    xml:space="preserve">
+    <value>Failed to select by the supplied id '{0}'</value>
     <comment>Invalid int message.</comment>
   </data>
   <data name="ReadInvalidString" xml:space="preserve">
-    <value>failed to read a valid string from the console.</value>
+    <value>Failed to read a valid string from the console</value>
     <comment>Invalid string message.</comment>
   </data>
   <data name="NotFound" xml:space="preserve">
-    <value>not found.</value>
+    <value>The command '{0}' was not found</value>
     <comment>Not found message.</comment>
-  </data>
-  <data name="MissingArgument" xml:space="preserve">
-    <value>Failed to determine the sub-command for the input string '{0}'</value>
-    <comment>MissingArgument message</comment>
   </data>
   <data name="InvalidHost" xml:space="preserve">
     <value>Invalid host name supplied</value>
@@ -160,7 +161,7 @@
     <comment>Invalid port message.</comment>
   </data>
   <data name="IntConversionFail" xml:space="preserve">
-    <value>Failed to parse the supplied value as a 32bit integer.</value>
+    <value>Failed to parse the supplied value as an integer</value>
     <comment>Int conversion message</comment>
   </data>
   <data name="TimeoutFail" xml:space="preserve">
@@ -173,14 +174,27 @@
   </data>
   <data name="ConnectedMessage" xml:space="preserve">
     <value>Connected</value>
+    <comment>A ping message</comment>
   </data>
   <data name="NotConnectedMessage" xml:space="preserve">
     <value>Not Connected</value>
+    <comment>Not connected</comment>
   </data>
   <data name="PingMessage" xml:space="preserve">
     <value>Checking connection to: {0}:{1}</value>
   </data>
   <data name="MessageNA" xml:space="preserve">
-    <value>Not implemented.</value>
+    <value>Not implemented</value>
+    <comment>TODO message</comment>
+  </data>
+  <data name="InvalidChar" xml:space="preserve">
+    <value>Invalid character 0x{0:2X}</value>
+    <comment>An invalid character was found</comment>
+  </data>
+  <data name="ReadError" xml:space="preserve">
+    <value>Failed to read the supplied input</value>
+  </data>
+  <data name="ReadActionNotFound" xml:space="preserve">
+    <value>The command '{0} {1}' was not found</value>
   </data>
 </root>

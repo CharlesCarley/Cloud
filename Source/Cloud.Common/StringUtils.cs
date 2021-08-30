@@ -284,14 +284,24 @@ namespace Cloud.Common
             return ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z';
         }
 
+        public static bool IsStringOnlyLetters(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return false;
+
+            return IsLetter(value[0]) &&
+                   value.All(
+                       ch => ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z');
+        }
+
         public static bool IsIdentifier(string value)
         {
             if (string.IsNullOrEmpty(value))
                 return false;
             return IsLetter(value[0]) || value[0] == '_' &&
-                   value.All(
-                       ch => ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z' || ch >= '0' && ch <= '9' ||
-                             ch == '_' || ch == '.') ;
+                                             value.All(
+                                                 ch => ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z' || ch >= '0' && ch <= '9' ||
+                                                       ch == '_' || ch == '.');
         }
 
         /// <summary>

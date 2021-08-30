@@ -152,17 +152,18 @@ namespace BookStore.Cli
         {
             Console.WriteLine(Resources.BookClearMessage);
 
-            string input;
+            ActionQueryResult input;
             do {
-                input = _actionQueryTable.ReadInput().Trim();
-                if (input.Equals("yes")) {
+                input = _actionQueryTable.ReadAction();
+
+                if (input.Value.Equals("yes")) {
                     try {
                         BookTransaction.Clear();
                     } catch (Exception ex) {
                         Console.WriteLine(ex.Message);
                     }
                 }
-            } while (!input.Equals("yes") && !input.Equals("no"));
+            } while (!input.Value.Equals("yes") && !input.Value.Equals("no"));
         }
 
         public bool ParseCommandLine(string[] args)
@@ -193,9 +194,12 @@ namespace BookStore.Cli
         {
             try {
                 var book = BookTransaction.SelectById(obj);
-                Console.WriteLine(
-                    book is null ? Resources.NotFound
-                                 : book.ToJson().AsPrettyPrint());
+
+                if (book is null)
+                    Console.WriteLine(Resources.SelectError, obj);
+                else
+                    Console.WriteLine(book.ToJson().AsPrettyPrint());
+
             } catch (Exception e) {
                 Console.WriteLine(e.Message);
             }
@@ -250,24 +254,22 @@ namespace BookStore.Cli
         {
             InitializeDatabase();
             Usage();
-            Console.Write(Resources.ActionPrompt,
-                          Settings.Host,
-                          Settings.Port);
 
             Quit = false;
 
+            Console.Write('\n');
             while (!Quit) {
-                var input = _actionQueryTable.ReadInput().Trim();
-                if (string.IsNullOrEmpty(input))
-                    continue;
-
-                if (!_actionQueryTable.InvokeIf(input))
-                    _actionQueryTable.InvalidInput(input);
-
-                Console.Write('\n');
                 Console.Write(Resources.ActionPrompt,
                               Settings.Host,
                               Settings.Port);
+
+                var input = _actionQueryTable.ReadAction();
+                if (input.Type == ActionToken.Error) {
+                    Console.WriteLine(Resources.ReadError);
+                } else if (input.Value.Length > 0) {
+                    if (!_actionQueryTable.InvokeIf(input))
+                        _actionQueryTable.InvalidInput(input.Value);
+                }
             }
         }
 
@@ -284,16 +286,17 @@ namespace BookStore.Cli
             var inputStream = new StringReader(builder.ToString());
             Console.SetIn(inputStream);
 
-            string input;
+            ActionQueryResult input;
+
             do {
-                input = _actionQueryTable.ReadInput().Trim();
-                if (string.IsNullOrEmpty(input))
-                    continue;
-
-                if (!_actionQueryTable.InvokeIf(input))
-                    _actionQueryTable.InvalidInput(input);
-
-            } while (!string.IsNullOrEmpty(input));
+                input = _actionQueryTable.ReadAction();
+                if (input.Type == ActionToken.Error) {
+                    Console.WriteLine(Resources.ReadError);
+                } else if (input.Value.Length > 0) {
+                    if (!_actionQueryTable.InvokeIf(input))
+                        _actionQueryTable.InvalidInput(input.Value);
+                }
+            } while (input.Value.Length > 0 && input.Type != ActionToken.Error);
         }
 
         public void Run()

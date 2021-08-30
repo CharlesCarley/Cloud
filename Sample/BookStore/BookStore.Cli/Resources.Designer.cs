@@ -70,16 +70,18 @@ namespace BookStore.Cli {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to book:
-        ///  save           Creates, or updates, a element with the contents of the supplied JSON. 
-        ///                      &lt;string&gt; JSON text.
-        ///                      &lt;file&gt;   JSON file.
-        ///  selectArray    Pulls a list of all server id and revision pairs.
-        ///                      The list is in the form of [id[0], rev[0] ... id[n], rev[n]]
-        ///  selectById     Pulls a book item with the specified id.
-        ///                      &lt;int&gt; Server id.
-        ///  selectByKey    Pulls a book item with the specified key.
-        ///                   [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to 
+        ///  list           Pulls all books from the server and prints them to the console
+        ///  clear          Clears the entire book table
+        ///
+        ///  selectArray    Pulls a list of all server id and revision pairs
+        ///                  The list is in the form of [id[0], rev[0] ... id[n], rev[n]]
+        ///
+        ///  save           Creates, or updates an element with the contents of the supplied JSON
+        ///                   [string|file] JSON
+        ///
+        ///  selectById     Pulls a book item with the specified id
+        ///  deleteById     Deletes an item with the sp [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Book {
             get {
@@ -97,15 +99,17 @@ namespace BookStore.Cli {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to config:
-        ///  host       Sets the host address to the supplied argument.
-        ///                 &lt;string&gt; Host Ipv4 address or domain name.
-        ///  port       Sets the host port to the supplied argument.
-        ///                 &lt;int&gt; Port in the set [80, 443, 1024-65535]
-        ///  timeout    Sets the timeout for store transactions.
-        ///                 &lt;int&gt; Time in milliseconds in the range of [10-30000]
-        ///  list       Prints the current configuration.
-        ///.
+        ///   Looks up a localized string similar to   list       Prints the current configuration
+        ///
+        ///  host       Sets the host address to the supplied argument
+        ///               [string] Host Ipv4 address or domain name
+        ///  
+        ///  port       Sets the host port to the supplied argument
+        ///               [int] Port in the set [80, 443, 1024-65535]
+        ///  
+        ///  timeout    Sets the timeout for store transactions
+        ///               [int] Time in milliseconds in the range of [10-30000]
+        ///  .
         /// </summary>
         internal static string Configuration {
             get {
@@ -123,11 +127,20 @@ namespace BookStore.Cli {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to parse the supplied value as a 32bit integer..
+        ///   Looks up a localized string similar to Failed to parse the supplied value as an integer.
         /// </summary>
         internal static string IntConversionFail {
             get {
                 return ResourceManager.GetString("IntConversionFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid character 0x{0:2X}.
+        /// </summary>
+        internal static string InvalidChar {
+            get {
+                return ResourceManager.GetString("InvalidChar", resourceCulture);
             }
         }
         
@@ -150,20 +163,11 @@ namespace BookStore.Cli {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not implemented..
+        ///   Looks up a localized string similar to Not implemented.
         /// </summary>
         internal static string MessageNA {
             get {
                 return ResourceManager.GetString("MessageNA", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Failed to determine the sub-command for the input string &apos;{0}&apos;.
-        /// </summary>
-        internal static string MissingArgument {
-            get {
-                return ResourceManager.GetString("MissingArgument", resourceCulture);
             }
         }
         
@@ -177,7 +181,7 @@ namespace BookStore.Cli {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to not found..
+        ///   Looks up a localized string similar to The command &apos;{0}&apos; was not found.
         /// </summary>
         internal static string NotFound {
             get {
@@ -187,14 +191,14 @@ namespace BookStore.Cli {
         
         /// <summary>
         ///   Looks up a localized string similar to 
-        ///  clear     Clears the console.
-        ///  ping      Tests the connection to the database.
-        ///  config    Handles settings related to the connection with the host.
-        ///                See &lt;config&gt; &lt;help&gt; for more information. 
-        ///  book      Handles book API objects.
-        ///                See &lt;book&gt; &lt;help&gt; for more information.
+        ///  clear     Clears the console
+        ///  ping      Tests the connection to the database
         ///
-        ///  quit      Exits the program.
+        ///  config    Handles settings related to the connection with the host
+        ///  book      Handles book API objects
+        ///                See [item help] for more information
+        ///
+        ///  quit      Exits the program
         ///.
         /// </summary>
         internal static string Options {
@@ -213,7 +217,25 @@ namespace BookStore.Cli {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to failed to read a valid integer from the console..
+        ///   Looks up a localized string similar to The command &apos;{0} {1}&apos; was not found.
+        /// </summary>
+        internal static string ReadActionNotFound {
+            get {
+                return ResourceManager.GetString("ReadActionNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to read the supplied input.
+        /// </summary>
+        internal static string ReadError {
+            get {
+                return ResourceManager.GetString("ReadError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to read a valid integer from the console.
         /// </summary>
         internal static string ReadInvalidInt {
             get {
@@ -222,11 +244,20 @@ namespace BookStore.Cli {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to failed to read a valid string from the console..
+        ///   Looks up a localized string similar to Failed to read a valid string from the console.
         /// </summary>
         internal static string ReadInvalidString {
             get {
                 return ResourceManager.GetString("ReadInvalidString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to select by the supplied id &apos;{0}&apos;.
+        /// </summary>
+        internal static string SelectError {
+            get {
+                return ResourceManager.GetString("SelectError", resourceCulture);
             }
         }
         
@@ -240,7 +271,7 @@ namespace BookStore.Cli {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unknown option: &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Unknown option: &apos;{0}&apos;.
         /// </summary>
         internal static string UnknownOption {
             get {
