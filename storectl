@@ -23,7 +23,6 @@ function echo_g0() { echo -e "\e[1;30m$1\e[0m"; }
 
 
 export SolutionDir="$PWD/"
-export AutoTest="false"
 
 function log_env  {
     echo_r  "storectl build tool."
