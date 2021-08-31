@@ -54,6 +54,12 @@ namespace BookStore.Test
 
         public static string Spawn(string program, string args, int expectedReturn = 0)
         {
+            // prep for a Unix executable.
+            if (Environment.OSVersion.Platform == PlatformID.Unix) {
+                if (program.EndsWith(".exe"))
+                    program = program.Substring(0, program.Length - 4);
+            }
+
             var proc = Process.Start(new ProcessStartInfo(program) {
                 CreateNoWindow         = true,
                 RedirectStandardOutput = true,
@@ -116,7 +122,7 @@ namespace BookStore.Test
         {
             var ping = Spawn(CliProgram, "ping");
             Assert.AreEqual(
-                $"Connected{Environment.NewLine}" ,
+                $"Connected{Environment.NewLine}",
                 ping);
         }
     }
