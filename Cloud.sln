@@ -15,6 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Misc", "Misc", "{8718CD30-6
 		.gitignore = .gitignore
 		gitupdate.py = gitupdate.py
 		LICENSE = LICENSE
+		storectl = storectl
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cloud", "Cloud", "{B8CD6CE6-BB74-421A-9C6E-55AA6EA7AF6C}"

@@ -61,16 +61,20 @@ function  buildStore {
 
     dotnet restore $Project
     echo_g0 $SEP
-    echo "Building Generator"
+    echo_g "Building Generator"
     dotnet build $Generator -c Release
     echo_g0 $SEP
-    echo "Building Solution"
+    echo_g "Building Solution"
     dotnet build $Project -c Release
     echo_g0 $SEP
-    echo "Publishing Solution"
+}
+
+function publishStore {
+    echo_g "Publishing Solution"
     dotnet publish $Project -c Release --no-build -o $Publish
     echo_g0 $SEP
 }
+
 
 function  clean {
     git clean -dfx $SolutionDir
@@ -88,6 +92,7 @@ elif [ "$1" = "clean" ]; then
 elif [ "$1" = "rebuild" ]; then
     clean
     buildStore
+    publishStore
 
     if [ "$2" = "run" ]; then
         runStore $3
@@ -95,12 +100,16 @@ elif [ "$1" = "rebuild" ]; then
 
 elif [ "$1" = "build" ]; then
     buildStore
+    publishStore
 
     if [ "$2" = "run" ]; then
         runStore $3
     fi
 
 elif [ "$1" = "test" ]; then
+    echo_g "Running tests"
+
+    buildStore
     dotnet test  $CommonTest -c Release
     dotnet test  $DatabaseTest -c Release
 else
