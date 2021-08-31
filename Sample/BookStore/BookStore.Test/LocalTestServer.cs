@@ -34,16 +34,16 @@ namespace BookStore.Test
         private readonly IWebHost _host;
         private HostConfig        _hostConfig;
 
-        public LocalTestServer()
+        public LocalTestServer(int port = 5000)
         {
-            _host = InitializeHost();
+            _host = InitializeHost(port);
         }
 
-        private IWebHost InitializeHost()
+        private IWebHost InitializeHost(int port)
         {
             _hostConfig = new HostConfig {
                 Host = "localhost",
-                Port = 5000
+                Port = port
             };
 
             // set up a temp destination directory

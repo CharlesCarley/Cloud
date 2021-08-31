@@ -79,7 +79,7 @@ namespace BookStore.Test
         [TestInitialize]
         public void Initialize()
         {
-            _server = new LocalTestServer();
+            _server = new LocalTestServer(19487);
             _server.Start();
 
             if (File.Exists($"{CliDirectory}/BookStore.Cli.db")) {
@@ -87,7 +87,7 @@ namespace BookStore.Test
             }
 
             Spawn(CliProgram, "config host 127.0.0.1");
-            Spawn(CliProgram, "config port 5000");
+            Spawn(CliProgram, "config port 19487");
             Spawn(CliProgram, "config timeout 8000");
 
             Assert.IsTrue(File.Exists($"{CliDirectory}/BookStore.Cli.db"));
@@ -99,7 +99,7 @@ namespace BookStore.Test
                                               "    \"Key\": \"MainSettings\",\n" +
                                               "    \"Timeout\": 8000,\n" +
                                               "    \"Host\": \"127.0.0.1\",\n" +
-                                              "    \"Port\": 5000\n" +
+                                              "    \"Port\": 19487\n" +
                                               "}" + Environment.NewLine);
 
             Assert.AreEqual(a.Length, b.Length);
