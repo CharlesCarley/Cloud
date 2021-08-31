@@ -30,7 +30,6 @@ namespace BookStore.Test
 {
     /// This test goes through an in memory stage to communicate
     /// back and forth in the same environment
-
     [TestClass]
     public class TestClientServer {
         private static LocalTestServer _server;
@@ -113,15 +112,6 @@ namespace BookStore.Test
             Assert.AreEqual(2, result[1]);
         }
 
-        /// <summary>
-        /// Tests:
-        ///     [x] SelectArray
-        ///     [x] SelectById
-        ///     [x] SelectByKey
-        ///     [x] Clear
-        ///     [x] Drop
-        ///     [x] Save
-        /// </summary>
         [TestMethod]
         public void TestGeneral()
         {

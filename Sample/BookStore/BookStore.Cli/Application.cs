@@ -143,8 +143,6 @@ namespace BookStore.Cli
 
         private static void PingHost()
         {
-            Console.WriteLine(Resources.PingMessage, Transaction.Host, Transaction.Port);
-
             Console.WriteLine(Transaction.PingDatabase(10000)
                                   ? Resources.ConnectedMessage
                                   : Resources.NotConnectedMessage);
