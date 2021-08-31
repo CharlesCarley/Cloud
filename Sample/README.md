@@ -1,6 +1,6 @@
 # BookStore
 
-It a test storage API. The purpose of this sample is to provide a working environment to test database access. 
+Is a test storage API. Its purpose is to provide a working environment to test database access. 
 
 It's split into separate component projects.
 
