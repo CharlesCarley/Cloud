@@ -29,7 +29,7 @@ using Microsoft.AspNetCore.Hosting;
 namespace BookStore.Test
 {
     public class LocalTestServer {
-        private static string Content => AppContext.BaseDirectory + "..\\..\\..\\LocalTestServer\\";
+        private static string Content => AppContext.BaseDirectory + "/../../../LocalTestServer/";
 
         private readonly IWebHost _host;
         private HostConfig        _hostConfig;

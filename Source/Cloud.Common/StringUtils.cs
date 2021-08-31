@@ -239,7 +239,7 @@ namespace Cloud.Common
         /// <summary>
         /// Attempts to load the file from the supplied path into a string.
         /// </summary>
-        /// <param name="path">The file system path of the file.</param>
+        /// <param name="path">The file system path to the file.</param>
         /// <returns>A string that contains the contents of the file.</returns>
         /// <remarks>If the file does not exist or an exception occurred, then an empty string will be returned.</remarks>
         public static string ReadFileAsString(string path)
@@ -250,18 +250,19 @@ namespace Cloud.Common
                 var builder = new StringBuilder();
                 var fp      = File.OpenRead(path);
 
-                var buffer = new char[128];
+                var buffer = new char[256];
                 using (var reader = new StreamReader(fp))
                 {
                     int ar;
-                    while ((ar = reader.Read(buffer, 0, 128)) > 0)
+                    while ((ar = reader.Read(buffer, 0, 256)) > 0)
                         builder.Append(new string(buffer, 0, ar));
                 }
 
                 fp.Close();
                 return builder.ToString();
-            } catch {
-                // ignore
+            } catch (Exception ex) {
+                LogUtils.Log($"Failed to load the supplied file {path}");
+                LogUtils.Log(ex);
                 return string.Empty;
             }
         }

@@ -34,7 +34,7 @@ namespace Cloud.Utils.Test
             ConsoleOutput.Instance.WriteLine(message, OutputLevel.Information);
         }
 
-        public string TestDir = $"{Environment.CurrentDirectory}\\..\\..\\..\\";
+        public string TestDir = $"{Environment.CurrentDirectory}/../../../";
 
         [TestMethod]
         public void LoadNonExistentFile()

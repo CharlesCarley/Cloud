@@ -28,7 +28,7 @@ namespace BookStore.Test
 {
     [TestClass]
     public class TestDatabase {
-        public string TestDatabaseFile => $"{Environment.CurrentDirectory}..\\..\\TestDatabase.db";
+        public string TestDatabaseFile => $"{Environment.CurrentDirectory}/../../TestDatabase.db";
 
         [TestInitialize]
         public void OpenFreshDatabase()

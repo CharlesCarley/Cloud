@@ -1,35 +1,26 @@
 #!/bin/bash
 
-function echo_r() {
-    echo -e "\e[1;31m$1\e[0m"
-}
-function echo_g() {
-    echo -e "\e[1;32m$1\e[0m"
-}
-function echo_y() {
-    echo -e "\e[1;33m$1\e[0m"
-}
-function echo_b() {
-    echo -e "\e[1;34m$1\e[0m"
-}
-function echo_m() {
-    echo -e "\e[1;35m$1\e[0m"
-}
-function echo_c() {
-    echo -e "\e[1;36m$1\e[0m"
-}
-function echo_g1() {
-    echo -e "\e[1;37m$1\e[0m"
-}
-function echo_g0() {
-    echo -e "\e[1;30m$1\e[0m"
-}
 
 Project="$PWD/Cloud.sln"
 Generator="$PWD/Source/Cloud.Generator/Cloud.Generator.csproj"
 Publish="$HOME/Public/"
 Binary="$HOME/Public/BookStore.Store"
+
+CommonTest="$PWD/Units/Utils.Test/Cloud.Utils.Test.csproj"
+DatabaseTest="$PWD/Sample/BookStore/BookStore.Test/BookStore.Test.csproj"
+
 SEP="==========================================================="
+
+
+function echo_r()  { echo -e "\e[1;31m$1\e[0m"; }
+function echo_g()  { echo -e "\e[1;32m$1\e[0m"; }
+function echo_y()  { echo -e "\e[1;33m$1\e[0m"; }
+function echo_b()  { echo -e "\e[1;34m$1\e[0m"; }
+function echo_m()  { echo -e "\e[1;35m$1\e[0m"; }
+function echo_c()  { echo -e "\e[1;36m$1\e[0m"; }
+function echo_g1() { echo -e "\e[1;37m$1\e[0m"; }
+function echo_g0() { echo -e "\e[1;30m$1\e[0m"; }
+
 
 export SolutionDir="$PWD/"
 export AutoTest="false"
@@ -90,16 +81,13 @@ if [ "$1" = "help" ]; then
     usage
 
 elif [ "$1" = "run" ]; then
-
     runStore $2 $3
 
 elif [ "$1" = "clean" ]; then
-
     clean
 
 elif [ "$1" = "rebuild" ]; then
     clean
-
     buildStore
 
     if [ "$2" = "run" ]; then
@@ -107,13 +95,15 @@ elif [ "$1" = "rebuild" ]; then
     fi
 
 elif [ "$1" = "build" ]; then
-
     buildStore
 
     if [ "$2" = "run" ]; then
         runStore $3
     fi
 
+elif [ "$1" = "test" ]; then
+    dotnet test  $CommonTest -c Release
+    dotnet test  $DatabaseTest -c Release
 else
     usage
 fi
