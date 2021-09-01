@@ -96,9 +96,8 @@ namespace BookStore.Test
             _server = new LocalTestServer(19487);
             _server.Start();
 
-            if (File.Exists($"{CliDirectory}/BookStore.Cli.db")) {
+            if (File.Exists($"{CliDirectory}/BookStore.Cli.db"))
                 File.Delete($"{CliDirectory}/BookStore.Cli.db");
-            }
 
             Spawn(CliProgram, "config host 127.0.0.1");
             Spawn(CliProgram, "config port 19487");
@@ -146,7 +145,7 @@ namespace BookStore.Test
                 "Failed determine a suitable key from " + "'{}'" + Environment.NewLine,
                 programOutput);
 
-            programOutput = Spawn(CliProgram, "book save `{\\\"Key\\\":=\\\"A\\\"}`");
+            programOutput = Spawn(CliProgram, "book save `{\\\"Key\\\": \\\"A\\\"}`");
             Assert.AreEqual(
                 string.Empty,
                 programOutput);
@@ -162,7 +161,7 @@ namespace BookStore.Test
                             "}" + Environment.NewLine);
 
             var bookA = (Book)JsonParser.Unwrap(programOutput, typeof(Book));
-            var bookB = BookTransaction.SelectByKey("A");
+            var bookB = BookTransaction.SelectById(1);
 
             Assert.AreEqual(bookA.Key, bookB.Key);
         }

@@ -39,21 +39,22 @@ namespace BookStore.Cli
         public StateCodes CurrentState { get; set; }
         public bool       Quit { get; set; }
 
-        private string[] _args;
+        private readonly string[] _args;
 
-        private ActionQuery _actionQueryTable;
+        private readonly ActionQuery _actionQueryTable;
 
         private Settings Settings { get; set; }
 
-        public Application()
+        public Application(string[] args)
         {
-            _args = null;
+            if (args.Length <= 0) {
+                _args        = null;
+                CurrentState = StateCodes.Interactive;
+            } else {
+                CurrentState = StateCodes.CommandLine;
+                _args        = args;
+            }
 
-            BuildActionTable();
-        }
-
-        private void BuildActionTable()
-        {
             // main screen actions.
 
             _actionQueryTable = new ActionQuery();
@@ -100,12 +101,7 @@ namespace BookStore.Cli
 
             _actionQueryTable.Add("book", book);
         }
-
-        private static void TodoAction()
-        {
-            Console.WriteLine(Resources.MessageNA);
-        }
-
+        
         private void ConfigList()
         {
             Console.WriteLine(Settings.ToJson().AsPrettyPrint());
@@ -164,17 +160,6 @@ namespace BookStore.Cli
                     }
                 }
             } while (!input.Value.Equals("yes") && !input.Value.Equals("no"));
-        }
-
-        public bool ParseCommandLine(string[] args)
-        {
-            if (args.Length <= 0)
-                CurrentState = StateCodes.Interactive;
-            else {
-                CurrentState = StateCodes.CommandLine;
-                _args        = args;
-            }
-            return true;
         }
 
         private static void BookSelectAll()
@@ -344,11 +329,12 @@ namespace BookStore.Cli
                               Settings.Port);
 
                 var input = _actionQueryTable.ReadAction();
+
                 if (input.Type == ActionToken.Error) {
+                    // record the error
                     Console.WriteLine(Resources.ReadError);
-                } else if (input.Value.Length > 0) {
-                    if (!_actionQueryTable.InvokeIf(input))
-                        _actionQueryTable.InvalidInput(input.Value);
+                } else {
+                    _actionQueryTable.InvokeIf(input);
                 }
             }
         }
@@ -376,9 +362,8 @@ namespace BookStore.Cli
                 input = _actionQueryTable.ReadAction();
                 if (input.Type == ActionToken.Error) {
                     Console.WriteLine(Resources.ReadError);
-                } else if (input.Value.Length > 0) {
-                    if (!_actionQueryTable.InvokeIf(input))
-                        _actionQueryTable.InvalidInput(input.Value);
+                } else {
+                    _actionQueryTable.InvokeIf(input);
                 }
             } while (input.Value.Length > 0 && input.Type != ActionToken.Error);
         }

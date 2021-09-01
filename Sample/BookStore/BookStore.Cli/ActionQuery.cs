@@ -27,6 +27,10 @@ using Cloud.Common;
 
 namespace BookStore.Cli
 {
+    /// <summary>
+    /// Is a basic dictionary container that maps
+    /// predefined keywords to function calls.
+    /// </summary>
     public class ActionQuery {
         private readonly StringBuilder _builder;
         private ActionQuery            _parent;
@@ -82,97 +86,65 @@ namespace BookStore.Cli
                 query._parent = this;
         }
 
-        private void TryDisplayLocalHelp()
-        {
-            if (VoidActions.ContainsKey("help"))
-                VoidActions["help"]?.Invoke();
-            else
-                _parent?.TryDisplayLocalHelp();
-        }
-
-        public bool InvokeIf(ActionQueryResult input)
+        public void InvokeIf(ActionQueryResult input)
         {
             // Attempts to invoke the action mapped to the supplied input.
 
-            // A result of true means that the command was processed,
-            // with or without error.
-            var result = false;
-            if (input.Type != ActionToken.Identifier) {
-                // unknown at this point
-                Console.WriteLine(Resources.NotFound, input.Value);
-                return false;
-            }
+            if (input.Type == ActionToken.Identifier) {
+                if (VoidActions.ContainsKey(input.Value)) {
+                    // Handle actions with no parameter
 
-            if (string.IsNullOrEmpty(input.Value)) {
-                //  Just print the help if it's available.
+                    VoidActions[input.Value]?.Invoke();
 
-                TryDisplayLocalHelp();
+                } else if (IntActions.ContainsKey(input.Value)) {
+                    // Handle actions with an integer parameter
 
-            } else if (VoidActions.ContainsKey(input.Value)) {
-                // Handle actions with no parameter
+                    var action = ReadAction();
 
-                VoidActions[input.Value]?.Invoke();
-                result = true;
+                    switch (action.Type) {
+                    case ActionToken.Integer:
+                        IntActions[input.Value]?.Invoke(StringUtils.ToInt(action.Value));
+                        break;
+                    case ActionToken.Identifier:
+                        Console.WriteLine(Resources.IntReadIdentifer);
+                        break;
+                    case ActionToken.String:
+                        Console.WriteLine(Resources.IntReadString);
+                        break;
+                    case ActionToken.Empty:
+                        Console.WriteLine(Resources.IntReadSpace);
+                        break;
+                    default:
+                        Console.WriteLine(Resources.IntReadError);
+                        break;
+                    }
 
-            } else if (IntActions.ContainsKey(input.Value)) {
-                // Handle actions with an integer parameter
+                } else if (StringActions.ContainsKey(input.Value)) {
+                    // Handle actions with a string parameter.
 
-                var action = ReadAction();
+                    var action = ReadAction();
+                    if (action.Type == ActionToken.Identifier ||
+                        action.Type == ActionToken.String ||
+                        action.Type == ActionToken.Json) {
+                        StringActions[input.Value]?.Invoke(action.Value);
+                    } else {
+                        Console.WriteLine(Resources.ReadInvalidString, action.Value);
+                    }
 
-                switch (action.Type) {
-                case ActionToken.Integer:
-                    IntActions[input.Value]?.Invoke(StringUtils.ToInt(action.Value));
-                    break;
-                case ActionToken.Identifier:
-                    Console.WriteLine(Resources.IntReadIdentifer);
-                    break;
-                case ActionToken.String:
-                    Console.WriteLine(Resources.IntReadString);
-                    break;
-                case ActionToken.Empty:
-                    Console.WriteLine(Resources.IntReadSpace);
-                    break;
-                default:
-                    Console.WriteLine(Resources.IntReadError);
-                    break;
+                } else if (SubActions.ContainsKey(input.Value)) {
+                    // The input is mapped to another table, so
+                    // invoke it's query method.
+
+                    var action = ReadAction();
+                    if (action.Type != ActionToken.Identifier)
+                        Console.WriteLine(Resources.ReadActionNotFound, input.Value, action.Value);
+                    else
+                        SubActions[input.Value].InvokeIf(action);
                 }
 
-                result = true;
-            } else if (StringActions.ContainsKey(input.Value)) {
-                // Handle actions with a string parameter.
-
-                var action = ReadAction();
-                if (action.Type == ActionToken.Identifier ||
-                    action.Type == ActionToken.String ||
-                    action.Type == ActionToken.Json) {
-                    StringActions[input.Value]?.Invoke(action.Value);
-                } else {
-                    Console.WriteLine(Resources.ReadInvalidString, action.Value);
-                }
-
-                result = true;
-
-            } else if (SubActions.ContainsKey(input.Value)) {
-                // The input is mapped to another table, so
-                // invoke it's query method.
-
-                var action = ReadAction();
-                result     = true;
-                if (action.Type != ActionToken.Identifier)
-                    Console.WriteLine(Resources.ReadActionNotFound, input.Value, action.Value);
-                else
-                    result = SubActions[input.Value].InvokeIf(action);
-            } else {
+            } else if (input.Type != ActionToken.Empty) {
                 Console.WriteLine(Resources.NotFound, input.Value);
-                result = true;
             }
-
-            return result;
-        }
-
-        public void InvalidInput(string input)
-        {
-            Console.WriteLine(Resources.UnknownOption, input);
         }
 
         private static bool IsAlphabet(int ch)
@@ -180,9 +152,16 @@ namespace BookStore.Cli
             return ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z' || ch == '.';
         }
 
+        /// <summary>
+        /// Scans the supplied input for strings, integers or Json.
+        /// </summary>
+        /// <remarks>
+        /// Json input is collected by first entering a grave '`' to signal that it should start collecting,
+        /// then it is terminated by entering another grave character.
+        /// </remarks>
         public ActionQueryResult ReadAction()
         {
-            var result = new ActionQueryResult { Type = ActionToken.Error };
+            var result = new ActionQueryResult { Type = ActionToken.Start };
             _builder.Clear();
 
             var i    = 0;
@@ -198,7 +177,10 @@ namespace BookStore.Cli
                 case '\r': {
                     if (Console.In.Peek() == '\n')
                         Console.In.Read();
-                    done = true;
+
+                    if (i > 0) {
+                        done = true;
+                    }
                     break;
                 }
                 case '\n':
@@ -209,16 +191,37 @@ namespace BookStore.Cli
                     while (Console.In.Peek() == ' ') {
                         Console.Read();
                     }
-                    if (i > 0)  // trim space in front of the text.
+
+                    if (i > 0) {
+                        // This is to handle any white space before the text.
+                        // IE; If no text is in the builder keep going.
                         done = true;
+                    }
                     break;
                 }
                 case '`': {
+                    // This needs to process all characters that can compose a json file.
+                    // Double quotes should be escaped \".
+                    // The entire contents should be placed in between the grave character `{Json Content}`
+
                     ch = Console.In.Peek();
                     while (ch != '`') {
                         ch = Console.Read();
-                        if (StringUtils.IsInJsonCharacterSet((char)ch))
-                            _builder.Append((char)ch);
+                        if (ch == '`') continue;
+
+                        if (StringUtils.IsInJsonCharacterSet((char)ch)) {
+                            // \\ is only for the command line right now.
+                            if (ch != '\\')
+                                _builder.Append((char)ch);
+
+                        } else {
+                            // Remove any processes thus far and exit.
+
+                            Console.WriteLine(Resources.InvalidChar, ch);
+
+                            _builder.Clear();
+                            ch = '`';
+                        }
                     }
                     done = true;
                     break;
@@ -231,6 +234,7 @@ namespace BookStore.Cli
                         _builder.Append((char)ch);
                     } else {
                         // undefined
+                        Console.WriteLine(Resources.InvalidChar, ch);
                         done = true;
                     }
                 } break;

@@ -31,7 +31,7 @@ namespace Cloud.Generator
     public class Program {
         public static void Main(string[] args)
         {
-            var app = new GeneratorImpl();
+            var app = new Generator();
             ParseCommandLineOptions(args, app);
 
             if (string.IsNullOrEmpty(app.Input) || string.IsNullOrEmpty(app.Output)) {
@@ -45,7 +45,7 @@ namespace Cloud.Generator
                 app.Run();
         }
 
-        private static void ParseCommandLineOptions(IReadOnlyList<string> args, GeneratorImpl app)
+        private static void ParseCommandLineOptions(IReadOnlyList<string> args, Generator app)
         {
             for (var index = 0; index < args.Count; index++) {
                 var arg = args[index];
@@ -111,11 +111,6 @@ namespace Cloud.Generator
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="appType"></param>
-        /// <returns></returns>
         private static bool IsValidType(string appType)
         {
             if (string.IsNullOrEmpty(appType))

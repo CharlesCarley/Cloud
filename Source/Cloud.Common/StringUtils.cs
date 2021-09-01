@@ -433,6 +433,7 @@ namespace Cloud.Common
             case '-':
             case ',':
             case '\"':
+            case '\\':
             case ':':
             case '.':
             case '/':

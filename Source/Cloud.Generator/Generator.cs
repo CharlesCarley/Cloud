@@ -20,7 +20,6 @@
 -------------------------------------------------------------------------------
 */
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Cloud.Common;
@@ -31,16 +30,16 @@ using Cloud.ReflectionApi;
 
 namespace Cloud.Generator
 {
-    public class GeneratorImpl {
+    public class Generator {
         public string            Namespace { get; set; }
         public string            Input { get; set; }
         public bool              Verbose { get; set; }
         public string            Output { get; set; }
         public string            Type { get; set; }
         private StoreItemManager Manager { get; }
-        private IStoreGenerator  Generator { get; set; }
+        private IStoreGenerator  Interface { get; set; }
 
-        public GeneratorImpl()
+        public Generator()
         {
             Manager = new StoreItemManager();
         }
@@ -89,7 +88,7 @@ namespace Cloud.Generator
             foreach (var type in assembly.DefinedTypes)
                 BuildType(type);
 
-            Generator.Generate(Manager, Output);
+            Interface.Generate(Manager, Output);
         }
 
         private void BuildType(Type type)
@@ -176,10 +175,10 @@ namespace Cloud.Generator
         {
             switch (Type) {
             case "ClientSQLite":
-                Generator = new ClientSQLiteGenerator();
+                Interface = new ClientSQLiteGenerator();
                 break;
             case "ServerSQLite":
-                Generator = new ServerSQLiteGenerator();
+                Interface = new ServerSQLiteGenerator();
                 break;
             default:
                 throw new NotImplementedException();
