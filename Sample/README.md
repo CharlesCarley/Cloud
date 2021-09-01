@@ -12,25 +12,25 @@ It's split into separate component projects.
   - [BookStore.FrontEnd](#bookstorefrontend)
   - [BookStore.Mobile](#bookstoremobile)
 
-## BookStore.Api
+## [BookStore.Api](BookStore/BookStore.Api)
 
-Defines the API that gets feed into both the client and server projects.
+Defines the development API that gets feed into both the client and server projects.
 
-## BookStore.Cli
+## [BookStore.Cli](BookStore/BookStore.Cli)
 
-Contains a basic command line tool to access database store service.   
+Contains a basic command line tool to access the database service. 
 
-## BookStore.Client
+## [BookStore.Client](BookStore/BookStore.Client)
 
 Contains the local database code that is generated from the BookStore.Api assembly.
 
-## BookStore.Store
+## [BookStore.Store](BookStore/BookStore.Store)
 
 Contains the external database code that is generated from the BookStore.Api assembly.
 
-## BookStore.FrontEnd
+## [BookStore.FrontEnd](BookStore/BookStore.FrontEnd)
 
-Contains a basic CRUD application to modify the database store service.   
+Contains a basic web application to modify the database service.    
 
 ## BookStore.Mobile
 

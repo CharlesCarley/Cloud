@@ -291,7 +291,6 @@ namespace BookStore.Cli
             Database.Register("BookStore.Cli.db");
             Database.Open();
 
-            Settings.Saved += SettingsOnSaved;
             Settings = Settings.SelectByKey("MainSettings");
             if (Settings is null) {
                 Settings = new Settings {
@@ -302,6 +301,7 @@ namespace BookStore.Cli
                 };
                 Settings.Save();
             }
+
             SettingsOnSaved(Settings);
         }
 

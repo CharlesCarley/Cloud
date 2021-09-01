@@ -91,7 +91,6 @@ namespace BookStore.Cli
             // Attempts to invoke the action mapped to the supplied input.
 
             if (input.Type == ActionToken.Identifier) {
-
                 if (VoidActions.ContainsKey(input.Value)) {
                     // Handle actions with no parameter
 
@@ -141,6 +140,8 @@ namespace BookStore.Cli
                         Console.WriteLine(Resources.ReadActionNotFound, input.Value, action.Value);
                     else
                         SubActions[input.Value].InvokeAction(action);
+                } else {
+                    Console.WriteLine(Resources.NotFound, input.Value);
                 }
 
             } else if (input.Type != ActionToken.Empty) {
