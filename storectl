@@ -107,9 +107,9 @@ elif [ "$1" = "build" ]; then
     fi
 
 elif [ "$1" = "test" ]; then
-    echo_g "Running tests"
-
     buildStore
+
+    echo_g "Running tests"
     dotnet test  $CommonTest -c Release
     dotnet test  $DatabaseTest -c Release
 else

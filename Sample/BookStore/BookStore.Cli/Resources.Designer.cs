@@ -108,8 +108,7 @@ namespace BookStore.Cli {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed determine a suitable key from &apos;{0}&apos;
-        ///    .
+        ///   Looks up a localized string similar to Failed determine a suitable key from &apos;{0}&apos;.
         /// </summary>
         internal static string BookInvalidKey {
             get {

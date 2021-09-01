@@ -76,6 +76,19 @@ namespace BookStore.Test
             return output;
         }
 
+        private static void CompareJson(string strA, string strB)
+        {
+            var a = StringUtils.StringToBytes(strA);
+            var b = StringUtils.StringToBytes(strB);
+
+            Assert.AreEqual(a.Length, b.Length);
+            for (var i = 0; i < a.Length; i++) {
+                var ba = a[i];
+                var bb = b[i];
+                Assert.AreEqual(ba, bb);
+            }
+        }
+
         [TestInitialize]
         public void Initialize()
         {
@@ -93,21 +106,14 @@ namespace BookStore.Test
             Assert.IsTrue(File.Exists($"{CliDirectory}/BookStore.Cli.db"));
             var outString = Spawn(CliProgram, "config list");
 
-            var a = StringUtils.StringToBytes(outString);
-            var b = StringUtils.StringToBytes("{\n" +
-                                              "    \"Identifier\": 1,\n" +
-                                              "    \"Key\": \"MainSettings\",\n" +
-                                              "    \"Timeout\": 8000,\n" +
-                                              "    \"Host\": \"127.0.0.1\",\n" +
-                                              "    \"Port\": 19487\n" +
-                                              "}" + Environment.NewLine);
-
-            Assert.AreEqual(a.Length, b.Length);
-            for (var i = 0; i < a.Length; i++) {
-                var ba = a[i];
-                var bb = b[i];
-                Assert.AreEqual(ba, bb);
-            }
+            CompareJson(outString,
+                        "{\n" +
+                            "    \"Identifier\": 1,\n" +
+                            "    \"Key\": \"MainSettings\",\n" +
+                            "    \"Timeout\": 8000,\n" +
+                            "    \"Host\": \"127.0.0.1\",\n" +
+                            "    \"Port\": 19487\n" +
+                            "}" + Environment.NewLine);
         }
 
         [TestCleanup]
@@ -124,6 +130,35 @@ namespace BookStore.Test
             Assert.AreEqual(
                 $"Connected{Environment.NewLine}",
                 ping);
+        }
+
+        [TestMethod]
+        public void TestSelectArray()
+        {
+            var programOutput = Spawn(CliProgram, "book list");
+            Assert.AreEqual(
+                $"[]{Environment.NewLine}",
+                programOutput);
+
+            programOutput = Spawn(CliProgram, "book save `{}`");
+            Assert.AreEqual(
+                "Failed determine a suitable key from " + "'{}'" + Environment.NewLine,
+                programOutput);
+
+            programOutput = Spawn(CliProgram, "book save `{\\\"Key\\\":=\\\"A\\\"}`");
+            Assert.AreEqual(
+                string.Empty,
+                programOutput);
+
+            programOutput = Spawn(CliProgram, "book list");
+
+            CompareJson(programOutput,
+                        "{\n" +
+                            "    \"Identifier\": -1,\n" +
+                            "    \"Key\": \"A\",\n" +
+                            "    \"Price\": 0,\n" +
+                            "    \"Description\": \"\"\n" +
+                            "}" + Environment.NewLine);
         }
     }
 }

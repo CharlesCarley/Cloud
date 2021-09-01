@@ -229,8 +229,7 @@
   </data>
   <data name="BookInvalidKey"
     xml:space="preserve">
-    <value>Failed determine a suitable key from '{0}'
-    </value>
+    <value>Failed determine a suitable key from '{0}'</value>
   </data>
   <data name="BlankArray" xml:space="preserve">
     <value>[]</value>
