@@ -91,8 +91,7 @@ __To run directly from Visual Studio__
 
 In the Visual Studio solution explorer, right click on the root of the solution tree and select Properties. Select Common Properties / Startup Project. From the list of projects enable BookStore.Store and BookStore.FrontEnd as the projects to start. Then Ctrl+F5 will launch both projects for testing. 
 
-__To run the store externally__
-See: [Running in Linux](Content/LinuxStore.md)
+__To run the store externally, see__ : [Running in Linux](Content/LinuxStore.md)
 
 
 ## Dependencies

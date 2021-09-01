@@ -217,7 +217,7 @@ namespace BookStore.Cli
                                 _builder.Append((char)ch);
 
                         } else {
-                            // Remove any processes thus far and exit.
+                            // Remove any processed thus far and exit.
 
                             Console.WriteLine(Resources.InvalidChar, ch);
 
