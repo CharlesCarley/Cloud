@@ -334,7 +334,7 @@ namespace BookStore.Cli
                     // record the error
                     Console.WriteLine(Resources.ReadError);
                 } else {
-                    _actionQueryTable.InvokeIf(input);
+                    _actionQueryTable.InvokeAction(input);
                 }
             }
         }
@@ -363,7 +363,7 @@ namespace BookStore.Cli
                 if (input.Type == ActionToken.Error) {
                     Console.WriteLine(Resources.ReadError);
                 } else {
-                    _actionQueryTable.InvokeIf(input);
+                    _actionQueryTable.InvokeAction(input);
                 }
             } while (input.Value.Length > 0 && input.Type != ActionToken.Error);
         }

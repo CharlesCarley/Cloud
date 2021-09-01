@@ -86,11 +86,12 @@ namespace BookStore.Cli
                 query._parent = this;
         }
 
-        public void InvokeIf(ActionQueryResult input)
+        public void InvokeAction(ActionQueryResult input)
         {
             // Attempts to invoke the action mapped to the supplied input.
 
             if (input.Type == ActionToken.Identifier) {
+
                 if (VoidActions.ContainsKey(input.Value)) {
                     // Handle actions with no parameter
 
@@ -139,7 +140,7 @@ namespace BookStore.Cli
                     if (action.Type != ActionToken.Identifier)
                         Console.WriteLine(Resources.ReadActionNotFound, input.Value, action.Value);
                     else
-                        SubActions[input.Value].InvokeIf(action);
+                        SubActions[input.Value].InvokeAction(action);
                 }
 
             } else if (input.Type != ActionToken.Empty) {
@@ -194,13 +195,13 @@ namespace BookStore.Cli
 
                     if (i > 0) {
                         // This is to handle any white space before the text.
-                        // IE; If no text is in the builder keep going.
+                        // IE; If no text is in the builder, keep going.
                         done = true;
                     }
                     break;
                 }
                 case '`': {
-                    // This needs to process all characters that can compose a json file.
+                    // This needs to process all the characters that can compose a json file.
                     // Double quotes should be escaped \".
                     // The entire contents should be placed in between the grave character `{Json Content}`
 
