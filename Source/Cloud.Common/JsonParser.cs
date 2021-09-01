@@ -669,6 +669,10 @@ namespace Cloud.Common
 
         private readonly List<object> _array;
 
+        public bool                       IsArray { get; set; }
+        public Dictionary<string, object> Dictionary { get; }
+        public List<JsonObject>           Nodes { get; }
+
         /// <summary>
         /// Initializes a new instance of
         /// the <see cref="JsonObject" /> class.
@@ -684,24 +688,8 @@ namespace Cloud.Common
         }
 
         /// <summary>
-        ///
-        /// </summary>
-        public bool IsArray { get; set; }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public Dictionary<string, object> Dictionary { get; }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public List<JsonObject> Nodes { get; }
-
-        /// <summary>
         /// Attempts to parse the base64 input string, by first converting it back
         /// to plain text then by parsing the plain text string.
-        ///
         /// </summary>
         /// <param name="input">An assumed base 64 input string.</param>
         /// <returns>
@@ -722,7 +710,7 @@ namespace Cloud.Common
                 var str   = Encoding.ASCII.GetString(bytes);
                 return Parse(str);
             } catch (FormatException) {
-                // attempt to parse normally..
+                // Attempt to parse it normally..
                 return Parse(input);
             } catch (Exception e) {
                 LogUtils.Log(e);
@@ -786,16 +774,6 @@ namespace Cloud.Common
         /// <summary>
         ///
         /// </summary>
-        /// <param name="arr"></param>
-        /// <returns></returns>
-        public bool ValidateParamList(string[] arr)
-        {
-            return arr == null || arr.All(str => Dictionary.ContainsKey(str));
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
         public void SetValue(string key, object value)
@@ -845,22 +823,21 @@ namespace Cloud.Common
             object val = null;
             if (key != null && Dictionary.ContainsKey(key))
                 val = Dictionary[key];
-            switch (val)
-            {
-                case null:
-                    return def;
-                case string s:
-                    return s;
-                case int i:
-                    return i.ToString(CultureInfo.InvariantCulture);
-                case long l:
-                    return l.ToString(CultureInfo.InvariantCulture);
-                case double d:
-                    return d.ToString(CultureInfo.InvariantCulture);
-                case bool b:
-                    return b ? "true" : "false";
-                default:
-                    throw new InvalidCastException();
+            switch (val) {
+            case null:
+                return def;
+            case string s:
+                return s;
+            case int i:
+                return i.ToString(CultureInfo.InvariantCulture);
+            case long l:
+                return l.ToString(CultureInfo.InvariantCulture);
+            case double d:
+                return d.ToString(CultureInfo.InvariantCulture);
+            case bool b:
+                return b ? "true" : "false";
+            default:
+                throw new InvalidCastException();
             }
         }
 
@@ -869,22 +846,21 @@ namespace Cloud.Common
             object val = null;
             if (key != null && Dictionary.ContainsKey(key))
                 val = Dictionary[key];
-            switch (val)
-            {
-                case null:
-                    return def;
-                case string s when double.TryParse(s, out double d):
-                    return d;
-                case string _:
-                    return 0;
-                case int i:
-                    return i;
-                case double d:
-                    return d;
-                case bool b:
-                    return b ? 1 : 0;
-                default:
-                    throw new InvalidCastException();
+            switch (val) {
+            case null:
+                return def;
+            case string s when double.TryParse(s, out double d):
+                return d;
+            case string _:
+                return 0;
+            case int i:
+                return i;
+            case double d:
+                return d;
+            case bool b:
+                return b ? 1 : 0;
+            default:
+                throw new InvalidCastException();
             }
         }
 
@@ -893,24 +869,23 @@ namespace Cloud.Common
             object val = null;
             if (key != null && Dictionary.ContainsKey(key))
                 val = Dictionary[key];
-            switch (val)
-            {
-                case null:
-                    return def;
-                case string s when long.TryParse(s, out long d):
-                    return d;
-                case string _:
-                    return def;
-                case long l:
-                    return l;
-                case int i:
-                    return i;
-                case double d:
-                    return (long)d;
-                case bool b:
-                    return b ? 1 : 0;
-                default:
-                    throw new InvalidCastException();
+            switch (val) {
+            case null:
+                return def;
+            case string s when long.TryParse(s, out long d):
+                return d;
+            case string _:
+                return def;
+            case long l:
+                return l;
+            case int i:
+                return i;
+            case double d:
+                return (long)d;
+            case bool b:
+                return b ? 1 : 0;
+            default:
+                throw new InvalidCastException();
             }
         }
 
@@ -920,22 +895,21 @@ namespace Cloud.Common
             if (key != null && Dictionary.ContainsKey(key))
                 val = Dictionary[key];
 
-            switch (val)
-            {
-                case null:
-                    return def;
-                case string s when int.TryParse(s, out int d):
-                    return d;
-                case string _:
-                    return def;
-                case int i:
-                    return i;
-                case double d:
-                    return (int)d;
-                case bool b:
-                    return b ? 1 : 0;
-                default:
-                    throw new InvalidCastException();
+            switch (val) {
+            case null:
+                return def;
+            case string s when int.TryParse(s, out int d):
+                return d;
+            case string _:
+                return def;
+            case int i:
+                return i;
+            case double d:
+                return (int)d;
+            case bool b:
+                return b ? 1 : 0;
+            default:
+                throw new InvalidCastException();
             }
         }
 
@@ -945,22 +919,21 @@ namespace Cloud.Common
             if (key != null && Dictionary.ContainsKey(key))
                 val = Dictionary[key];
 
-            switch (val)
-            {
-                case null:
-                    return def;
-                case string s when bool.TryParse(s, out bool d):
-                    return d;
-                case string _:
-                    return def;
-                case int i:
-                    return i != 0;
-                case double d:
-                    return (int)d != 0;
-                case bool b:
-                    return b;
-                default:
-                    throw new InvalidCastException();
+            switch (val) {
+            case null:
+                return def;
+            case string s when bool.TryParse(s, out bool d):
+                return d;
+            case string _:
+                return def;
+            case int i:
+                return i != 0;
+            case double d:
+                return (int)d != 0;
+            case bool b:
+                return b;
+            default:
+                throw new InvalidCastException();
             }
         }
 

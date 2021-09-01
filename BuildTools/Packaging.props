@@ -6,13 +6,12 @@
   
   <!-- ================ Package Properties ================ -->
   <PropertyGroup>
-    <PackageProjectUrl>https://github.com/CharlesCarley/Cloud2</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/CharlesCarley/Cloud2.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/CharlesCarley/Cloud</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/CharlesCarley/Cloud.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Copyright>2017 Charles Carley</Copyright>
+    <Copyright>Charles Carley</Copyright>
     <NeutralLanguage>en</NeutralLanguage>
     <Authors>Charles Carley snailrose@gmail.com</Authors>
-    <Company>Not available - I just like to write code.</Company>
   </PropertyGroup>
 
 
@@ -27,5 +26,4 @@
       <Link>Info\README.md</Link>
     </None>
   </ItemGroup>
-
 </Project>

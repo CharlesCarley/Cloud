@@ -7,10 +7,13 @@
     <PackageVersion>1.0.0</PackageVersion>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
+
+
   <Target Name="PackFile"
           AfterTargets="Pack"
           Condition="'$(PackageName)' != ''">
     <RemoveDir Directories="$(SolutionDir)Publish\$(PackageName)"/>
+    
     <Exec Command="nuget add $(OutDir)..\$(PackageName).$(PackageVersion).nupkg -src $(SolutionDir)Publish -expand" />
   </Target>
 

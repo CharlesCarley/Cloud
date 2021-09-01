@@ -29,12 +29,12 @@ namespace Cloud.Utils.Test
 {
     [TestClass]
     public class JsonUnits {
+        public string TestDir = $"{Environment.CurrentDirectory}/../../../";
+
         static void LogMessage(string message)
         {
             ConsoleOutput.Instance.WriteLine(message, OutputLevel.Information);
         }
-
-        public string TestDir = $"{Environment.CurrentDirectory}/../../../";
 
         [TestMethod]
         public void LoadNonExistentFile()

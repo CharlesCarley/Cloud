@@ -29,7 +29,7 @@ using System.Text;
 namespace Cloud.Common
 {
     /// <summary>
-    /// StringUtils is a utility class for miscellaneous string manipulation.
+    /// StringUtils is a utility class for miscellaneous string manipulation / testing.
     /// </summary>
     public static class StringUtils {
         /// <summary>
@@ -490,7 +490,7 @@ namespace Cloud.Common
             if (c >= '0' && c <= '9')
                 return c - '0';
             throw new FormatException(
-                $"The input character '{c}' falls outside of the predefined range of this function.");
+                $"The input character '{c}' falls outside of the range of this function.");
         }
 
         /// <summary>

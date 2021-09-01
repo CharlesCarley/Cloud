@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build"
+         ToolsVersion="14.0"
+         xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(SolutionDir)\BuildTools\Globals.props"/>
   <Import Project="$(SolutionDir)\BuildTools\Packaging.props" />
 
-  <!-- This used to pass any shared modules down to sub module projects.
-       Doing this way allows using different packages on the standalone repository
-       than in the embedded repository without modifications.
-   -->
-
+  <!-- This used to pass any shared modules down to sub module projects. -->
   <ItemGroup Condition="$(IncludAnalizers)=='True'">
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers"
                       Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Diagnostics.Tools" Version="4.3.0" />
+    <PackageReference Include="System.Diagnostics.Tools"
+                      Version="4.3.0" />
   </ItemGroup>
 
-  
+
+  <!-- These just aid in quickly adding references and moving the source tree.-->
   <PropertyGroup>
     <CloudGeneratorProgram></CloudGeneratorProgram>
-
     <CloudGeneratorName>Cloud.Generator</CloudGeneratorName>
 
     <CloudSourceDir>$(SolutionDir)Source\</CloudSourceDir>
@@ -43,6 +42,6 @@
     <CloudClientSQLite>$(CloudSourceDir)$(CloudClientSQLiteName)\$(CloudClientSQLiteName).csproj</CloudClientSQLite>
     <CloudServerSQLite>$(CloudSourceDir)$(CloudServerSQLiteName)\$(CloudServerSQLiteName).csproj</CloudServerSQLite>
     <CloudServerMySQL>$(CloudSourceDir)$(CloudServerMySQLName)\$(CloudServerMySQLName).csproj</CloudServerMySQL>
-</PropertyGroup>
+  </PropertyGroup>
 
 </Project>

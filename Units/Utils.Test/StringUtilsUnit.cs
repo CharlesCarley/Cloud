@@ -29,6 +29,7 @@ namespace Cloud.Utils.Test
 {
     [TestClass]
     public class StringUtilsUnit {
+
         private static void LogMessage(string message)
         {
             ConsoleOutput.Instance.WriteLine(message, OutputLevel.Information);
@@ -63,7 +64,6 @@ namespace Cloud.Utils.Test
                 Assert.Fail();
             }
         }
-        
 
         [TestMethod]
         public void IsValidDatabaseValue()
@@ -83,8 +83,7 @@ namespace Cloud.Utils.Test
         [TestMethod]
         public void IisValidIpOrDomain()
         {
-            try
-            {
+            try {
                 Assert.IsFalse(StringUtils.IsIpAddressOrDomain("0"));
                 Assert.IsFalse(StringUtils.IsIpAddressOrDomain("0.0"));
                 Assert.IsFalse(StringUtils.IsIpAddressOrDomain("0.0.0"));
@@ -99,14 +98,11 @@ namespace Cloud.Utils.Test
                 Assert.IsFalse(StringUtils.IsIpAddressOrDomain("1.host.csci"));
             }
 
-
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 LogMessage(ex.Message);
                 Assert.Fail();
             }
         }
-
 
         [TestMethod]
         public void ConvertToHex()
@@ -128,20 +124,19 @@ namespace Cloud.Utils.Test
         [TestMethod]
         public void ConvertToSha()
         {
-            try
-            {
+            try {
                 const string str = "Hello World";
+
                 var result = ShaHashString.Get(str);
+
                 Assert.AreEqual(
-                    "2C74FD17EDAFD80E8447B0D46741EE243B7EB74DD2149A0AB1B9246FB30382F27E853D8585719E0E67CBDA0DAA8F51671064615D645AE27ACB15BFB1447F459B", 
+                    "2C74FD17EDAFD80E8447B0D46741EE243B7EB74DD2149A0AB1B9246FB30382F27E853D8585719E0E67CBDA0DAA8F51671064615D645AE27ACB15BFB1447F459B",
                     result);
                 var result2 = ShaHashString.GetSha1(str);
                 Assert.AreEqual(
                     "0A4D55A8D778E5022FAB701977C5D840BBC486D0",
                     result2);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 LogMessage(ex.Message);
                 Assert.Fail();
             }

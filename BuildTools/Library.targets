@@ -7,6 +7,7 @@
     <TargetFramework>$(CoreFramework)</TargetFramework>
     <OutputType>Library</OutputType>
   </PropertyGroup>
+
   <PropertyGroup>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>

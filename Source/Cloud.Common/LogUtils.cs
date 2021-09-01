@@ -35,11 +35,21 @@ namespace Cloud.Common
         Verbose,
     }
 
-    /// <summary>
-    ///
-    /// </summary>
     public static class LogUtils {
         public static LogLevel Detail { get; set; } = LogLevel.Verbose;
+
+        /// <summary>
+        /// Logs a single message string to the system console.
+        /// </summary>
+        /// <param name="message">The message to log.</param>
+        public static void Log(string message)
+        {
+            if (message == null) return;
+            if (System.Diagnostics.Debugger.IsAttached)
+                System.Diagnostics.Debug.WriteLine(message);
+
+            Console.WriteLine(message);
+        }
 
         private static void LogDetail(LogLevel detail, string method, string message)
         {
@@ -80,18 +90,6 @@ namespace Cloud.Common
             }
         }
 
-        /// <summary>
-        /// Logs a single message string to the system console.
-        /// </summary>
-        /// <param name="message">The message to log.</param>
-        public static void Log(string message)
-        {
-            if (message == null) return;
-            if (System.Diagnostics.Debugger.IsAttached)
-                System.Diagnostics.Debug.WriteLine(message);
-
-            Console.WriteLine(message);
-        }
 
         /// <summary>
         /// Logs a message string to the system console.
