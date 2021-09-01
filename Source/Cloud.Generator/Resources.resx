@@ -118,31 +118,34 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="InvalidBackend" xml:space="preserve">
-    <value>Unable to determine the back-end generator which was defined via the command line as '{0}'.</value>
+    <value>Unable to determine the back-end generator from the supplied command line '{0}'</value>
   </data>
   <data name="MissingInput" xml:space="preserve">
-    <value>Missing input parameter.</value>
+    <value>Missing input parameter</value>
+  </data>
+  <data name="MissingNamespaceParameter" xml:space="preserve">
+    <value>Missing namespace parameter</value>
   </data>
   <data name="MissingNamespace" xml:space="preserve">
-    <value>No usable namespace was found in the supplied module.</value>
+    <value>No usable namespace was found in the supplied module</value>
   </data>
   <data name="MissingOutput" xml:space="preserve">
-    <value>Missing output parameter.</value>
+    <value>Missing output parameter</value>
   </data>
   <data name="MissingParameters" xml:space="preserve">
-    <value>Missing input or output parameters.</value>
+    <value>Missing input or output parameters</value>
   </data>
   <data name="MissingType" xml:space="preserve">
-    <value>Missing type parameter.</value>
+    <value>Missing type parameter</value>
   </data>
   <data name="SkipClass" xml:space="preserve">
-    <value>Skipping the class '{0}' because it does not have the Item attribute attached to it.</value>
+    <value>Skipping the class '{0}' because it does not have the Item attribute attached to it</value>
   </data>
   <data name="ValidBackends" xml:space="preserve">
-    <value>                    The valid back-ends are: ClientSQLite, ServerSQLite, or ServerMySQL.</value>
+    <value>                    The valid back-ends are: ClientSQLite, ServerSQLite, or ServerMySQL</value>
   </data>
   <data name="VerboseNamespace" xml:space="preserve">
-    <value>Using -&gt; '{0}' as the primary namespace for the generated classes.</value>
+    <value>Using -&gt; '{0}' as the primary namespace for the generated classes</value>
   </data>
   <data name="VerboseType1" xml:space="preserve">
     <value>Property          : {0}</value>

@@ -61,7 +61,7 @@ namespace Cloud.Generator {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to determine the back-end generator which was defined via the command line as &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Unable to determine the back-end generator from the supplied command line &apos;{0}&apos;.
         /// </summary>
         internal static string InvalidBackend {
             get {
@@ -70,7 +70,7 @@ namespace Cloud.Generator {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Missing input parameter..
+        ///   Looks up a localized string similar to Missing input parameter.
         /// </summary>
         internal static string MissingInput {
             get {
@@ -79,7 +79,7 @@ namespace Cloud.Generator {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No usable namespace was found in the supplied module..
+        ///   Looks up a localized string similar to No usable namespace was found in the supplied module.
         /// </summary>
         internal static string MissingNamespace {
             get {
@@ -88,7 +88,16 @@ namespace Cloud.Generator {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Missing output parameter..
+        ///   Looks up a localized string similar to Missing namespace parameter.
+        /// </summary>
+        internal static string MissingNamespaceParameter {
+            get {
+                return ResourceManager.GetString("MissingNamespaceParameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing output parameter.
         /// </summary>
         internal static string MissingOutput {
             get {
@@ -97,7 +106,7 @@ namespace Cloud.Generator {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Missing input or output parameters..
+        ///   Looks up a localized string similar to Missing input or output parameters.
         /// </summary>
         internal static string MissingParameters {
             get {
@@ -106,7 +115,7 @@ namespace Cloud.Generator {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Missing type parameter..
+        ///   Looks up a localized string similar to Missing type parameter.
         /// </summary>
         internal static string MissingType {
             get {
@@ -115,7 +124,7 @@ namespace Cloud.Generator {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Skipping the class &apos;{0}&apos; because it does not have the Item attribute attached to it..
+        ///   Looks up a localized string similar to Skipping the class &apos;{0}&apos; because it does not have the Item attribute attached to it.
         /// </summary>
         internal static string SkipClass {
             get {
@@ -124,7 +133,7 @@ namespace Cloud.Generator {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to                     The valid back-ends are: ClientSQLite, ServerSQLite, or ServerMySQL..
+        ///   Looks up a localized string similar to                     The valid back-ends are: ClientSQLite, ServerSQLite, or ServerMySQL.
         /// </summary>
         internal static string ValidBackends {
             get {
@@ -133,7 +142,7 @@ namespace Cloud.Generator {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Using -&gt; &apos;{0}&apos; as the primary namespace for the generated classes..
+        ///   Looks up a localized string similar to Using -&gt; &apos;{0}&apos; as the primary namespace for the generated classes.
         /// </summary>
         internal static string VerboseNamespace {
             get {

@@ -31,18 +31,26 @@ namespace Cloud.Generator
     public class Program {
         public static void Main(string[] args)
         {
-            var app = new Generator();
-            ParseCommandLineOptions(args, app);
+            try {
+                var app = new Generator();
+                ParseCommandLineOptions(args, app);
 
-            if (string.IsNullOrEmpty(app.Input) || string.IsNullOrEmpty(app.Output)) {
-                LogUtils.Log(Resources.MissingParameters);
+                if (string.IsNullOrEmpty(app.Input) || string.IsNullOrEmpty(app.Output)) {
+                    LogUtils.Log(Resources.MissingParameters);
+                    Environment.Exit(1);
+
+                } else if (!IsValidType(app.Type)) {
+                    LogUtils.Log(Resources.InvalidBackend, app.Type);
+                    LogUtils.Log(Resources.ValidBackends);
+                    Environment.Exit(1);
+
+                } else {
+                    app.Run();
+                }
+            } catch (Exception ex) {
+                LogUtils.Log(ex.Message);
                 Environment.Exit(1);
-            } else if (!IsValidType(app.Type)) {
-                LogUtils.Log(Resources.InvalidBackend, app.Type);
-                LogUtils.Log(Resources.ValidBackends);
-                Environment.Exit(1);
-            } else
-                app.Run();
+            }
         }
 
         private static void ParseCommandLineOptions(IReadOnlyList<string> args, Generator app)
@@ -52,58 +60,51 @@ namespace Cloud.Generator
                 switch (arg) {
                 case "-i" when index + 1 < args.Count:
                     app.Input = args[index + 1];
+
                     if (app.Input.StartsWith("-")) {
-                        // missing argument
-                        LogUtils.Log(Resources.MissingInput);
-                        Environment.Exit(1);
+                        throw new Exception(Resources.MissingInput);
                     }
 
                     ++index;
                     break;
+                case "-i": // -i at the end of the list
+                    throw new Exception(Resources.MissingInput);
+
                 case "-n" when index + 1 < args.Count:
                     app.Namespace = args[index + 1];
+
                     if (app.Input.StartsWith("-")) {
-                        // missing argument
-                        LogUtils.Log(Resources.MissingInput);
-                        Environment.Exit(1);
+                        throw new Exception(Resources.MissingNamespaceParameter);
                     }
 
                     ++index;
                     break;
-                case "-i":
-                    // missing argument
-                    LogUtils.Log(Resources.MissingInput);
-                    Environment.Exit(1);
-                    break;
+                case "-n": // -n at the end of the list
+                    throw new Exception(Resources.MissingNamespaceParameter);
+
                 case "-o" when index + 1 < args.Count:
                     app.Output = args[index + 1];
                     if (app.Output.StartsWith("-")) {
                         // missing argument
-                        LogUtils.Log(Resources.MissingOutput);
-                        Environment.Exit(1);
+
+                        throw new Exception(Resources.MissingOutput);
                     }
 
                     ++index;
                     break;
-                case "-o":
-                    // missing argument
-                    LogUtils.Log(Resources.MissingOutput);
-                    Environment.Exit(1);
-                    break;
+                case "-o": // -o at the end if the list
+                    throw new Exception(Resources.MissingOutput);
+
                 case "-t" when index + 1 < args.Count:
                     app.Type = args[index + 1];
+
                     if (app.Type.StartsWith("-")) {
-                        // missing argument
-                        LogUtils.Log(Resources.MissingType);
-                        Environment.Exit(1);
+                        throw new Exception(Resources.MissingType);
                     }
                     ++index;
                     break;
                 case "-t":
-                    // missing argument
-                    LogUtils.Log(Resources.MissingType);
-                    Environment.Exit(1);
-                    break;
+                    throw new Exception(Resources.MissingType);
                 case "-v":
                     app.Verbose = true;
                     break;
