@@ -25,6 +25,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Diagnostics;
 using System.IO;
+using BookStore.Client;
 
 namespace BookStore.Test
 {
@@ -159,6 +160,11 @@ namespace BookStore.Test
                             "    \"Price\": 0,\n" +
                             "    \"Description\": \"\"\n" +
                             "}" + Environment.NewLine);
+
+            var bookA = (Book)JsonParser.Unwrap(programOutput, typeof(Book));
+            var bookB = BookTransaction.SelectByKey("A");
+
+            Assert.AreEqual(bookA.Key, bookB.Key);
         }
     }
 }
