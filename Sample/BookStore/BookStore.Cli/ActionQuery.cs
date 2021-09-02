@@ -241,7 +241,7 @@ namespace BookStore.Cli
                     }
                 } break;
                 }
-            } while (!done && ++i < 16);
+            } while (!done && ++i < 32);
 
             result.Value = _builder.ToString();
             if (string.IsNullOrEmpty(result.Value)) {
