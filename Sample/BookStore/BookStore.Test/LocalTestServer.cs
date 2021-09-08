@@ -34,7 +34,7 @@ namespace BookStore.Test
         private readonly IWebHost _host;
         private HostConfig        _hostConfig;
 
-        public LocalTestServer(int port = 5000)
+        public LocalTestServer(int port = 14587)
         {
             _host = InitializeHost(port);
         }
@@ -42,7 +42,7 @@ namespace BookStore.Test
         private IWebHost InitializeHost(int port)
         {
             _hostConfig = new HostConfig {
-                Host = "localhost",
+                Host = "127.0.0.1",
                 Port = port
             };
 
@@ -56,8 +56,6 @@ namespace BookStore.Test
             }
 
             Client.Database.Register($"{Content}\\LocalTestServer.Client.db");
-            Client.Database.Open();
-
             Store.Database.Register($"{Content}\\LocalTestServer.Server.db");
 
             var host = WebHost.CreateDefaultBuilder();
@@ -77,16 +75,14 @@ namespace BookStore.Test
 
         public void Start()
         {
+            _host.StopAsync().Wait();
             _host.StartAsync();
         }
 
         public void Stop()
         {
-            Client.Database.Close();
             _host.StopAsync().Wait();
             _host.Dispose();
-
-            Store.Database.Close();
 
             if (Directory.Exists(Content))
                 Directory.Delete(Content, true);

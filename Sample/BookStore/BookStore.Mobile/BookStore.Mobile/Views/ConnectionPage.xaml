@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="BookStore.Mobile.Views.ConnectionPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mobile="clr-namespace:BookStore.Mobile;assembly=BookStore.Mobile"
+    xmlns:viewModels="clr-namespace:BookStore.Mobile.ViewModels;assembly=BookStore.Mobile"
+    Title="Connection Settings"
+    Background="{StaticResource GradientBrush}">
+    <ContentPage.BindingContext>
+        <viewModels:ConnectionViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <Color x:Key="BaseRed">#d12424</Color>
+        <Color x:Key="BaseGreen">#6bb924</Color>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <mobile:ToolbarIcon
+            x:Name="List"
+            Clicked="SettingsClicked"
+            Mapping="SettingsIcon"
+            Order="Primary"
+            Color="{StaticResource HeaderText}" />
+        <mobile:ToolbarIcon
+            Mapping="LinkIcon"
+            Order="Primary"
+            Color="{Binding Connected}">
+        </mobile:ToolbarIcon>
+    </ContentPage.ToolbarItems>
+    <StackLayout Padding="24">
+        <Label FontSize="Body">
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="A green connection icon " />
+                    <Span
+                        FontFamily="CustomIconFont"
+                        Text="9"
+                        TextColor="{StaticResource BaseGreen}">
+                    </Span>
+                    <Span Text=" indicates that there is a present connection to the backend database." />
+                    <Span Text=" A red icon indicates a problem." />
+                    <Span Text=" If the icon is red, check the settings Host and Port values, then click update." />
+                    <Span Text=" The current application is trying to connect to: " />
+                    <Span
+                        FontAttributes="Italic"
+                        ForegroundColor="CadetBlue"
+                        Text="{Binding Host}" />
+                    <Span
+                        FontAttributes="Italic"
+                        ForegroundColor="CadetBlue"
+                        Text=":" />
+                    <Span
+                        FontAttributes="Italic"
+                        ForegroundColor="CadetBlue"
+                        Text="{Binding Port}" />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+    </StackLayout>
+</ContentPage>

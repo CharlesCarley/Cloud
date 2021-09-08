@@ -1,21 +1,19 @@
-	
+    
 
-	public class ${ClassName}Transaction {
-		private readonly Bundle _bundle;
-		
-		public ${ClassName}Transaction(Bundle bundle) 
+    public class ${ClassName}Transaction 
+    {
+        private readonly Bundle _bundle;
+        
+        public ${ClassName}Transaction(Bundle bundle) 
         {
-            // do not allow the bundle to be null
-            if (bundle is null)
-                throw new ArgumentNullException(nameof(bundle));
+            _bundle = bundle ?? throw new ArgumentNullException(nameof(bundle));
+        }
 
-			_bundle = bundle;
-		}
-
-		public bool Save() 
+        public bool Save() 
         {
             var result = Transaction.Dispatch(
-                new Content(_bundle) {
+                new Content(_bundle) 
+                {
                     Function = Constants.Save,
                     Table    = _bundle.TableId,
                 }, 
@@ -26,12 +24,13 @@
                 // TODO: this needs the returned (ServerId, Revision)
             }
             return false;
-		}
+        }
 
-		public bool Drop() 
+        public bool Drop() 
         {
             var result = Transaction.Dispatch(
-                new Content(_bundle.Key) {
+                new Content(_bundle.Key) 
+                {
                     Function = Constants.Drop,
                     Table    = _bundle.TableId,
                 }, 
@@ -39,11 +38,12 @@
                 Constants.HttpContentApplication);
 
             return result.Code == ReceiptCode.True;
-		}
+        }
         
         public ReceiptCode ExistsRemotely() 
         {
-            if (string.IsNullOrEmpty(_bundle.Key)) {
+            if (string.IsNullOrEmpty(_bundle.Key)) 
+            {
 
                 LogUtils.Log(LogLevel.Error, 
                     nameof(ExistsRemotely),
@@ -53,7 +53,8 @@
             }
 
             var result = Transaction.Dispatch(
-                new Content(_bundle.Key) {
+                new Content(_bundle.Key) 
+                {
                     Function = Constants.Contains,
                     Table    = _bundle.TableId,
                 },
@@ -63,10 +64,11 @@
             return result.Code;
         }
 
-		public static List<int> SelectArray() 
+        public static List<int> SelectArray() 
         {
             var result = Transaction.Dispatch(
-                    new Content(string.Empty) {
+                new Content(string.Empty) 
+                {
                     Function = Constants.SelectArray,
                     Table    = ${ClassName}.UniqueIdentifier,
                 },
@@ -74,12 +76,12 @@
                 Constants.HttpContentApplication);
 
             return result.UnpackList();
-		}
+        }
 
         private static ${ClassName} ExtractFromReceipt(Receipt receipt)
         {
-            if (receipt is null || !receipt.HasPackagedContent) {                    
-
+            if (receipt is null || !receipt.HasPackagedContent) 
+            {
                 LogUtils.Log(LogLevel.Error, 
                         nameof(ExtractFromReceipt),
                         "Invalid receipt.");
@@ -87,11 +89,13 @@
             }
 
             var returnValue = (${ClassName})receipt.UnpackJson<${ClassName}>();
-            if (returnValue != null) {
-                  
+            if (returnValue != null) 
+            {
                 returnValue.ServerId = receipt.Value.ServerId;
                 returnValue.Revision = receipt.Value.Revision;
-            } else {
+            } 
+            else 
+            {
                 LogUtils.Log(LogLevel.Error, 
                     nameof(ExtractFromReceipt),
                     "Failed to unpack the transaction receipt.");
@@ -100,10 +104,11 @@
             return returnValue;
         }
        
-		public static ${ClassName} SelectById(int id) 
+        public static ${ClassName} SelectById(int id) 
         {
             var result = Transaction.Dispatch(
-                new Content(id) {
+                new Content(id) 
+                {
                     Function = Constants.SelectById,
                     Table    = ${ClassName}.UniqueIdentifier,
                 },
@@ -112,17 +117,16 @@
 
             ${ClassName} returnValue = null;
 
-            if (result.HasPackagedContent) {
+            if (result.HasPackagedContent)
                 returnValue = ExtractFromReceipt(result);
-            }
             return returnValue;
-		} 
+        } 
 
 
         public static bool ContainsKey(string key) 
         {
-            if (string.IsNullOrEmpty(key)) {
-
+            if (string.IsNullOrEmpty(key)) 
+            {
                 LogUtils.Log(LogLevel.Error, 
                     nameof(ContainsKey),
                     "The supplied argument is null or empty.");
@@ -131,7 +135,8 @@
             }
 
             var result = Transaction.Dispatch(
-                new Content(key) {
+                new Content(key) 
+                {
                     Function = Constants.Contains,
                     Table    = ${ClassName}.UniqueIdentifier,
                 },
@@ -152,7 +157,8 @@
                 return null;
 
             var result = Transaction.Dispatch(
-                new Content(key) {
+                new Content(key) 
+                {
                     Function = Constants.SelectByKey,
                     Table    = ${ClassName}.UniqueIdentifier,
                 },
@@ -161,9 +167,8 @@
 
 
             ${ClassName} returnValue = null;
-            if (result.HasPackagedContent) {
+            if (result.HasPackagedContent)
                 returnValue = ExtractFromReceipt(result);
-            }
             return returnValue;
         } 
         
@@ -181,7 +186,7 @@
                 Constants.HttpContentApplication);
         
             // TODO: Test the return code...
-		} 
+        } 
 
         public static void Clear() 
         {
@@ -192,5 +197,5 @@
                 },
                 Constants.HttpPost,
                 Constants.HttpContentApplication);
-		} 
+        } 
     }

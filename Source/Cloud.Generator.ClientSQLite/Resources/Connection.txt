@@ -1,83 +1,67 @@
 
-    /// <summary>
-    /// Class for creating, connecting, and maintaining a static SQLiteConnection pointer.
-    /// </summary>
-    public static class Database {
-
+    public static class Database
+    {
         private static string _databasePath;
 
-        /// <summary>
-        /// Opens or creates the SQLite database at the supplied path,
-        /// then creates or updates any tables.
-        /// </summary>
-        /// <remarks>
-        /// This method should be called on application startup.
-        /// It privately stores the supplied path for later use via a call to Open. 
-        /// </remarks>
-        public static void Register(string pathToDatabaseFile) 
+        public static string Path => _databasePath;
+
+        public static void Register(string pathToDatabaseFile)
         {
             if (string.IsNullOrEmpty(pathToDatabaseFile))
                 throw new ArgumentNullException(nameof(pathToDatabaseFile));
 
-            _databasePath = null;
+            _databasePath = pathToDatabaseFile;
 
-            try {
-                Connection = new SQLiteConnection(pathToDatabaseFile,
-                                           SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create);
-                ${RegisterTypes}
-
-                _databasePath = pathToDatabaseFile;
-
-            } catch (Exception ex) {
-                
+            try
+            {
+                Book.Register();
+                Settings.Register();
+            }
+            catch (Exception ex)
+            {
+                _databasePath = null;
                 LogUtils.Log(LogLevel.Error, ex.Message);
-                
             }
-            Close();
         }
-        
-        public static void Open() 
+
+        public static void Clear()
         {
-            if (string.IsNullOrEmpty(_databasePath)) {
-
-                LogUtils.Log(LogLevel.Error, 
-                    nameof(Open),
-                    "No database path is registered");
-
-                return;
-            }
-            Connection = new SQLiteConnection(_databasePath, SQLiteOpenFlags.ReadWrite);
+            Book.Clear();
+            Settings.Clear();
         }
 
-        public static bool IsConnected => Connection != null;
-
-        public static void Clear() 
-        {
-            ${ClearTypes}
-        }
-
-        /// <summary>
-        /// Closes any open database handles and sets the local
-        /// connection to null.
-        /// </summary>
-        public static void Close() 
-        {
-            Connection?.Close();
-            Connection?.Dispose();
-            Connection = null;
-        }
-
-        public static string GenerateKey() 
+        public static string GenerateKey()
         {
             return Guid.NewGuid()
                 .ToString()
                 .ToUpper(CultureInfo.InvariantCulture);
         }
+    }
 
-        /// <summary>
-        /// Provides read only access to the open SQLiteConnection handle.
-        /// </summary>
-        public static SQLiteConnection Connection { get; private set; }
+
+    public class Connection : IDisposable
+    {
+        public SQLiteConnection DB => _connection;
+
+        private readonly SQLiteConnection _connection;
+
+        public Connection(SQLiteOpenFlags flags = SQLiteOpenFlags.ReadWrite)
+        {
+            try
+            {
+                _connection = new SQLiteConnection(Database.Path, flags);
+            }
+            catch
+            {
+                LogUtils.Log($"Failed to open the supplied {Database.Path}");
+            }
+        }
+
+        public void Dispose()
+        {
+            _connection?.Close();
+            _connection?.Dispose();
+        }
     }
 
     ${Content}

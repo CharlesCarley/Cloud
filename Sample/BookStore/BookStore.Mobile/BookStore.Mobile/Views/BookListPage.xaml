@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="BookStore.Mobile.Views.BookListPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mobile="clr-namespace:BookStore.Mobile;assembly=BookStore.Mobile"
+    xmlns:viewModels="clr-namespace:BookStore.Mobile.ViewModels;assembly=BookStore.Mobile"
+    Title="Details"
+    Appearing="OnPageAppearing"
+    Background="{StaticResource GradientBrush}">
+    <ContentPage.BindingContext>
+        <viewModels:BookCollectionViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.ToolbarItems>
+        <mobile:ToolbarIcon
+            Clicked="OnLinkIconClicked"
+            Mapping="LinkIcon"
+            Order="Primary"
+            Color="{Binding Connected}">
+        </mobile:ToolbarIcon>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout Padding="24">
+            <StackLayout Orientation="Vertical">
+                <StackLayout
+                    Padding="0,0,24,0"
+                    HorizontalOptions="FillAndExpand"
+                    Orientation="Horizontal"
+                    VerticalOptions="Center">
+                    <Label
+                        FontSize="Medium"
+                        Text="Book selection"
+                        TextColor="{StaticResource HeaderLight}" />
+                    <mobile:IconButton
+                        Clicked="OnAddClicked"
+                        HorizontalOptions="EndAndExpand"
+                        Icon="AddIcon"
+                        TextColor="{StaticResource HeaderLight}" />
+                    <mobile:IconButton
+                        Clicked="OnClearClicked"
+                        HorizontalOptions="End"
+                        Icon="BrushIcon"
+                        TextColor="{StaticResource HeaderLight}" />
+                </StackLayout>
+                <BoxView
+                    BackgroundColor="{StaticResource HeaderLighter}"
+                    HeightRequest="1"
+                    HorizontalOptions="FillAndExpand">
+                </BoxView>
+            </StackLayout>
+            <ListView
+                x:Name="BookListView"
+                CachingStrategy="RecycleElementAndDataTemplate"
+                ItemSelected="OnItemSelected"
+                ItemsSource="{Binding Items}"
+                SelectedItem="null"
+                SelectionMode="None">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout
+                                Padding="6"
+                                Orientation="Horizontal">
+                                <Label
+                                    Margin="7,0,7,0"
+                                    Text="{Binding Path=Title}" />
+                                <Label
+                                    Margin="2,0,2,0"
+                                    Text=":" />
+                                <Label
+                                    Margin="7,0,7,0"
+                                    Text="{Binding Path=Author}" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

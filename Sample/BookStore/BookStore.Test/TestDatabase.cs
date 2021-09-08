@@ -34,11 +34,6 @@ namespace BookStore.Test
         public void OpenFreshDatabase()
         {
             // The static interface should not be initialized at this point, so
-            Assert.IsNull(Database.Connection);    // no connection pointer,
-            Assert.IsFalse(Database.IsConnected);  // which effects IsConnected,
-            Assert.IsNull(Book.Connection);        // which sub classes extract from the Database class,
-            Assert.IsNull(Book.Query);             // and Query should only be valid if there is a connection.
-            Assert.IsFalse(Book.IsConnected);      // This is the same as the Database.IsConnected test.
             if (File.Exists(TestDatabaseFile)) {   // Recreate the database for every test.
                 try {                              //
                     File.Delete(TestDatabaseFile); //
@@ -48,15 +43,6 @@ namespace BookStore.Test
                 }                                  //
             }                                      //
             Database.Register(TestDatabaseFile);
-            Database.Open();
-
-            // test the inverse from above they should all be valid now..
-            Assert.IsNotNull(Database.Connection);
-            Assert.IsTrue(Database.IsConnected);
-            Assert.IsNotNull(Book.Connection);
-            Assert.IsNotNull(Book.Query);
-            Assert.IsTrue(Book.IsConnected);
-
             Book.Saved += BookSaved;                   // Test the saved trigger
             Book.StateChanged += GuardedExceptionTest; // Tests the behavior of exceptions
                                                        // in trigger callbacks..
@@ -65,10 +51,6 @@ namespace BookStore.Test
         [TestCleanup]
         public void CloseAndAssertDatabase()
         {
-            Assert.IsNotNull(Database.Connection);
-            Assert.IsTrue(Database.IsConnected);
-            Database.Close();
-
             if (File.Exists(TestDatabaseFile)) {
                 try {
                     File.Delete(TestDatabaseFile);
@@ -77,13 +59,6 @@ namespace BookStore.Test
                     Assert.Fail();
                 }
             }
-
-            Assert.IsNull(Database.Connection);
-            Assert.IsFalse(Database.IsConnected);
-            Assert.IsNull(Book.Connection);
-            Assert.IsNull(Book.Query);
-            Assert.IsFalse(Book.IsConnected);
-
             Book.Saved -= BookSaved;
             Book.StateChanged -= GuardedExceptionTest;
         }
@@ -91,8 +66,6 @@ namespace BookStore.Test
         [TestMethod]
         public void TestBook()
         {
-            Assert.IsTrue(Database.IsConnected);
-
             var res = Book.ExistsById(1);
             Assert.IsFalse(res);
 

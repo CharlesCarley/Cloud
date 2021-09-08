@@ -1,22 +1,21 @@
 
-		private Bundle MakePackage() 
-		{
-            var bundle = new Bundle {
+        public ${ClassName}Transaction CreateTransaction() 
+        {
+            var bundle = new Bundle 
+            {
                 TableId  = UniqueIdentifier,
                 ServerId = ServerId, 
                 Revision = Revision,
-				Key      = Key,
+                Key      = Key,
             };
+
             var obj = new JsonObject();
-			// Note: Not adding the local id as part of the package..
-			obj.AddValue("Key", Key);
 
-			${AddMembersToJObject}
-			bundle.Package = obj.AsCompactPrint();
-			return bundle;
-		}
+            // Note: Not adding the local id as part of the package..
+            obj.AddValue("Key", Key);
 
-		public ${ClassName}Transaction CreateTransaction() 
-		{
-			return new ${ClassName}Transaction(MakePackage());
-		}
+            ${AddMembersToJObject}
+            bundle.Package = obj.AsCompactPrint();
+
+            return new ${ClassName}Transaction(bundle);
+        }

@@ -9,7 +9,7 @@
 
   <!-- references -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build.Framework" Version="16.10.0" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="16.11.0" />
   </ItemGroup>
 
   <ItemGroup>

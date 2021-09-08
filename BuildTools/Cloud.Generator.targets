@@ -10,10 +10,10 @@
     <CloudExtraOptions Condition="'$(CloudExtraOptions)' == ''"></CloudExtraOptions>
     <CloudGeneratorProgram 
       Condition="'$(CloudGeneratorProgram)' == '' and $([MSBuild]::IsOSPlatform('Linux'))=='true'"
-      >$(SolutionDir)Source\Cloud.Generator\bin\$(Configuration)\$(CoreFramework)\Cloud.Generator</CloudGeneratorProgram>
+      >$(SolutionDir)Source\Cloud.Generator\bin\$(Configuration)\$(CoreAppFramework)\Cloud.Generator</CloudGeneratorProgram>
     <CloudGeneratorProgram 
       Condition="'$(CloudGeneratorProgram)' == '' and $([MSBuild]::IsOSPlatform('Windows'))=='true'"
-      >$(SolutionDir)Source\Cloud.Generator\bin\$(Configuration)\$(CoreFramework)\Cloud.Generator.exe</CloudGeneratorProgram>
+      >$(SolutionDir)Source\Cloud.Generator\bin\$(Configuration)\$(CoreAppFramework)\Cloud.Generator.exe</CloudGeneratorProgram>
   </PropertyGroup>
 
   <Target Name="CloudDbGenerator" 

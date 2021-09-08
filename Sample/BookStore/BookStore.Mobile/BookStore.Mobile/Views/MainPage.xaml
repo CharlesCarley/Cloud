@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="BookStore.Mobile.Views.MainPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mobile="clr-namespace:BookStore.Mobile;assembly=BookStore.Mobile"
+    xmlns:viewModels="clr-namespace:BookStore.Mobile.ViewModels;assembly=BookStore.Mobile"
+    Title="Book Store"
+    Appearing="OnAppearing"
+    Background="{DynamicResource GradientBrush}">
+    <ContentPage.BindingContext>
+        <viewModels:MainViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.ToolbarItems>
+        <mobile:ToolbarIcon
+            x:Name="List"
+            Clicked="OnDetailsClicked"
+            Mapping="FileIcon"
+            Order="Primary"
+            Color="{DynamicResource HeaderText}" />
+        <mobile:ToolbarIcon
+            Clicked="LinkedIconClicked"
+            Mapping="LinkIcon"
+            Order="Primary"
+            Color="{Binding Connected}">
+        </mobile:ToolbarIcon>
+    </ContentPage.ToolbarItems>
+    <StackLayout Padding="24">
+        <Label
+            FontSize="Body"
+            Text="{DynamicResource IndexDescription}" />
+    </StackLayout>
+
+</ContentPage>

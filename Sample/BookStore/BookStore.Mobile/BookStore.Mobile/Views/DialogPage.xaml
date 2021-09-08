@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    x:Class="BookStore.Mobile.Views.DialogPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:BookStore.Mobile.ViewModels;assembly=BookStore.Mobile"
+    BackgroundColor="{StaticResource ModalTransparent}">
+    <ContentPage.BindingContext>
+        <viewModels:DialogViewModel>
+        </viewModels:DialogViewModel>
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <x:Double x:Key="HrSize">0.4</x:Double>
+        <Thickness x:Key="Padding">16,8</Thickness>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout
+            HorizontalOptions="CenterAndExpand"
+            VerticalOptions="CenterAndExpand">
+            <StackLayout
+                Padding="0"
+                BackgroundColor="White"
+                Orientation="Vertical">
+                <StackLayout
+                    Padding="{StaticResource Padding}"
+                    Orientation="Vertical">
+
+                    <Label
+                        FontSize="Medium"
+                        Text="{Binding Title}" />
+                    <BoxView
+                        BackgroundColor="{StaticResource Header}"
+                        HeightRequest="{StaticResource HrSize}" />
+                </StackLayout>
+                <StackLayout
+                    Padding="{StaticResource Padding}"
+                    Orientation="Vertical">
+                    <Label
+                        Margin="0,0,0,9"
+                        FontSize="Body"
+                        Text="{Binding Message}" />
+                    <BoxView
+                        BackgroundColor="{StaticResource Header}"
+                        HeightRequest="{StaticResource HrSize}" />
+                </StackLayout>
+                <StackLayout
+                    Padding="{StaticResource Padding}"
+                    HorizontalOptions="EndAndExpand"
+                    Orientation="Horizontal">
+                    <Button
+                        Clicked="OnCancelClicked"
+                        HorizontalOptions="End"
+                        Style="{StaticResource GreenButton}"
+                        Text="No" />
+
+                    <Button
+                        Clicked="OnOkClicked"
+                        HorizontalOptions="End"
+                        Style="{StaticResource RedButton}"
+                        Text="Yes" />
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

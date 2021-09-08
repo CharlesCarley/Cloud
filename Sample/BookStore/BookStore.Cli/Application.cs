@@ -289,7 +289,6 @@ namespace BookStore.Cli
         public void InitializeDatabase()
         {
             Database.Register("BookStore.Cli.db");
-            Database.Open();
 
             Settings.Saved += SettingsOnSaved;
             Settings = Settings.SelectByKey("MainSettings");

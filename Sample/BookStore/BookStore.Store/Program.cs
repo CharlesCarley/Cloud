@@ -27,7 +27,8 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace BookStore.Store
 {
-    public static class Program {
+    public static class Program
+    {
         public static void Main(string[] args)
         {
             var builder = WebHost.CreateDefaultBuilder(args);
@@ -38,17 +39,20 @@ namespace BookStore.Store
                 Port = 8080,
             };
 
-            for (var i = 0; i < args.Length; i++) {
+            for (var i = 0; i < args.Length; i++)
+            {
                 var arg = args[i];
 
                 if (!arg.Equals("--cfg")) continue;
 
-                if (i + 1 < args.Length) {
+                if (i + 1 < args.Length)
+                {
                     var path = args[++i];
                     Console.WriteLine(
                         host.LoadFromStorage(path) ? Resources.LoadedConfig : Resources.ConfigNotLoaded,
                         path);
-                } else
+                }
+                else
                     Console.WriteLine(Resources.MissingConfigArg);
             }
 

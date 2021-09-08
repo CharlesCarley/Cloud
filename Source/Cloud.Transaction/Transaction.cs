@@ -29,7 +29,7 @@ using static Cloud.Transaction.TransactionUtility;
 namespace Cloud.Transaction
 {
     // TODO: this also needs to account for asynchronous tasks
- 
+
     /// <summary>
     /// </summary>
     public static class Transaction {
@@ -103,22 +103,6 @@ namespace Cloud.Transaction
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="content"></param>
-        /// <returns></returns>
-        public static Receipt Dispatch(Content content)
-        {
-            if (!HasConfig)
-                throw new TransactionException();
-
-            return ProcessImpl(content,
-                               Constants.HttpPost,
-                               Constants.HttpContentApplication,
-                               Constants.HttpSchemeHttp);
-        }
-
         public static Receipt Dispatch(Content content, int method, int contentType)
         {
             // NOTE: this is mainly for testing purposes so, do not
@@ -130,19 +114,6 @@ namespace Cloud.Transaction
                 throw new TransactionException();
 
             return ProcessImpl(content,
-                               method,
-                               contentType,
-                               Constants.HttpSchemeHttp);
-        }
-
-        public static Receipt Dispatch(int method, int contentType)
-        {
-            if (!HasConfig)
-                throw new TransactionException();
-
-            var request = new Content((string)null);
-
-            return ProcessImpl(request,
                                method,
                                contentType,
                                Constants.HttpSchemeHttp);
@@ -260,7 +231,7 @@ namespace Cloud.Transaction
                                                 int    timeout, // not checked
                                                 string path)
         {
-            if (Config is  null)
+            if (Config is null)
                 throw new TransactionException(Constants.InvalidHost);
 
             var methodString = IntHttpMethodToString(method);
@@ -290,6 +261,24 @@ namespace Cloud.Transaction
             return webRequest;
         }
 
+        public static bool PingDatabaseImpl(int timeout)
+        {
+            try {
+                var webRequest = CreateRequest(
+                    Constants.HttpGet,
+                    Constants.HttpContentApplication,
+                    Constants.HttpSchemeHttp,
+                    timeout,
+                    Constants.Status.ToString());
+                var response = webRequest.GetResponse();
+                response.Dispose();
+                return true;
+            } catch (Exception ex) {
+                LogUtils.Log(ex.Message);
+                return false;
+            }
+        }
+
         public static async Task<bool> PingDatabaseAsync(int timeout)
         {
             try {
@@ -299,11 +288,10 @@ namespace Cloud.Transaction
                     Constants.HttpSchemeHttp,
                     timeout,
                     Constants.Status.ToString());
-
                 var response = await webRequest.GetResponseAsync();
                 response.Dispose();
                 return true;
-            } catch (Exception ex) { 
+            } catch (Exception ex) {
                 LogUtils.Log(ex.Message);
                 return false;
             }
@@ -312,30 +300,9 @@ namespace Cloud.Transaction
         public static bool PingDatabase(int timeout)
         {
             try {
-                return Task.Run(async () =>
-                                    await PingDatabaseAsync(timeout))
-                    .Result;
+                return PingDatabaseImpl(timeout);
             } catch {
                 return false;
-            }
-        }
-
-        public static void Synchronize(int tableCode)
-        {
-            try {
-                var receipt = Dispatch(
-                    new Content {
-                        Function = Constants.SelectArray,
-                        Table    = tableCode,
-                    },
-                    Constants.HttpGet,
-                    Constants.HttpContentApplication);
-
-                if (receipt.HasPackagedContent) {
-                }
-
-            } catch {
-                // ignore
             }
         }
     }

@@ -56,15 +56,45 @@ namespace Cloud.Common
             // Todo: This needs to be formatted differently.
             // Todo: Enable / disable specific print sections.  
 
+
+            switch (detail)
+            {
+                default:
+                    break;
+                case LogLevel.Assert:
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    break;
+                case LogLevel.Error:
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+                case LogLevel.Warn:
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    break;
+                case LogLevel.Info:
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    break;
+                case LogLevel.Debug:
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    break;
+                case LogLevel.Verbose:
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    break;
+            }
+
+
+
             if (method is null) {
                 if (detail <= Detail) {
-                    Log($"{DateTime.Now:MM/dd/yy@HH:mm:ss}: {detail} : [] {message}");
+                    Log($"{DateTime.Now:MM/dd/yy@HH:mm:ss}: {detail} : {message}");
                 }
             } else {
                 if (detail <= Detail) {
                     Log($"{DateTime.Now:MM/dd/yy@HH:mm:ss}: {detail} : [ {method} ] {message}");
                 }
             }
+
+            Console.ResetColor();
         }
 
         /// <summary>
@@ -130,8 +160,8 @@ namespace Cloud.Common
         {
             // Used to provide debug information about the
             // location where the message is being delivered
-            Log($"Exception in => {ex.TargetSite?.Name}");
-            Log(message);
+
+            LogDetail(LogLevel.Assert, ex.TargetSite?.Name, message);
         }
 
         /// <summary>
@@ -140,10 +170,7 @@ namespace Cloud.Common
         /// <param name="ex"></param>
         public static void Log(Exception ex)
         {
-            // Used to provide debug information about the
-            // location where the message is being delivered
-            Log($"Exception in => {ex.TargetSite?.Name}");
-            Log(ex.Message);
+            LogDetail(LogLevel.Assert, ex.TargetSite?.Name, ex.Message);
         }
     }
 }

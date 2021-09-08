@@ -1,404 +1,309 @@
-    /// <summary>
-    /// Auto generated backend implementation for the ${InterfaceName} class.
-    /// Do not edit directly..
-    /// </summary>
-    public class ${ClassName} : ${InterfaceName} {
-        /// <summary>
-        /// This defines the table id for the ${ClassName} database table.
-        /// It is used as part of the route for the ReST server,
-        /// and it should be set to something unique when defining the API code. 
-        /// <remarks>
-        /// The server's route is defined as:
-        /// <code>${method}/${UniqueId}</code>
-        /// </remarks>
-        /// </summary>
+
+    public class ${ClassName} : ${InterfaceName} 
+    {
         public const int UniqueIdentifier = ${UniqueId};
-        /// <summary>
-        /// Identifier is the primary database id, which is auto incrementing and read only.
-        /// </summary>
+
         [PrimaryKey, AutoIncrement]
         public int Identifier { get; set; } = Constants.Undefined;
-        /// <summary>
-        /// The Key field is the primary means to search for elements in this database.
-        /// </summary>
-        public string  Key { get; set; } = string.Empty;
-        /// <summary>
-        /// Reference to this elements server id.
-        /// <remarks>
-        /// If this element is not synchronized with the server, 
-        /// then the value is defined to be the constant: 
-        ///  <see cref="Cloud.Common.Constants.Undefined">Undefined</see>
-        /// </remarks>
-        /// </summary>
-        public int ServerId { get;  set;} = Constants.Undefined;
-        /// <summary>
-        /// Reference to this elements revision number.
-        /// <remarks>
-        /// If this element is not synchronized with the server, 
-        /// then the value is defined to be the constant: 
-        ///  <see cref="Cloud.Common.Constants.Undefined">Undefined</see>
-        /// </remarks>
-        /// </summary>
-        public int Revision { get; set; } = Constants.Undefined;
-        /// <summary>
-        /// Provides access to the database connection.
-        /// </summary>
-        [Ignore]
-        public static SQLiteConnection Connection => Database.Connection;
-        /// <summary>
-        /// Tests the connection state. 
-        /// </summary>
-        [Ignore]
-        public static bool IsConnected => Database.IsConnected;
-        /// <summary>
-        /// Returns a TableQuery&lt;${ClassName}&gt; object.
-        /// </summary>
-        [Ignore]
-        public static TableQuery<${ClassName}> Query => Database.Connection?.Table<${ClassName}>(); 
 
-        /// <summary>
-        /// Creates the ${ClassName} database table if it does not already
-        /// exist in the database.
-        /// </summary>
+        public string Key { get; set; } = string.Empty;
+
+        public int ServerId { get; set;} = Constants.Undefined;
+
+        public int Revision { get; set; } = Constants.Undefined;
+        
+        public delegate void  BaseHandler(${ClassName} item);
+
+        public delegate void  DefaultHandler();
+
+        public static   event DefaultHandler Cleared;
+
+        public static   event BaseHandler Saved;
+
+        public static   event BaseHandler Dropped;
+
+        public static   event DefaultHandler StateChanged;
+        
+        
         public static void Register() 
         {
-            Connection?.CreateTable<${ClassName}>();
+            using (var con = new Connection(SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create))
+            {
+                con.DB?.CreateTable<${ClassName}>();
+            }
         }
-        
-        // TODO: This could have Saving and Dropping triggers to optionally preform an action before the event.
-        /// <summary>
-        /// Is the callback method definition for events that require 
-        /// the object in question to be supplied as a parameter.
-        /// </summary>
-        public delegate void BaseHandler(${ClassName} item);
-        /// <summary>
-        /// Is the callback method definition for events that do not require 
-        /// any parameters.
-        /// </summary>
-        public delegate void DefaultHandler();
-        /// <summary>
-        /// An optional callback that is invoked when 
-        /// the ${ClassName} table is cleared. 
-        /// </summary>
-        public static event DefaultHandler Cleared;
-        /// <summary>
-        /// An optional callback that is invoked when 
-        /// a ${ClassName} object is saved. 
-        /// </summary>
-        public static event BaseHandler Saved;
-        /// <summary>
-        /// An optional callback that is invoked when 
-        /// a ${ClassName} object is removed. 
-        /// </summary>
-        public static event BaseHandler Dropped;
-        /// <summary>
-        /// An optional callback that is invoked after any change in the 
-        /// state of the database.
-        /// </summary>
-        public static event DefaultHandler StateChanged;
-        
-        /// <summary>
-        /// Calls the static Save method with the this pointer as the object to save.
-        /// </summary>
-        /// <returns>True if the object was saved otherwise returns false.</returns>
-        /// <remarks>
-        /// This is primarily here for convenience and ease of use.
-        /// </remarks>
+
         public bool Save() 
         {
             return Save(this);
         }
 
-        /// <summary>
-        /// Calls the static Drop method with the this pointer as the object to drop from the database.
-        /// </summary>
-        /// <returns>True if the object was dropped otherwise returns false.</returns>
-        /// <remarks>
-        /// This is primarily here for convenience and ease of use.
-        /// </remarks>
+        public Task<bool> SaveAsync() 
+        {
+            return Task.Run(() => Save(this));
+        }
+
         public bool Drop() 
         {
             return Drop(this);
         }
         
-        /// <summary>
-        /// Deletes the entire table then recreates it.
-        /// </summary>
+
         public static void Clear() 
         {
-            if (!IsConnected) 
-                return;
+            using(var con = new Connection())
+            {
+                con.DB?.DropTable<${ClassName}>();
+                con.DB?.CreateTable<${ClassName}>();
 
-            Connection?.DropTable<${ClassName}>();
-            Connection?.CreateTable<${ClassName}>();
+                try 
+                {
+                    Cleared?.Invoke();
+                    StateChanged?.Invoke();
+                } 
+                catch 
+                {
+                    // ignored
+                }
+            }
+        }
+        
+        public static Task ClearAsync()
+        {
+            return Task.Run(Clear);
+        }
 
-            try {
-                Cleared?.Invoke();
-                StateChanged?.Invoke();
-            } catch {
-                // ignored
+        public static List<${ClassName}> SelectAll() 
+        {
+            List<${ClassName}> val = null;
+            using(var con = new Connection())
+            {
+                var query = con.DB?.Table<${ClassName}>();
+                if (query != null)
+                    val = query.ToList();
+            }
+            return val;
+        }
+
+        public static ${ClassName} SelectByKey(string key) 
+        {
+            if (key is null)
+                return null;
+
+            ${ClassName} val = null;
+            using(var con = new Connection())
+            {
+                var query = con.DB?.Table<${ClassName}>();
+                if (query != null)
+                    val = query.FirstOrDefault(i => i.Key == key);
+            }
+            return val;
+        }
+        
+        public static ${ClassName} SelectByIdentifier(int id) 
+        {
+            ${ClassName} val = null;
+            using(var con = new Connection())
+            {
+                var query = con.DB?.Table<${ClassName}>();
+                if (query != null)
+                    val = query.FirstOrDefault(i => i.Identifier == id);
+            }
+            return val;
+        }
+
+        public static bool ExistsByKey(string key) 
+        {
+            if (key is null)
+                return false;
+
+            bool val = false;
+            using(var con = new Connection())
+            {
+                var query = con.DB?.Table<${ClassName}>();
+                if (query != null)
+                    val = query.Any(i => i.Key == key);
+            }
+            return val;
+        }
+        
+        public static bool ExistsById(int identifier) 
+        {
+            bool val = false;            
+            using(var con = new Connection())
+            {
+                var query = con.DB?.Table<${ClassName}>();
+                if (query != null)
+                    val = query.Any(i => i.Identifier == identifier);
+            }
+            return val;
+        }
+
+        private static void InsertImpl(Connection con, TableQuery<${ClassName}> query, ${ClassName} obj, out bool result)
+        {
+            if (string.IsNullOrEmpty(obj.Key))
+                obj.Key = Database.GenerateKey();
+
+            obj.Revision = 1;
+
+            result = con.DB.Insert(obj) != 0;
+            if (result)
+            {
+                ${ClassName} element = query.FirstOrDefault(i => i.Key == obj.Key);
+
+                if (element.Identifier != Constants.Undefined)
+                {
+                    // Update the identifier for this instance.
+                    obj.Identifier = element.Identifier;
+                }
+                else
+                    throw new Exception("Failed to extract an id from the database.");
+            }
+            else
+            {
+                throw new Exception($"Insert object {obj.Key} failed.");
             }
         }
 
-        /// <summary>
-        /// Returns a list of all elements in the table.
-        /// </summary>
-        public static List<${ClassName}> SelectAll() 
+        private static void UpdateImpl(Connection con, TableQuery<${ClassName}> query, ${ClassName} obj, out bool result)
         {
-            return !IsConnected ? null : Query?.ToList();
+            ${ClassName} element = query.FirstOrDefault(i => i.Key == obj.Key);
+            if (element == null)
+                throw new Exception($"Failed to extract the object {obj.Key} from the database.");
+
+            if (element.Identifier != Constants.Undefined)
+            {
+
+                // Update the identifier for this instance and
+                // bump the revision prior to update.
+                obj.Identifier = element.Identifier;
+                obj.Revision   = obj.Revision + 1;
+
+                result = con.DB.Update(obj) != 0;
+            }
+            else
+            {
+                throw new Exception("Failed to extract an id from the database.");
+            }
         }
 
-        /// <summary>
-        /// Searches the database for the supplied key argument.
-        /// </summary>
-        /// <param name="key">The lookup key to search by.</param>
-        /// <returns>
-        ///   If there is a connection to the database; 
-        ///     This returns a ${ClassName} instance if the key was found in the database 
-        ///     otherwise returns null.
-        ///   If there is no connection with the database this will always return null.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// If the supplied key is null.
-        /// </exception>
-        public static ${ClassName} SelectByKey(string key) 
+        private static bool SaveOrUpdateImpl(Connection con, TableQuery<${ClassName}> query, ${ClassName} obj)
         {
-            if (!IsConnected || key is  null) 
-                return null;
-            return Query?.FirstOrDefault(i => i.Key == key);
-        }
-        
-        /// <summary>
-        /// Searches the database for the supplied id argument.
-        /// </summary>
-        /// <param name="id">The lookup id to search by.</param>
-        /// <returns>
-        ///   If there is a connection to the database; 
-        ///     This returns a ${ClassName} instance if the supplied <b>id</b> was found in the database,
-        ///     otherwise returns null.
-        ///   If there is no connection with the database this will always return null.
-        /// </returns>
-        public static ${ClassName} SelectByIdentifier(int id) 
-        {
-            return !IsConnected ? null : 
-                Query?.FirstOrDefault(i => i.Identifier == id);
-        }
-        
-        /// <summary>
-        /// Queries the data base to search for the supplied key. 
-        /// </summary>
-        /// <param name="key">Is the key to search for.</param>
-        /// <returns>
-        /// False if not connected, otherwise returns true if the supplied key
-        /// exists in the database.
-        /// </returns>
-        public static bool ExistsByKey(string key) 
-        {
-            if (!IsConnected || key is null) 
+            bool result;
+            if (query.All(i => i.Key != obj.Key))
+                InsertImpl(con, query, obj, out result);
+            else
+                UpdateImpl(con, query, obj, out result);
+
+            if (!result)
                 return false;
-            return !(Query is null) && 
-                Query.Any(i => i.Key == key);
-        }
-        
-        /// <summary>
-        /// Queries the data base to search for the supplied identifier. 
-        /// </summary>
-        /// <param name="identifier">Is the Identifier to search for.</param>
-        /// <returns>
-        /// False if not connected, otherwise returns true if the supplied identifier
-        /// exists in the database.
-        /// </returns>
-        public static bool ExistsById(int identifier) 
-        {
-            if (!IsConnected) 
-                return false;
-            return !(Query is null) && 
-                Query.Any(i => i.Identifier == identifier);
+
+
+            try
+            {
+                Saved?.Invoke(obj);
+                StateChanged?.Invoke();
+            }
+            catch (Exception exception)
+            {
+                // if the call back code throws an exception
+                // just log it and keep going
+                LogUtils.Log(LogLevel.Warn, nameof(Save), exception.Message);
+            }
+            return true;
         }
 
-        /// <summary>
-        /// Queries the data base to search for the supplied object's current identifier. 
-        /// </summary>
-        /// <param name="obj">Is the object to search for by key.</param>
-        /// <returns>
-        /// Returns the objects identifier if the object's key 
-        /// exists in the database. Otherwise, returns Constants.Undefined if it's not in the database or 
-        /// a database connection is not open.
-        /// </returns>
-        private static int ExtractIdFromDatabase(${ClassName} obj) 
+        public static bool Save(${ClassName} obj)
         {
-            if (!IsConnected || obj is null)
-                return Constants.Undefined;
-            var fromDataBase = SelectByKey(obj.Key);
-            return fromDataBase?.Identifier ?? Constants.Undefined;
-        }
-        
-        /// <summary>
-        /// This method is two separate operations in one call.
-        /// First, if the supplied object does not exist in the database, then 
-        ///   a new entry will be <b>insert</b>ed. 
-        /// Second, if the supplied object does exist in the database, then the 
-        ///   columns will be <b>update</b>d to match the supplied object.
-        /// For it to exist in the database, the Key field must match with a column in the current database. 
-        /// </summary>
-        /// <param name="obj">Is the object to insert.</param>
-        /// <returns>
-        /// False if not connected, otherwise returns true if the operation succeeded.
-        /// </returns>
-        public static bool Save(${ClassName} obj) 
-        {
-            if (!IsConnected || obj is null)
+            if (obj is null)
                 return false;
 
             var result = false;
-            try {
-                if (Query.All(i => i.Key != obj.Key)) {
-                    // Re-examine this but keep for now, 
-                    // It allows objects to be saved 'without' a lookup key.
-                    // Which is desired behavior, but the means for generating 
-                    // the key needs to be better.
-                    if (string.IsNullOrEmpty(obj.Key))
-                        obj.Key = Database.GenerateKey();
-
-                    result = Connection?.Insert(obj) != 0;
-                    
-                    if (result) {
-                        // Update the instance field.
-                        var id = ExtractIdFromDatabase(obj);
-                     
-                        if (id != Constants.Undefined) {
-                            obj.Identifier = id;
-                        }
-                    }
-
-                } else {
-                    var id = ExtractIdFromDatabase(obj);
-                    if (id != Constants.Undefined) {
-                        
-                        obj.Identifier = id; 
-
-                        result = Connection?.Update(obj) != 0;
-
-                    } else {
-                        LogUtils.Log(LogLevel.Error, 
-                            nameof(Save),
-                            "Failed to extract the id from the database."
-                            );
-                    }
+            using (var con = new Connection())
+            {
+                try
+                {
+                    var query = con.DB?.Table<${ClassName}>();
+                    if (query != null)
+                        result = SaveOrUpdateImpl(con, query, obj);
                 }
-
-                if (result) {
-                    try {
-                        Saved?.Invoke(obj);
-                        StateChanged?.Invoke();
-                    } catch {
-                        // ignored
-                    }
+                catch (Exception exception)
+                {
+                    result = false;
+                    LogUtils.Log(LogLevel.Error, nameof(Save), exception.Message);
                 }
-            } catch (SQLiteException exception) {
-                result = false;
-                LogUtils.Log(LogLevel.Error, 
-                    nameof(Save),
-                    exception.Message
-                    );
             }
             return result;
         }
-        /// <summary>
-        /// Attempts to save the supplied list of objects.
-        /// </summary>
-        /// <param name="objects">The list of objects to save.</param>
-        /// <returns>
-        /// Returns the count of successful saves. 
-        /// </returns>
+
         public static int Save(List<${ClassName}> objects) 
         {
-            if (!IsConnected || objects is null)
+            if (objects is null)
                 return 0;
-
             return objects.Count(Save);
         }
 
-        /// <summary>
-        /// Attempts to remove the supplied object from the database.
-        /// </summary>
-        /// <param name="obj">The object to drop.</param>
-        /// <returns>
-        /// Returns true on success otherwise returns false.
-        /// </returns>
         public static bool Drop(${ClassName} obj) 
         {
-            if (!IsConnected || obj is null)
+            if (obj is null)
                 return false;
 
             var result = false;
-            try {
-                result = Connection.Delete(obj) > 0;
-                if (result) {
-                    try {
-                        Dropped?.Invoke(obj);
-                        StateChanged?.Invoke();
-                    } catch {
-                        // ignored
+            try 
+            {
+                using(var con = new Connection())
+                {
+                    if (con.DB != null)
+                    {
+                        result = con.DB.Delete(obj) > 0;
+
+                        if (result) 
+                        {
+                            try 
+                            {
+                                Dropped?.Invoke(obj);
+                                StateChanged?.Invoke();
+                            } 
+                            catch (Exception exception)
+                            {
+                                // if the call back code throws an exception
+                                // just log it and keep going
+                                LogUtils.Log(LogLevel.Warn, nameof(Drop), exception.Message);
+                            }
+                        }
                     }
                 }
-            } catch (SQLiteException exception) {
-
-                LogUtils.Log(LogLevel.Error,
-                    nameof(Drop),
-                    exception.Message
-                );
+            }
+            catch (Exception exception) 
+            {
+                LogUtils.Log(LogLevel.Error, nameof(Drop), exception.Message);
             }
             return result;
         }
 
-        /// <summary>
-        /// Attempts to remove the supplied list of objects.
-        /// </summary>
-        /// <param name="objects">The list of objects to remove.</param>
-        /// <returns>
-        /// Returns the number of successful removals. 
-        /// </returns>
         public static int Drop(IEnumerable<${ClassName}> objects) 
         {
-            if (!IsConnected || objects is null)
+            if (objects is null)
                 return 0;
-
             return objects.Count(Drop);
         }
         
-        /// <summary>
-        /// Attempts to remove the row that contains the supplied key.
-        /// </summary>
-        /// <param name="key">The row to delete by the supplied key .</param>
-        /// <returns>
-        /// Returns true on success otherwise returns false.
-        /// </returns>
         public static bool DropByKey(string key) 
         {
-            if (!IsConnected || string.IsNullOrEmpty(key))
+            if (string.IsNullOrEmpty(key))
                 return false;
 
             var obj = SelectByKey(key);
             return !(obj is null) && Drop(obj);
         }
         
-        /// <summary>
-        /// Attempts to remove the row that contains the supplied primary id.
-        /// </summary>
-        /// <param name="identifier">The row to delete by the supplied identifier.</param>
-        /// <returns>
-        /// Returns true on success otherwise returns false.
-        /// </returns>
         public static bool DropByIdentifier(int identifier) 
         {
-            if (!IsConnected || identifier <= 0)
+            if (identifier <= 0)
                 return false;
-
             var obj = SelectByIdentifier(identifier);
             return !(obj is null) && Drop(obj);
         }
-
 
         public JsonObject ToJson()
         {
@@ -411,4 +316,5 @@
 
         ${TransactionImpl}
     }
+
     ${SyncImpl}

@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application
+    x:Class="BookStore.Mobile.App"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:BookStore.Mobile.ViewModels;assembly=BookStore.Mobile">
+    <Application.Resources>
+        <Color x:Key="Header">#2d2d2d</Color>
+        <Color x:Key="HeaderTransparent">#2d2d2d2d</Color>
+        <Color x:Key="ModalTransparent">#802d2d2d</Color>
+        <Color x:Key="HeaderLight">#4d4d4d</Color>
+        <Color x:Key="HeaderLighter">#9d9d9d</Color>
+        <Color x:Key="HeaderText">#939393</Color>
+        <Color x:Key="BaseRed">#d12424</Color>
+        <Color x:Key="BaseGreen">#6bb924</Color>
+        <x:String x:Key="IndexDescription">The book store is a test front end web application for the Cloud project. This apps primary goals are to be able to connect to the store's backend REST service, and preform all CRUD operations on the database.</x:String>
+
+        <LinearGradientBrush x:Key="GradientBrush" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Offset="0.0" Color="{StaticResource HeaderTransparent}" />
+            <GradientStop Offset="0.1" Color="Transparent" />
+        </LinearGradientBrush>
+
+        <Style
+            x:Key="GreenButton"
+            TargetType="Button">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup Name="CommonStates">
+                        <VisualState Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="{StaticResource BaseGreen}" />
+                                <Setter Property="BorderColor" Value="{StaticResource HeaderTransparent}" />
+                                <Setter Property="TextColor" Value="White" />
+                                <Setter Property="CornerRadius" Value="5" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+
+        </Style>
+        <Style
+            x:Key="RedButton"
+            TargetType="Button">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup Name="CommonStates">
+                        <VisualState Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="{StaticResource BaseRed}" />
+                                <Setter Property="BorderColor" Value="{StaticResource HeaderTransparent}" />
+                                <Setter Property="TextColor" Value="White" />
+                                <Setter Property="CornerRadius" Value="5" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+        <Style
+            x:Key="DefaultEntry"
+            TargetType="Entry">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup Name="CommonStates">
+                        <VisualState Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="TextColor" Value="{StaticResource HeaderLight}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+        <Style
+            x:Key="DefaultEditor"
+            TargetType="Editor">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup Name="CommonStates">
+                        <VisualState Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="TextColor" Value="{StaticResource HeaderLight}" />
+                                <Setter Property="HeightRequest" Value="96" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+    </Application.Resources>
+</Application>

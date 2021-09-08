@@ -4,12 +4,12 @@
   <Import Project="$(SolutionDir)\BuildTools\Extras.props" />
 
   <PropertyGroup>
-    <TargetFramework>$(CoreFramework)</TargetFramework>
+    <TargetFramework>$(CoreAppFramework)</TargetFramework>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
   <PropertyGroup>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
+    <EnableNETAnalyzers>false</EnableNETAnalyzers>
   </PropertyGroup>
 
 

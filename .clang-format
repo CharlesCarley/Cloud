@@ -5,7 +5,7 @@ TabWidth:           4
 UseTab:             Never
 
 Language:           CSharp
-BreakBeforeBraces:  WebKit
+BreakBeforeBraces:  Allman
 
 AlignConsecutiveDeclarations:        true
 AlignConsecutiveAssignments:         true

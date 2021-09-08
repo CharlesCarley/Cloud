@@ -30,7 +30,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace BookStore.Store
 {
-    public class DevelopmentStartup {
+    public class DevelopmentStartup
+    {
         public DevelopmentStartup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -61,6 +62,8 @@ namespace BookStore.Store
 
             app.UseAuthorization();
             app.UseMvc();
+
+            // TODO: this needs to be configured
             Database.Register($"{env.ContentRootPath}/BookStore.db");
         }
     }

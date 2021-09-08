@@ -28,7 +28,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Cloud.Utils.Test
 {
     [TestClass]
-    public class JsonUnits {
+    public class JsonUnits
+    {
         public string TestDir = $"{Environment.CurrentDirectory}/../../../";
 
         static void LogMessage(string message)
@@ -146,7 +147,8 @@ namespace Cloud.Utils.Test
             Assert.AreEqual(false, booleanFalse);
         }
 
-        private class TestWrapObject {
+        private class TestWrapObject
+        {
             public string A { get; set; }
             public int    B { get; set; }
             public float  C { get; set; }
@@ -169,7 +171,5 @@ namespace Cloud.Utils.Test
             Assert.AreEqual(7765432, obj1.B);
             Assert.IsTrue(Math.Abs(1.1457890f - obj.C) < 0.0001f);
         }
-
-
     }
 }

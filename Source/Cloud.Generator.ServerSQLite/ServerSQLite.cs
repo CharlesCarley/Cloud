@@ -29,7 +29,8 @@ using Cloud.GeneratorApi;
 
 namespace Cloud.Generator.ServerSQLite
 {
-    static class Parameters {
+    static class Parameters
+    {
         public const string HeaderUsing               = "${Using}";
         public const string HeaderProjectNamespace    = "${ProjectNamespace}";
         public const string HeaderContent             = "${Content}";
@@ -52,7 +53,8 @@ namespace Cloud.Generator.ServerSQLite
         public const string RouteContainsKey = "${ContainsKey}";
     }
 
-    public static class Builders {
+    public static class Builders
+    {
         public static StringBuilder Output { get; }
         public static StringBuilder Content { get; }
         public static StringBuilder Registration { get; }
@@ -69,7 +71,8 @@ namespace Cloud.Generator.ServerSQLite
         }
     }
 
-    public class ServerSQLiteGenerator : IStoreGenerator {
+    public class ServerSQLiteGenerator : IStoreGenerator
+    {
         private StoreItemManager Manager { get; set; }
         private string           Output { get; set; }
 
@@ -80,7 +83,8 @@ namespace Cloud.Generator.ServerSQLite
 
             // make sure that the defining API is visible
             Builders.Content.Clear();
-            foreach (var ns in Manager.UsedNamespaces) {
+            foreach (var ns in Manager.UsedNamespaces)
+            {
                 // exclude it if its the same as the destination.
                 if (Manager.Namespace.Equals(ns)) continue;
 
@@ -102,7 +106,8 @@ namespace Cloud.Generator.ServerSQLite
 
         private void GenerateClasses()
         {
-            foreach (var item in Manager.Items) {
+            foreach (var item in Manager.Items)
+            {
                 var classTemplate = Templates.Class;
 
                 Builders.Decelerations.Clear();
@@ -130,7 +135,8 @@ namespace Cloud.Generator.ServerSQLite
             propertyDeclarations.Append(Parameters.EOL);
             propertyDeclarations.Append(' ', 8);
             propertyDeclarations.Append("public ");
-            switch (property.Type) {
+            switch (property.Type)
+            {
             case PropertyType.DateAndTime:
             case PropertyType.String:
                 propertyDeclarations.Append("string ");
@@ -148,7 +154,8 @@ namespace Cloud.Generator.ServerSQLite
             propertyDeclarations.Append(property.Name);
             propertyDeclarations.Append(" { get; set; }");
 
-            if (property.Default != null) {
+            if (property.Default != null)
+            {
                 if (property.Type == PropertyType.String)
                     propertyDeclarations.Append($" = \"{property.Default}\";");
                 else if (property.Type == PropertyType.Real)
@@ -168,7 +175,8 @@ namespace Cloud.Generator.ServerSQLite
 
             // Replace the RegisterTypes variable
             Builders.Registration.Append(Parameters.EOL);
-            foreach (var item in Manager.Items) {
+            foreach (var item in Manager.Items)
+            {
                 Builders.Registration.Append(' ', 16);
                 Builders.Registration.Append($"{item.UserName}.Register();");
                 Builders.Registration.Append(Parameters.EOL);
@@ -180,7 +188,8 @@ namespace Cloud.Generator.ServerSQLite
             Builders.Registration.Clear();
             Builders.Registration.Append(Parameters.EOL);
 
-            foreach (var item in Manager.Items) {
+            foreach (var item in Manager.Items)
+            {
                 Builders.Registration.Append(' ', 12);
                 Builders.Registration.Append($"{item.UserName}.Clear();");
                 Builders.Registration.Append(Parameters.EOL);
@@ -201,11 +210,14 @@ namespace Cloud.Generator.ServerSQLite
         /// <returns></returns>
         public bool Generate(StoreItemManager items, string path)
         {
-            try {
+            try
+            {
                 Manager = items;
                 Output  = path;
                 return GenerateImpl();
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 LogUtils.Log(ex.Message);
             }
             return false;

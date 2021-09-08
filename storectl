@@ -110,8 +110,8 @@ elif [ "$1" = "test" ]; then
     buildStore
 
     echo_g "Running tests"
-    dotnet test  $CommonTest -c Release
-    dotnet test  $DatabaseTest -c Release
+    dotnet test -v n $CommonTest -c Release
+    dotnet test -v n $DatabaseTest -c Release
 else
     usage
 fi

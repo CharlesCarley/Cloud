@@ -5,17 +5,6 @@
   <Import Project="$(SolutionDir)\BuildTools\Globals.props"/>
   <Import Project="$(SolutionDir)\BuildTools\Packaging.props" />
 
-  <!-- This used to pass any shared modules down to sub module projects. -->
-  <ItemGroup Condition="$(IncludAnalizers)=='True'">
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers"
-                      Version="3.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="System.Diagnostics.Tools"
-                      Version="4.3.0" />
-  </ItemGroup>
-
 
   <!-- These just aid in quickly adding references and moving the source tree.-->
   <PropertyGroup>

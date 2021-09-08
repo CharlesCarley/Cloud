@@ -1,92 +1,111 @@
     
-    public class ${ClassName} {
-
-        public const int UniqueIdentifier = ${UniqueId};
-
+    public class ${ClassName} 
+    {
         [PrimaryKey, AutoIncrement]
-        public int     ServerId { get; set; } = Constants.Undefined;
-        public int     Revision { get; set; } = Constants.Undefined;
-        public string  Key      { get; set; } = string.Empty;
-        public string  Storage  { get; set; } = string.Empty;
+        public int ServerId { get; set; } = Constants.Undefined;
 
-        [Ignore]
-        public static SQLiteConnection Connection => Database.Connection;
-        [Ignore]
-        public static bool IsConnected => Database.IsConnected;
-        [Ignore]
-        public static TableQuery<${ClassName}> Query => Database.Connection?.Table<${ClassName}>();
+        public int Revision { get; set; } = Constants.Undefined;
+
+        public string  Key { get; set; } = string.Empty;
+
+        public string  Storage  { get; set; } = string.Empty;
 
         public static void Clear() 
         {
-            if (!IsConnected) 
-                return;
-            Connection?.DropTable<${ClassName}>();
-            Connection?.CreateTable<${ClassName}>();
+            using var con = new Connection(SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create);
+            con.DB?.DropTable<${ClassName}>();
+            con.DB?.CreateTable<${ClassName}>();
         }
 
         public static void Register() 
         {
-            Connection?.CreateTable<${ClassName}>();
-        }
-        
-        private static RevisionId ExtractIdRevFromDatabase(string key) 
-        {
-            if (!IsConnected || string.IsNullOrEmpty(key))
-                return null;
-
-            var result = Connection.Query<RevisionId>(
-                "SELECT ServerId, Revision FROM ${ClassName} WHERE Key==?;", key);
-
-            if (result != null && result.Count > 0)
-                return result[0];
-            return null;
+            using var con = new Connection(SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create);
+            con.DB?.CreateTable<${ClassName}>();
         }
 
-        public static bool Save(${ClassName} obj) 
+        private static RevisionId InsertImpl(Connection con, TableQuery<${ClassName}> query, ${ClassName} obj)
         {
-            if (!IsConnected || obj is null)
+            if (string.IsNullOrEmpty(obj.Key))
+                throw new Exception("The supplied object's key is undefined");
+
+            obj.Revision = 1;
+
+            RevisionId revision = null;
+            if (con.DB.Insert(obj) != 0)
+            {
+                ${ClassName} element = query.FirstOrDefault(i => i.Key == obj.Key);
+                if (element.ServerId != Constants.Undefined)
+                {
+                    revision = new RevisionId {
+                        Revision = 1,
+                        ServerId = Constants.Undefined
+                    };
+                }
+                else
+                    throw new Exception("Failed to extract an id from the database.");
+            }
+            else
+                throw new Exception($"Insert object {obj.Key} failed.");
+            return revision;
+        }
+
+        private static RevisionId UpdateImpl(Connection con, TableQuery<${ClassName}> query, ${ClassName} obj)
+        {
+            ${ClassName} element = query.FirstOrDefault(i => i.Key == obj.Key);
+            if (element == null)
+                throw new Exception($"Failed to extract the object {obj.Key} from the database.");
+
+            RevisionId revision = null;
+
+            if (element.ServerId != Constants.Undefined)
+            {
+                // Update the identifier for this instance and
+                // bump the revision prior to update.
+
+                obj.ServerId = element.ServerId;
+                obj.Revision = element.Revision + 1;
+
+                if (con.DB.Update(obj) != 0)
+                {
+                    revision = new RevisionId {
+                        Revision = obj.Revision,
+                        ServerId = element.ServerId
+                    };
+                }
+                else
+                    throw new Exception($"Failed update the {obj.Key} element in the database.");
+            }
+            else
+                throw new Exception("Failed to extract an id from the database.");
+
+            return revision;
+        }
+
+        public static bool Save(${ClassName} obj)
+        {
+            if (obj is null)
                 return false;
 
-            var result = false;
-            try {
-                if (Query.All(i => i.Key != obj.Key)) {
-                    // Re-examine this but keep for now, 
-                    // It allows objects to be saved 'without' a lookup key.
-                    // Which is can be a desired behavior, but the means for generating 
-                    // the key needs to be better.
-                    if (string.IsNullOrEmpty(obj.Key))
-                        obj.Key = Database.GenerateKey();
+            RevisionId result = null;
+            try
+            {
+                using var con = new Connection();
+                var query = con.DB?.Table<${ClassName}>();
 
-                    obj.Revision = 1;
-                    result = Connection?.Insert(obj) != 0;
-                } else {
-                    var id = ExtractIdRevFromDatabase(obj.Key);
-                    if (id != null) {
-                        obj.ServerId = id.ServerId;
-                        obj.Revision = id.Revision + 1;
-
-                        // TODO: Compare the package strings for equality, and if they are not the same 
-                        //       do the update....
-                        result = Connection?.Update(obj) != 0;
-                    } else {
-
-                        LogUtils.Log(LogLevel.Warn,
-                            nameof(Save),
-                            $"Failed to extract ServerId and Revision from the ${ClassName} table, with the key '{obj.Key}'");
-                    }
+                if (query != null)
+                {
+                    if (query.All(i => i.Key != obj.Key))
+                        result = InsertImpl(con, query, obj);
+                    else
+                        result = UpdateImpl(con, query, obj);
                 }
-            } catch (SQLiteException ex) {
-                result = false;
-                LogUtils.Log(LogLevel.Error,
-                    nameof(Save),
-                    ex.Message);
             }
-
-            // TODO: return the json {"ServerId": ServerId, "Revision": Revision }
-            // for now it's just a bool value...
-            return result;
+            catch (Exception ex)
+            {
+                LogUtils.Log(LogLevel.Error, nameof(Save), ex.Message);
+            }
+            return result != null;
         }
-
 
         public static string AsJson64(${ClassName} obj) 
         {
@@ -99,212 +118,196 @@
             json.AddValue("Package",  obj.Storage);
             return json.AsBase64();
         }
-
     }
 
     public class ${ClassName}Controller : Controller 
     {
-        [Ignore]
-        public static TableQuery<${ClassName}> Query => Database.Connection?.Table<${ClassName}>();
+        private string ValidateBundle(PostBundle bundle)
+        {
+            if (bundle is null) 
+            {
+                LogUtils.Log(LogLevel.Warn, nameof(ValidateBundle), "The supplied bundle is null.");
+                return null;
+            }
+            
+            if (string.IsNullOrEmpty(bundle.Content)) 
+            {
+                LogUtils.Log(LogLevel.Warn, nameof(ValidateBundle), "The bundle is missing content.");
+                return null;
+            }
 
-        [Route("${SelectArray}/${UniqueId}")] [HttpGet]
+            var result = StringUtils.FromBase64(bundle.Content);
+            if (string.IsNullOrEmpty(result))
+            {               
+                LogUtils.Log(LogLevel.Warn, nameof(ValidateBundle), "The bundle failed to unpack.");
+                return null;
+            }
+            return result;
+        }
+
+        [Route("${SelectArray}/${UniqueId}")] 
+        [HttpGet]
         public string SelectArray() 
         {
-            // First, try to connect.
-            Database.Connect();
-
-            if (!Database.IsConnected) {
-
-                LogUtils.Log(LogLevel.Warn, 
-                    nameof(SelectArray), 
-                    "no connection to the database.");
-
-                // Can't do it so bail out with an empty list.
+            using var con = new Connection();
+            if (con.DB is null) 
+            {
+                LogUtils.Log(LogLevel.Warn, nameof(SelectArray),  "No connection to the database.");
                 return Constants.ReturnNone;
             }
 
-            // Try to pull all of the indices.
-
             string returnString;
-            try {
-
-                var result = Database.Connection?.Query<RevisionId>(
-                    "SELECT ServerId, Revision FROM ${ClassName};");
-
-                if (result != null && result.Count > 0) {
-
-                    // Build the CSV list.
-
+            try 
+            {
+                var result = con.DB.Query<RevisionId>("SELECT ServerId, Revision FROM ${ClassName};");
+                if (result != null && result.Count > 0) 
+                {
                     var list = new List<int>();
-
-                    foreach (var id in result) {
-                        list.Add(id.ServerId);
-                        list.Add(id.Revision);
+                    foreach (var item in result)
+                    {
+                        list.Add(item.ServerId);
+                        list.Add(item.Revision);
                     }
-
-                    // serialize the list as a string
-
                     returnString = StringUtils.IntListToString(list, true);
-
-                } else {
-                    returnString = Constants.ReturnNone;
                 }
+                else 
+                    returnString = Constants.ReturnNone;
             }
             catch (Exception ex)
             {
-                returnString = Constants.ReturnNone;
                 LogUtils.Log(LogLevel.Error, nameof(SelectArray), ex.Message);
+                returnString = Constants.ReturnNone;
             }
-
-            Database.Close();
             return returnString;
         }
 
-        [Route("${ContainsKey}/${UniqueId}")] [HttpPost]
+        [Route("${ContainsKey}/${UniqueId}")] 
+        [HttpPost]
         public string ContainsKey([FromBody] PostBundle bundle) 
         {
-            // fail cases: the bundle is null or its content is empty.  
-
-            if (bundle is null) {
-                LogUtils.Log(LogLevel.Warn, 
-                    nameof(ContainsKey), 
-                    "The supplied bundle is null.");
-                return Constants.ReturnFailure;
-            }
-
-            if (string.IsNullOrEmpty(bundle.Content)) {
-                LogUtils.Log(LogLevel.Warn, 
-                    nameof(ContainsKey), 
-                    "The bundle is missing content.");
-                return Constants.ReturnFailure;
-            }
-
-            // extract the content back out
-
-            var lookupKey = StringUtils.FromBase64(bundle.Content);
-            if (string.IsNullOrEmpty(lookupKey))  {
-
+            var lookupKey = ValidateBundle(bundle);
+            if (string.IsNullOrEmpty(lookupKey))  
+            {
                 LogUtils.Log(LogLevel.Error, 
-                    nameof(ContainsKey),  
+                    nameof(ContainsKey), 
                     "Failed to extract bundle content.");
 
                 return Constants.ReturnFailure;
             }
 
-            // try to connect and query it
-            try {
-                Database.Connect();
-
-                if (Database.IsConnected) {
-
-                    var item   = Query?.FirstOrDefault(obj => obj.Key == lookupKey) != null;
-                    var result = item ? Constants.ReturnTrue : Constants.ReturnFalse;
-
-                    Database.Close();
-                    return result;
+            string result;
+            try 
+            {
+                using var con = new Connection();
+                if (con.DB != null) 
+                {
+                    var query = con.DB.Table<${ClassName}>();
+                    if (query != null)
+                    {
+                        var item = query.FirstOrDefault(obj => obj.Key == lookupKey) != null;
+                        result = item ? Constants.ReturnTrue : Constants.ReturnFalse;
+                    }
+                    else
+                        result = Constants.ReturnFailure;
                 }
                 else
                 {
                     LogUtils.Log(LogLevel.Error, 
                         nameof(ContainsKey), 
                         "Failed to open a connection to the database.");
-                    return Constants.ReturnFailure;
+
+                    result = Constants.ReturnFailure;
                 }
-
-            } catch (Exception ex) {
-
+            } 
+            catch (Exception ex) 
+            {
                 LogUtils.Log(LogLevel.Error, nameof(ContainsKey), ex.Message);
-                return Constants.ReturnFailure;
+                result = Constants.ReturnFailure;
             }
+            return result;
         }
 
 
-        [Route("${SelectById}/${UniqueId}")] [HttpPost]
+        [Route("${SelectById}/${UniqueId}")] 
+        [HttpPost]
         public string SelectById([FromBody] PostBundle bundle) 
         {
-            if (bundle is null)
-                return null;
+            var content = ValidateBundle(bundle);
+            if (string.IsNullOrEmpty(content))
+                return Constants.ReturnFailure;
 
-            var identifier = StringUtils.ToInt(
-                StringUtils.FromBase64(bundle.Content),
-                Constants.Undefined);
-
+            var identifier = StringUtils.ToInt(content, Constants.Undefined);
             if (identifier == Constants.Undefined) 
-                return null;
+                return Constants.ReturnFailure;
             
-            Database.Connect();
-            var item = Query?.FirstOrDefault(obj => obj.ServerId == identifier);
+            using var con = new Connection();
+            var query = con.DB?.Table<${ClassName}>();
+
+            var item = query?.FirstOrDefault(obj => obj.ServerId == identifier);
             string result = null;
             if (item != null)
                 result = ${ClassName}.AsJson64(item);
-            Database.Close();
             return result;
         }
 
-        [Route("${SelectByKey}/${UniqueId}")] [HttpPost]
+        [Route("${SelectByKey}/${UniqueId}")] 
+        [HttpPost]
         public string SelectByKey([FromBody] PostBundle bundle) 
         {
-            if (bundle is null)
-                return null;
+            var content = ValidateBundle(bundle);
+            if (string.IsNullOrEmpty(content))
+                return Constants.ReturnFailure;
 
-            var identifier = StringUtils.FromBase64(bundle.Content);
-            if (string.IsNullOrEmpty(identifier)) 
-                return null;
-            
-            Database.Connect();
-            var item = Query?.FirstOrDefault(obj => obj.Key == identifier);
+            using var con = new Connection();
+            var query = con.DB?.Table<${ClassName}>();
+
+            var item = query?.FirstOrDefault(obj => obj.Key == content);
             string result = null;
             if (item != null)
                 result = ${ClassName}.AsJson64(item);
-            Database.Close();
             return result;
         }
 
-        [Route("${Save}/${UniqueId}")] [HttpPost]
+        [Route("${Save}/${UniqueId}")] 
+        [HttpPost]
         public void Save([FromBody] PostBundle bundle) 
         {
-            if (bundle is null)
+            var content = ValidateBundle(bundle);
+            if (string.IsNullOrEmpty(content))
                 return;
 
-            Database.Connect();
-            var obj = (UnpackedBundle)JsonParser.Unwrap(
-                    bundle.Content, 
-                    typeof(UnpackedBundle));
+            var obj = (UnpackedBundle)JsonParser.Unwrap(content, typeof(UnpackedBundle), false);
             if (obj == null)
                 return;
+
             ${ClassName}.Save(new ${ClassName}{
                 ServerId = obj.ServerId,
                 Revision = obj.Revision,
                 Key      = obj.Key,
                 Storage  = obj.Package,
             });
-
-            // TODO: Return the id and the revision..
-            Database.Close();
         }
 
-        [Route("${Drop}/${UniqueId}")] [HttpPost]
+        [Route("${Drop}/${UniqueId}")] 
+        [HttpPost]
         public void Drop([FromBody] PostBundle bundle) 
         {
-            if (bundle is null)
+            var content = ValidateBundle(bundle);
+            if (string.IsNullOrEmpty(content))
                 return;
 
-            var identifier = StringUtils.FromBase64(bundle.Content);
-            if (string.IsNullOrEmpty(identifier)) 
-                return;
-            
-            Database.Connect();
-            var item = Query?.FirstOrDefault(obj => obj.Key == identifier);
+            using var con = new Connection();
+            var query = con.DB?.Table<${ClassName}>();
+
+            var item = query?.FirstOrDefault(obj => obj.Key == content);
             if (item != null)
-                Database.Connection?.Delete(item);
-            Database.Close();
+                con.DB?.Delete(item);
         }
 
-        [Route("${Clear}/${UniqueId}")] [HttpPost]
-        public void Clear([FromBody] PostBundle bundle) 
+        [Route("${Clear}/${UniqueId}")] 
+        [HttpPost]
+        public void Clear() 
         {
-            Database.Connect();
             ${ClassName}.Clear();
-            Database.Close();
         }
     }

@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="BookStore.Mobile.Views.BookEditFormPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:BookStore.Mobile.ViewModels;assembly=BookStore.Mobile"
+    Title="Add Book"
+    Background="{DynamicResource GradientBrush}">
+    <ContentPage.BindingContext>
+        <viewModels:BookViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <StackLayout Padding="24">
+            <Label
+                FontSize="Large"
+                Text="Create"
+                TextColor="{StaticResource HeaderLight}" />
+            <BoxView
+                BackgroundColor="{StaticResource HeaderLight}"
+                HeightRequest=".5" />
+
+            <Label Text="Key" />
+            <Entry
+                Style="{StaticResource DefaultEntry}"
+                Text="{Binding Key}" />
+            <Label Text="Title" />
+            <Entry
+                Style="{StaticResource DefaultEntry}"
+                Text="{Binding Title}" />
+            <Label Text="Author" />
+            <Entry
+                Style="{StaticResource DefaultEntry}"
+                Text="{Binding Author}" />
+            <Label Text="Description" />
+            <Editor Text="{Binding Description}"
+                    Style="{StaticResource DefaultEditor}"/>
+            <Button
+                Clicked="OnUpdateClicked"
+                HorizontalOptions="Start"
+                Style="{StaticResource GreenButton}"
+                Text="Update" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

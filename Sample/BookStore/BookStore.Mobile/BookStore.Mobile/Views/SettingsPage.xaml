@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="BookStore.Mobile.Views.SettingsPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:BookStore.Mobile.ViewModels;assembly=BookStore.Mobile"
+    Title="Settings"
+    Background="{StaticResource GradientBrush}">
+    <!--
+        ====================
+        SettingsViewModel
+        ====================
+    -->
+    <ContentPage.BindingContext>
+        <viewModels:SettingsViewModel />
+    </ContentPage.BindingContext>
+    <!--
+        ====================
+        Resources
+        ====================
+    -->
+    <ContentPage.Content>
+        <StackLayout Padding="24">
+
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span
+                            FontSize="Medium"
+                            Text="Connection" />
+                        <Span
+                            FontSize="Body"
+                            Text=" Specify the connection settings to the backend database." />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <StackLayout Padding="12">
+                <Label Text="Host" />
+                <Entry Text="{Binding Host}" />
+                <Label Text="Port" />
+                <Entry Text="{Binding Port}" />
+                <Button
+                    Clicked="UpdateHostConfig"
+                    HorizontalOptions="Start"
+                    Style="{StaticResource GreenButton}"
+                    Text="Update">
+                </Button>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,77 +1,34 @@
-    /// <summary>
-    /// Class for creating, connecting, and maintaining a static SQLiteConnection pointer.
-    /// </summary>
-    public static class Database {
-
+    public static class Database 
+    {
         private static string _databaseFile;
 
-        /// <summary>
-        /// Opens or creates a database at the supplied path.
-        /// </summary>
-        /// <param name="pathToDatabaseFile">A file system path to the database.</param>
-        /// <remarks>
-        /// If an ILog implementation is not supplied prior to invoking this method, then
-        /// a default log is created, which logs through System.Console.
-        /// </remarks>
+        public static string Path => _databaseFile;
+
+        /// 
+        /// 
         public static void Register(string pathToDatabaseFile) 
         {
             if (string.IsNullOrEmpty(pathToDatabaseFile))
                 throw new ArgumentNullException(nameof(pathToDatabaseFile));
 
-            _databaseFile = null;
+            LogUtils.Log(pathToDatabaseFile);
 
-            try {
-                Connection = new SQLiteConnection(pathToDatabaseFile,
-                                           SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create);
+            _databaseFile = pathToDatabaseFile;
+
+            try 
+            {
                 ${RegisterTypes}
-
-                _databaseFile = pathToDatabaseFile;
-
-            } catch (Exception ex) {
-
+            } 
+            catch (Exception ex) 
+            {
+                _databaseFile = null;
                 LogUtils.Log(LogLevel.Error, ex.Message);
             }
-            Close();
         }
 
-        public static void Connect()  
+        public static void Clear() 
         {
-
-            if (string.IsNullOrEmpty(_databaseFile)) {   
-
-                LogUtils.Log(LogLevel.Error, 
-                    nameof(Connect),
-                    "Invalid path to the database.");
-
-                return;
-            }
-
-            try {
-                Connection = new SQLiteConnection(
-                    _databaseFile, 
-                    SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create);
-
-            } catch (Exception ex) {
-                LogUtils.Log(LogLevel.Error, ex.Message);
-                Close();
-            }
-        }
-
-        public static bool IsConnected => Connection != null;
-
-        public static void Clear() {
             ${ClearTypes}
-        }
-
-        /// <summary>
-        /// Closes any open database handles and sets the local
-        /// connection to null.
-        /// </summary>
-        public static void Close() 
-        {
-            Connection?.Close();
-            Connection?.Dispose();
-            Connection = null;
         }
 
         public static string GenerateKey() 
@@ -80,14 +37,35 @@
                 .ToString()
                 .ToUpper(CultureInfo.InvariantCulture);
         }
-
-        /// <summary>
-        /// Provides read only access to the open SQLiteConnection handle.
-        /// </summary>
-        public static SQLiteConnection Connection { get; private set; }
     }
 
-    public class UnpackedBundle {
+    public class Connection : IDisposable
+    {
+        public SQLiteConnection DB => _connection;
+
+        private readonly SQLiteConnection _connection;
+
+        public Connection(SQLiteOpenFlags flags = SQLiteOpenFlags.ReadWrite)
+        {
+            try
+            {
+                _connection = new SQLiteConnection(Database.Path, flags);
+            }
+            catch
+            {
+                LogUtils.Log($"Failed to open the supplied {Database.Path}");
+            }
+        }
+
+        public void Dispose()
+        {
+            _connection?.Close();
+            _connection?.Dispose();
+        }
+    }
+
+    public class UnpackedBundle 
+    {
         public int    ServerId { get; set; }
         public int    Revision { get; set; }
         public int    TableId  { get; set; }
@@ -96,17 +74,20 @@
         public string Package  { get; set; }
     }
     
-    public class RevisionId {
+    public class RevisionId 
+    {
         public int    ServerId { get; set; }
         public int    Revision { get; set; }
     }
     
     ${Content}
 
+    
     /// <summary>
     /// Controller that is used to execute a client status check.
     /// </summary>
-    public class StatusController : Controller {
+    public class StatusController : Controller 
+    {
         [Route("${Status}")][HttpGet]
         public void StatusCheck()
         {
