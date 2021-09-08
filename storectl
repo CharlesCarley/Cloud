@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 Project="$PWD/Cloud.sln"
 Generator="$PWD/Source/Cloud.Generator/Cloud.Generator.csproj"
 Publish="$HOME/Public/"
