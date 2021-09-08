@@ -1,6 +1,6 @@
 #!/bin/bash
 
-Project="$PWD/Cloud.sln"
+Project="$PWD/Cloud.Store.sln"
 Generator="$PWD/Source/Cloud.Generator/Cloud.Generator.csproj"
 Publish="$HOME/Public/"
 Binary="$HOME/Public/BookStore.Store"
