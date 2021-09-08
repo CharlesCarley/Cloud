@@ -72,7 +72,6 @@ namespace BookStore.Mobile.Views
             {
                 var page = new DialogPage("Clear?", "This will clear the book database.");
                 page.Disappearing += OnDialogExit;
-
                 await Navigation.PushModalAsync(page);
                 
 
@@ -83,7 +82,7 @@ namespace BookStore.Mobile.Views
             }
         }
 
-        private void OnDialogExit(object sender, EventArgs e)
+        private async void OnDialogExit(object sender, EventArgs e)
         {
             if (sender is DialogPage page)
             {
@@ -92,11 +91,10 @@ namespace BookStore.Mobile.Views
                     if (dialog.Result)
                     {
                         if (BindingContext is BookCollectionViewModel collection)
-                            collection.ClearCollection();
+                            await collection.ClearCollectionAsync();
 
                     }
                 }
-
             }
         }
 

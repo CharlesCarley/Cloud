@@ -47,7 +47,6 @@ namespace BookStore.Mobile.Views
             {
                 if (BindingContext is BookViewModel book)
                     book.Save();
-
                 await Navigation.PopAsync(true);
             }
             catch (Exception exception)

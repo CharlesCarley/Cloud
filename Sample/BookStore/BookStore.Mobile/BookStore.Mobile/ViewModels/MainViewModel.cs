@@ -22,10 +22,11 @@
 
 namespace BookStore.Mobile.ViewModels
 {
-    public class MainViewModel : ConnectionViewModel {
+    public class MainViewModel : ConnectionViewModel
+    {
         public MainViewModel()
         {
-            base.TestConnection();
+            TestConnection();
         }
     }
 }

@@ -71,6 +71,7 @@ namespace BookStore.Mobile.ViewModels
                 return string.Empty;
             }
             set {
+
                 if (_settings != null)
                 {
                     if (!_settings.Host.Equals(value) && !string.IsNullOrEmpty(value))

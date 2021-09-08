@@ -33,9 +33,9 @@ namespace BookStore.Mobile.Views
             {
                 InitializeComponent();
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                App.SetException(e);
+                App.SetException(this, exception);
             }
         }
 

@@ -25,11 +25,9 @@ using Xamarin.Forms.Xaml;
 
 namespace BookStore.Mobile.Views
 {
-    /// <summary>
-    /// Defines a basic error page to attempt to display information.
-    /// </summary>
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ErrorPage {
+    public partial class ErrorPage
+    {
         public ErrorPage()
         {
             InitializeComponent();
@@ -37,7 +35,8 @@ namespace BookStore.Mobile.Views
 
         public void SetException(Exception e)
         {
-            if (Content is ErrorView ev) {
+            if (Content is ErrorView ev)
+            {
                 if (ev.Brief != null)
                     ev.Brief.Text = e.Message;
 

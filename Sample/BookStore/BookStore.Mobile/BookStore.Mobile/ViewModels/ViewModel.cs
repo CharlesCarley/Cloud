@@ -31,7 +31,7 @@ namespace BookStore.Mobile.ViewModels
 
         protected void NotifyEvent(string name)
         {
-            if (name == null) 
+            if (name is null)
                 throw new ArgumentNullException(nameof(name));
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
