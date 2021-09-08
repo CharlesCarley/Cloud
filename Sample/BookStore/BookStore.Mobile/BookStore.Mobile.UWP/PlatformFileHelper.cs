@@ -25,10 +25,6 @@ using Windows.Storage;
 
 namespace BookStore.Mobile.UWP
 {
-    /// <summary>
-    /// File path helper to gain access to the underlying
-    /// platform file system path.
-    /// </summary>
     public class PlatformFileHelper : IPlatformFileHelper
     {
         public string GetFilePath(string file)

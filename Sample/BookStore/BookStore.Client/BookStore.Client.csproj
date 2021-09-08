@@ -6,13 +6,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BookStore.Api\BookStore.Api.csproj" />
-  </ItemGroup>
-
-
-  <ItemGroup>
     <ProjectReference Include="$(CloudTransaction)" />
     <ProjectReference Include="$(CloudUtils)" />
+    <ProjectReference Include="..\BookStore.Api\BookStore.Api.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -21,8 +17,6 @@
     <CloudGeneratorType>ClientSQLite</CloudGeneratorType>
     <CloudGeneratorRootNamespace>BookStore.Client</CloudGeneratorRootNamespace>
   </PropertyGroup>
-
   <Import Project="$(SolutionDir)\BuildTools\Cloud.Generator.targets" />
-
 
 </Project>

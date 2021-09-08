@@ -108,6 +108,9 @@ namespace Cloud.Generator.ServerSQLite
         {
             foreach (var item in Manager.Items)
             {
+                if (!item.CanSynchronize)
+                    continue;
+
                 var classTemplate = Templates.Class;
 
                 Builders.Decelerations.Clear();
@@ -129,43 +132,6 @@ namespace Cloud.Generator.ServerSQLite
             }
         }
 
-        private void BuildPropertyDeclarationString(StringBuilder     propertyDeclarations,
-                                                    StoreItemProperty property)
-        {
-            propertyDeclarations.Append(Parameters.EOL);
-            propertyDeclarations.Append(' ', 8);
-            propertyDeclarations.Append("public ");
-            switch (property.Type)
-            {
-            case PropertyType.DateAndTime:
-            case PropertyType.String:
-                propertyDeclarations.Append("string ");
-                break;
-            case PropertyType.Integer:
-                propertyDeclarations.Append("int ");
-                break;
-            case PropertyType.Real:
-                propertyDeclarations.Append("float ");
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-            }
-
-            propertyDeclarations.Append(property.Name);
-            propertyDeclarations.Append(" { get; set; }");
-
-            if (property.Default != null)
-            {
-                if (property.Type == PropertyType.String)
-                    propertyDeclarations.Append($" = \"{property.Default}\";");
-                else if (property.Type == PropertyType.Real)
-                    propertyDeclarations.Append($" = {property.Default}f;");
-                else
-                    propertyDeclarations.Append($" = {property.Default};");
-            }
-            propertyDeclarations.Append(Parameters.EOL);
-        }
-
         private void GenerateContent()
         {
             var connection = Templates.Connection;
@@ -177,6 +143,8 @@ namespace Cloud.Generator.ServerSQLite
             Builders.Registration.Append(Parameters.EOL);
             foreach (var item in Manager.Items)
             {
+                if (!item.CanSynchronize)
+                    continue;
                 Builders.Registration.Append(' ', 16);
                 Builders.Registration.Append($"{item.UserName}.Register();");
                 Builders.Registration.Append(Parameters.EOL);
@@ -190,6 +158,8 @@ namespace Cloud.Generator.ServerSQLite
 
             foreach (var item in Manager.Items)
             {
+                if (!item.CanSynchronize)
+                    continue;
                 Builders.Registration.Append(' ', 12);
                 Builders.Registration.Append($"{item.UserName}.Clear();");
                 Builders.Registration.Append(Parameters.EOL);

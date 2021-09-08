@@ -3,7 +3,6 @@
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)Sample\BookStore\BookStore.Client\BookStore.Client.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\js\" />
@@ -15,5 +14,4 @@
     <Folder Include="wwwroot\lib\jquery\" />
     <Folder Include="wwwroot\lib\jquery\dist\" />
   </ItemGroup>
-
 </Project>
