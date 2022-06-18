@@ -14,8 +14,7 @@
 
             try
             {
-                Book.Register();
-                Settings.Register();
+                ${RegisterTypes}
             }
             catch (Exception ex)
             {
@@ -26,8 +25,7 @@
 
         public static void Clear()
         {
-            Book.Clear();
-            Settings.Clear();
+            ${ClearTypes}
         }
 
         public static string GenerateKey()
