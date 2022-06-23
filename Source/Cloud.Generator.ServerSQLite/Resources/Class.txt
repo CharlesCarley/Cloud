@@ -1,6 +1,8 @@
     
     public class ${ClassName} 
     {
+        public const int UniqueId = ${UniqueId};
+
         [PrimaryKey, AutoIncrement]
         public int ServerId { get; set; } = Constants.Undefined;
 
